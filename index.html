@@ -1,0 +1,1982 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tura de mâine · paletizare UR20</title>
+<meta name="description" content="Numără gălețile un minut și află dacă paletizarea robotizată UR20 se potrivește liniei tale. Prototip AI-Powered Business Challenge 2026.">
+<meta name="theme-color" content="#1226aa">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tura de mâine">
+<style>
+/* Identitatea vizuală Tech-Con: Inter, albastru #1226aa / #0a1a87, bleu #dde9f6 / #8cb6e1, roșu #e7004c */
+:root{
+  color-scheme: light;
+  --brand:#1226aa; --brand-dark:#0a1a87; --brand-soft:#dde9f6; --brand-pale:#d0deed; --aqua:#8cb6e1; --accent:#e7004c;
+  --bg:#f3f6fb; --card:#ffffff; --text:#1a1a1a; --muted:#5e6478; --line:#d9e2ef;
+  --green:#1e7b24; --green-soft:#e5f3e6; --amber:#b07800; --amber-soft:#fff4d6;
+  --red:#c0001f; --red-soft:#fde8ec; --radius:14px;
+  --shadow:0 1px 2px rgba(10,26,135,.05),0 8px 24px rgba(10,26,135,.07);
+  --grad:linear-gradient(90deg,#e7004c 0%,#1226aa 100%);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--bg);color:var(--text);font:16px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;font-weight:400;-webkit-font-smoothing:antialiased;min-height:100vh}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;touch-action:manipulation}
+.top{position:sticky;top:0;z-index:10;padding:calc(10px + env(safe-area-inset-top)) 12px 6px;background:linear-gradient(var(--bg) 70%,rgba(243,246,251,0))}
+.top-row{display:flex;align-items:center;gap:10px;max-width:560px;margin:0 auto;background:#fff;border-radius:var(--radius);padding:10px 14px;box-shadow:var(--shadow)}
+.logo{display:flex;align-items:center;gap:10px;background:none;border:0;padding:0;color:var(--brand);text-align:left}
+.wm{font-weight:800;font-size:19px;letter-spacing:-.6px;color:var(--brand);display:inline-flex;align-items:center;line-height:1}
+.wm i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin:0 2px;transform:translateY(1px)}
+.prod{border-left:1.5px solid var(--line);padding-left:10px;font-size:13px;font-weight:600;line-height:1.15;color:var(--brand)}
+.prod small{display:block;font-weight:500;color:var(--muted);font-size:11px}
+.steps{display:flex;gap:4px;margin-left:auto}
+.steps i{width:16px;height:4px;border-radius:2px;background:var(--brand-pale)}
+.steps i.on{background:var(--brand)}
+main{max-width:560px;margin:0 auto;padding:8px 16px calc(32px + env(safe-area-inset-bottom))}
+.screen{display:none}
+.screen.active{display:block}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+h1{font-size:30px;line-height:1.12;margin:8px 0 12px;letter-spacing:-.6px;font-weight:500;color:var(--brand)}
+h2{font-size:24px;line-height:1.18;margin:6px 0 8px;letter-spacing:-.4px;font-weight:500;color:var(--brand)}
+h3{font-size:16px;margin:0 0 6px;font-weight:600;color:var(--brand)}
+p{margin:0 0 10px}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.kicker{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:var(--brand)}
+.kicker::before{content:"";width:2px;height:14px;background:var(--accent);flex:0 0 2px}
+.hero{background:linear-gradient(135deg,rgba(18,38,170,.96),rgba(10,26,135,.98)),repeating-linear-gradient(45deg,#fff 0 1px,transparent 1px 14px);color:#fff;border-radius:var(--radius);padding:22px 18px 20px;margin-top:4px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;border:28px solid rgba(140,182,225,.16)}
+.hero .kicker,.hero h1{color:#fff}
+.hero .kicker::before{background:#fff}
+.hero p{color:rgba(255,255,255,.82)}
+.hero .ur{display:inline-flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.hero .ur span{font-size:12px;font-weight:600;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:4px 10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);margin:12px 0}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:52px;border-radius:999px;border:0;background:var(--brand);color:#fff;font-weight:600;font-size:16px;padding:12px 20px;margin-top:12px;transition:transform .12s ease,opacity .12s ease,background .15s ease}
+.btn:not([disabled]):active{transform:scale(.97)}
+.btn.sec{background:#fff;color:var(--brand);border:1.5px solid var(--brand-pale)}
+.btn.navy{background:var(--brand-dark)}
+.home-h{font-size:29px;margin:10px 0 12px}
+.howto-stage{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+#how{display:block;width:100%;height:auto}
+.howto{list-style:none;margin:0;padding:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.howto li{font-size:12.5px;line-height:1.25;font-weight:600;color:var(--muted);display:flex;align-items:center;gap:6px;padding:6px;border-radius:10px;transition:background .3s ease,color .3s ease}
+.howto li b{flex:0 0 20px;height:20px;border-radius:50%;background:var(--brand-pale);color:var(--brand);font-size:11px;display:flex;align-items:center;justify-content:center}
+.howto li.on{background:var(--brand-soft);color:var(--brand)}
+.howto li.on b{background:var(--brand);color:#fff}
+.btn.big{min-height:60px;font-size:18px}
+.btn.grad{background:var(--grad);text-transform:uppercase;letter-spacing:.6px;font-weight:700}
+.btn[disabled]{opacity:.4;cursor:default}
+.btn-row{display:flex;gap:10px}
+.btn-row .btn{flex:1}
+.link{background:none;border:0;color:var(--muted);text-decoration:underline;padding:8px 0;font-size:14px}
+.back{background:none;border:0;color:var(--muted);padding:4px 0;font-size:14px;display:inline-flex;align-items:center;gap:4px}
+.steps-list{list-style:none;padding:0;margin:14px 0}
+.steps-list li{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}
+.steps-list li:last-child{border-bottom:0}
+.num{flex:0 0 30px;height:30px;border-radius:50%;background:var(--brand-soft);color:var(--brand);font-weight:700;display:flex;align-items:center;justify-content:center}
+.note{font-size:13px;color:var(--muted);border-left:3px solid var(--line);padding-left:10px;margin-top:14px}
+
+/* measure */
+.seg{display:flex;background:var(--line);border-radius:12px;padding:3px;margin:12px 0}
+.seg button{flex:1;border:0;background:transparent;border-radius:10px;padding:9px 6px;font-weight:600;font-size:14px;color:var(--muted)}
+.seg button.on{background:var(--card);color:var(--text);box-shadow:var(--shadow)}
+.tapzone{display:flex;flex-direction:column;align-items:center;padding:8px 0}
+.tap{width:220px;height:220px;border-radius:50%;border:0;background:radial-gradient(circle at 35% 30%,#3a52d6,var(--brand) 60%,var(--brand-dark));color:#fff;font-size:22px;font-weight:800;box-shadow:0 0 0 10px var(--brand-soft),0 14px 34px rgba(18,38,170,.35),inset 0 -6px 0 rgba(0,0,0,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;transition:transform .08s ease}
+.tap.bump{transform:scale(.94)}
+.tap .big{font-size:64px;line-height:1}
+.tap .lbl{font-size:14px;font-weight:600;opacity:.9}
+.timer{margin-top:14px;font-variant-numeric:tabular-nums;display:flex;gap:18px;align-items:baseline}
+.timer b{font-size:28px}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;width:100%;margin-top:10px}
+.bar i{display:block;height:100%;background:var(--brand);width:0}
+.result{text-align:center}
+.result .val{font-size:48px;font-weight:600;color:var(--brand);letter-spacing:-1px;font-variant-numeric:tabular-nums}
+
+/* form */
+.field{margin:16px 0}
+.field>label,.field>.lab{display:block;font-weight:600;font-size:15px;margin-bottom:8px;color:var(--brand)}
+.field .hint{font-size:13px;color:var(--muted);margin:-4px 0 8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:9px 14px;font-weight:600;font-size:14px;min-height:42px}
+.chip.on{border-color:var(--brand);background:var(--brand-soft);color:var(--brand)}
+input[type=number],input[type=text],input[type=email],select{width:100%;min-height:48px;border:1.5px solid var(--line);background:var(--card);border-radius:12px;padding:10px 12px;font-size:16px}
+input:focus,select:focus{outline:2px solid var(--brand);outline-offset:1px}
+.stepper{display:flex;align-items:center;gap:0;border:1.5px solid var(--line);border-radius:12px;width:max-content;background:var(--card)}
+.stepper button{width:48px;height:46px;border:0;background:transparent;font-size:22px;font-weight:700}
+.stepper output{min-width:44px;text-align:center;font-weight:800;font-size:18px;font-variant-numeric:tabular-nums}
+.err{color:var(--red);font-size:13px;font-weight:600;margin-top:6px;display:none}
+.field.bad .err{display:block}
+.field.bad input,.field.bad select{border-color:var(--red)}
+.inline-input{display:flex;gap:8px;align-items:center;margin-top:8px}
+.inline-input input{flex:1}
+.inline-input span{color:var(--muted);font-size:14px;white-space:nowrap}
+details.opt{border:1.5px dashed var(--line);border-radius:12px;padding:10px 12px;margin:16px 0}
+details.opt summary{font-weight:700;cursor:pointer}
+.formerr{background:var(--red-soft);color:var(--red);border-radius:12px;padding:10px 12px;font-weight:600;font-size:14px;display:none;margin-top:12px}
+.formerr.show{display:block}
+
+/* analysis */
+.verdict{border-radius:var(--radius);padding:16px;margin:12px 0;border:1.5px solid}
+.verdict.green{background:var(--green-soft);border-color:var(--green)}
+.verdict.amber{background:var(--amber-soft);border-color:var(--amber)}
+.verdict.red{background:var(--red-soft);border-color:var(--red)}
+.verdict .vt{font-size:21px;font-weight:600;letter-spacing:-.3px;margin-bottom:4px}
+.verdict.green .vt{color:var(--green)} .verdict.amber .vt{color:var(--amber)} .verdict.red .vt{color:var(--red)}
+.metrics{display:grid;grid-template-columns:1fr;gap:10px}
+.metric{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+.metric .ml{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)}
+.metric .mv{font-size:24px;font-weight:600;color:var(--brand);letter-spacing:-.4px;margin:2px 0;font-variant-numeric:tabular-nums}
+.metric .ms{font-size:13px;color:var(--muted)}
+.cmp{margin-top:8px}
+.cmp .row{display:flex;align-items:center;gap:8px;font-size:13px;margin:4px 0}
+.cmp .row span{width:74px;color:var(--muted)}
+.cmp .track{flex:1;height:10px;background:var(--line);border-radius:5px;overflow:hidden}
+.cmp .track i{display:block;height:100%;border-radius:5px}
+.badge{display:inline-block;font-size:12px;font-weight:800;border-radius:999px;padding:3px 9px;margin-top:6px}
+.badge.green{background:var(--green-soft);color:var(--green)} .badge.amber{background:var(--amber-soft);color:var(--amber)} .badge.red{background:var(--red-soft);color:var(--red)}
+.notes{margin:12px 0;padding:0;list-style:none}
+.notes li{font-size:14px;padding:8px 0 8px 26px;position:relative;border-bottom:1px solid var(--line)}
+.notes li:last-child{border-bottom:0}
+.notes li::before{content:"!";position:absolute;left:0;top:9px;width:18px;height:18px;border-radius:50%;background:var(--amber-soft);color:var(--amber);font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center}
+.notes li.info::before{content:"i";background:var(--line);color:var(--muted)}
+details.how{margin:12px 0;font-size:14px}
+details.how summary{font-weight:700;cursor:pointer;color:var(--muted)}
+details.how ul{padding-left:18px;margin:8px 0}
+details.how li{margin:4px 0}
+.shared{background:var(--brand-soft);border-radius:12px;padding:10px 12px;font-size:14px;font-weight:600;color:var(--brand);margin-bottom:8px}
+
+/* story */
+.stage-wrap{position:relative;border-radius:var(--radius);overflow:hidden;background:#eef2f9;border:1px solid var(--line);box-shadow:var(--shadow)}
+#stage{display:block;width:100%;height:auto}
+.stage-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;background:linear-gradient(135deg,rgba(18,38,170,.92),rgba(10,26,135,.95));color:#fff;text-align:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .5s ease}
+.stage-overlay.show{opacity:1}
+.stage-overlay .o1{font-size:23px;font-weight:500;letter-spacing:-.2px}
+.stage-overlay .o2{font-size:15px;opacity:.85;margin-top:6px;max-width:300px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px;min-width:0}
+.stat .sl{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stat .sv{font-size:18px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+.stat.hot .sv{color:var(--red)} .stat.cool .sv{color:var(--green)}
+.meter{height:5px;background:var(--line);border-radius:3px;margin-top:4px;overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:var(--red)}
+.caption{min-height:118px;margin-top:12px}
+.caption .cap-t{font-size:21px;font-weight:500;letter-spacing:-.4px;color:var(--brand);margin:2px 0 4px}
+.caption p{color:var(--muted);font-size:15px;transition:opacity .3s ease}
+.dots{display:flex;gap:6px;justify-content:center;margin:6px 0}
+.dots i{width:8px;height:8px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--brand);width:22px;border-radius:4px}
+.bil{display:grid;gap:10px;margin-top:6px}
+.bcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;opacity:0;transform:translateY(8px);transition:opacity .4s ease,transform .4s ease}
+.bcard.show{opacity:1;transform:none}
+.bcard .bh{display:flex;align-items:center;gap:8px;font-weight:600;font-size:16px;color:var(--brand)}
+.bcard .ico{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;background:var(--brand-soft)}
+.ba{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-top:10px}
+.ba .side{background:var(--bg);border-radius:10px;padding:8px 10px}
+.ba .side small{display:block;font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase}
+.ba .side b{font-size:17px;font-variant-numeric:tabular-nums}
+.ba .side.after b{color:var(--green)}
+.ba .arrow{color:var(--muted);font-weight:800}
+.bcard p{font-size:13px;color:var(--muted);margin:8px 0 0}
+
+/* dossier */
+.paper{background:#fff;color:#1a1a1a;border-radius:14px;border:1px solid #d9e2ef;border-top:4px solid #1226aa;padding:18px 16px;box-shadow:var(--shadow);font-size:14px}
+.paper h3{font-size:18px;margin:0 0 2px;font-weight:500;color:#1226aa;letter-spacing:-.3px}
+.paper .meta{font-size:12px;color:#66657a;margin-bottom:10px}
+.paper h4{font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:#1226aa;margin:14px 0 4px}
+.paper ul{margin:0;padding-left:18px}
+.paper li{margin:3px 0}
+.paper .tag{font-size:10px;font-weight:800;border-radius:4px;padding:1px 5px;margin-left:4px;vertical-align:1px}
+.paper .tag.f{background:#e6f6ed;color:#1e9e5a}
+.paper .tag.e{background:#fff6dc;color:#9a6a00}
+.share{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.share .btn{margin-top:0}
+.btn.wa{background:#1fa855}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--brand-dark);color:#fff;padding:10px 16px;border-radius:12px;font-weight:600;font-size:14px;opacity:0;transition:all .25s ease;z-index:50;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.warn{background:var(--amber-soft);color:var(--amber);border-radius:12px;padding:10px 12px;font-size:13px;font-weight:600}
+.ok-big{text-align:center;padding:10px 0}
+.ok-big .circle{width:72px;height:72px;border-radius:50%;background:var(--green-soft);color:var(--green);font-size:38px;display:flex;align-items:center;justify-content:center;margin:6px auto 10px}
+.kv{font-size:14px;margin:0;padding:0;list-style:none}
+.kv li{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--line)}
+.kv li span{color:var(--muted)}
+.kv li b{text-align:right}
+footer{max-width:560px;margin:0 auto;padding:18px 16px 28px;font-size:12px;color:var(--muted);border-top:1px solid var(--line)}
+footer .wm{font-size:15px}
+footer .f-tag{margin:4px 0 0}
+footer .f-text{margin:10px 0 0}
+footer .offices{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+footer .offices span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--brand);font-weight:600}
+@media (min-width:520px){ .metrics{grid-template-columns:1fr 1fr} .metrics .metric:first-child{grid-column:1/-1} }
+.desk-only{display:none}
+
+/* ---------- Calculator: două coloane ---------- */
+@media (min-width:960px){
+  body{background:linear-gradient(180deg,#e4ecf8 0,var(--bg) 520px) no-repeat,var(--bg)}
+  .top{padding:16px 32px 8px;background:transparent;position:sticky}
+  .top-row{max-width:1160px;padding:14px 22px}
+  .wm{font-size:22px}
+  .prod{font-size:14px}
+  .steps i{width:28px;height:5px}
+  main{max-width:1160px;padding:24px 32px 48px}
+  footer{max-width:1160px;padding:24px 32px 36px;display:grid;grid-template-columns:minmax(260px,1fr) 1.6fr;column-gap:48px;align-items:start}
+  footer .f-text{margin:0}
+  .screen.active{display:grid;column-gap:44px;align-items:start;grid-auto-flow:row dense}
+  .screen.active > *{grid-column:1/-1;min-width:0}
+  .btn:not(.sec):hover{filter:brightness(1.06)}
+  .btn.sec:hover{background:var(--brand-soft);filter:none}
+  .chip:hover{border-color:var(--brand)}
+  .desk-only{display:block}
+  h2{font-size:34px}
+
+  /* start */
+  #s-intro.active{grid-template-columns:1fr 1.3fr;align-items:center;min-height:calc(100vh - 260px)}
+  #s-intro > *{grid-column:1}
+  #s-intro .home-h{font-size:54px;line-height:1.05;letter-spacing:-1.4px;margin:0 0 18px;align-self:end}
+  #s-intro .lead{font-size:18px;color:var(--muted);max-width:470px;margin:0 0 8px}
+  #s-intro .howto-stage{grid-column:2;grid-row:1 / span 4;align-self:center}
+  #s-intro #start{max-width:470px;margin-top:18px}
+  #s-intro .btn-row{max-width:470px;align-self:start}
+
+  /* măsurare */
+  #s-measure.active{grid-template-columns:1fr 1fr;max-width:1000px;margin:0 auto}
+  #s-measure > *{grid-column:1}
+  #s-measure #tap-panel,#s-measure #manual-panel,#s-measure #cam-panel{grid-column:2;grid-row:1 / span 7;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+  #s-measure .tap{width:260px;height:260px}
+
+  /* 3 întrebări */
+  #s-details.active{grid-template-columns:repeat(3,1fr);column-gap:28px;max-width:1000px;margin:0 auto}
+  #s-details > .field{grid-column:auto;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin:12px 0 0}
+  #s-details details.opt{background:#fff}
+  #s-details details.opt[open]{display:grid;grid-template-columns:1fr 1fr;column-gap:28px}
+  #s-details details.opt[open] summary{grid-column:1/-1}
+  #s-details #d-next{max-width:360px;justify-self:end}
+  #s-details .formerr{grid-column:1/-1}
+
+  /* rezultat */
+  #s-analysis.active{grid-template-columns:1.5fr 1fr}
+  #s-analysis .metrics{grid-template-columns:repeat(3,1fr)}
+  #s-analysis .metrics .metric:first-child{grid-column:auto}
+  #s-analysis .notes,#s-analysis details.how{grid-column:1}
+  #s-analysis .notes{grid-row:span 2}
+  #s-analysis #to-dossier-quick{align-self:start}
+  #s-analysis #to-story,#s-analysis #to-dossier-quick{grid-column:2}
+  #s-analysis #to-story{margin-top:22px}
+
+  /* povestea */
+  #s-story.active{grid-template-columns:1.55fr 1fr;column-gap:32px}
+  #s-story .stage-wrap{grid-column:1;grid-row:span 5}
+  #s-story .stats,#s-story .caption,#s-story .dots,#s-story #story-ctrl{grid-column:2}
+  #s-story .stats{margin-top:0;grid-template-columns:1fr}
+  #s-story .stat{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:12px 16px}
+  #s-story .stat .meter{flex-basis:100%}
+  #s-story .stat .sv{font-size:24px}
+  #s-story .caption .cap-t{font-size:26px}
+  #s-story .dots{justify-content:flex-start}
+  #s-story .bil{grid-template-columns:1fr 1fr}
+  #s-story #to-dossier{max-width:360px}
+
+  /* raport */
+  #s-dossier.active{grid-template-columns:1.4fr 1fr}
+  #s-dossier .paper{grid-column:1;grid-row:span 4;padding:28px 30px;font-size:15px}
+  #s-dossier .share,#s-dossier > p.muted:last-of-type,#s-dossier #to-request{grid-column:2}
+  #s-dossier .share{margin-top:0}
+
+  /* cerere */
+  #s-request.active{max-width:720px;margin:0 auto}
+  /* panou */
+  #s-panel .kpis{grid-template-columns:repeat(4,1fr)}
+  #s-panel .target-row{grid-template-columns:repeat(3,1fr)}
+  #s-panel .leads{grid-template-columns:1fr 1fr}
+  #s-panel #clear-mine{max-width:320px}
+  #s-intro .qr-card,#s-intro .install,#s-intro .ios-hint{grid-column:1}
+  #s-request #req-form{display:grid;grid-template-columns:1fr 1fr;column-gap:20px}
+  #s-request #req-form > .field:last-of-type,#s-request #req-send{grid-column:1/-1}
+}
+/* ---------- Panou Tech-Con ---------- */
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+.kpi small{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.kpi b{font-size:26px;font-weight:600;color:var(--brand);font-variant-numeric:tabular-nums;letter-spacing:-.5px}
+.kpi.hl{background:linear-gradient(135deg,#1226aa,#0a1a87);border:0}
+.kpi.hl small{color:#8cb6e1}.kpi.hl b{color:#fff}
+.target-row{display:grid;grid-template-columns:1fr;gap:10px}
+.target-row label{font-size:13px;font-weight:600;color:var(--brand);display:flex;flex-direction:column;gap:6px}
+.target-row .inline-input{margin:0}
+.t-out{margin:12px 0 0;font-size:14px;background:var(--brand-soft);border-radius:12px;padding:10px 12px;color:var(--brand)}
+.pfilter{margin:6px 0 12px}
+.leads{display:grid;gap:10px}
+.lcard{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:start}
+.lcard.mine{border-color:var(--accent);box-shadow:0 0 0 2px rgba(231,0,76,.12),var(--shadow)}
+.score{grid-row:span 3;width:54px;height:54px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:18px;line-height:1}
+.score small{font-size:9px;font-weight:700;letter-spacing:.5px;opacity:.85}
+.score.A{background:var(--green)}.score.B{background:var(--amber)}.score.C{background:#8a90a6}
+.lcard h4{margin:0;font-size:16px;font-weight:600;color:var(--brand);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.tag{font-size:10px;font-weight:700;border-radius:4px;padding:2px 6px;text-transform:uppercase;letter-spacing:.4px}
+.tag.demo{background:var(--line);color:var(--muted)}.tag.me{background:var(--red-soft);color:var(--accent)}
+.lcard .meta{font-size:12.5px;color:var(--muted)}
+.facts{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.facts span{font-size:12px;font-weight:600;background:var(--bg);border-radius:999px;padding:3px 9px}
+.next{grid-column:1/-1;margin-top:8px;font-size:13px;font-weight:600;border-top:1px dashed var(--line);padding-top:8px;color:var(--text)}
+.next b{color:var(--brand)}
+.empty{text-align:center;color:var(--muted);padding:20px}
+/* ---------- Mod prezentare, QR, instalare ---------- */
+.demo-pill{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:90;background:#0a1a87;color:#fff;border-radius:999px;padding:8px 8px 8px 14px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;box-shadow:0 10px 30px rgba(10,26,135,.35)}
+.demo-pill .dot{width:8px;height:8px;border-radius:50%;background:#e7004c;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:.25}}
+.demo-pill button{border:0;background:#fff;color:#0a1a87;border-radius:999px;padding:6px 12px;font-weight:700;font-size:12px}
+.install{display:block;width:100%;margin-top:12px;border:1.5px dashed var(--brand-pale);background:transparent;color:var(--brand);border-radius:999px;padding:10px 14px;font-weight:600;font-size:14px}
+.ios-hint{font-size:13px;color:var(--muted);text-align:center;margin-top:8px}
+.qr-card{margin-top:18px;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:12px 16px;max-width:470px}
+.qr-card:not([hidden]){display:flex}
+#qr{flex:0 0 92px;width:92px;height:92px}
+#qr svg,#qr img{width:92px;height:92px;display:block}
+.share .wide{grid-column:1/-1}
+.f-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.f-links button{background:none;border:0;padding:0;color:var(--brand);font-weight:600;font-size:12px;text-decoration:underline;cursor:pointer}
+
+/* ---------- Bandă de test ---------- */
+.belt{position:fixed;inset:0;z-index:120;background:#f3f6fb;display:flex;flex-direction:column}
+.belt[hidden]{display:none!important}
+.belt-top{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:12px 18px;background:#fff;border-bottom:1px solid var(--line)}
+.belt-top > b{color:var(--brand);font-weight:600}
+.belt-sent{margin-left:auto;font-weight:600;color:var(--muted)}
+.belt-sent b{color:var(--brand);font-size:20px}
+.belt-close{width:auto;margin:0;min-height:40px;padding:8px 18px}
+.belt-hint{margin:10px 18px 0;font-size:13px;color:var(--muted)}
+.belt-stage{position:relative;flex:1;overflow:hidden;background:#fff;margin:12px 18px 18px;border-radius:var(--radius);border:1px solid var(--line)}
+.belt-conv{position:absolute;left:0;right:0;top:66%;height:6%;background:#2e3245;border-top:6px solid #4b5068}
+.belt-b{position:absolute;left:0;top:calc(66% - 1px);transform-origin:bottom;translate:0 -100%;will-change:transform}
+.belt-b svg{width:100%;height:100%;display:block}
+
+/* ---------- Camera ---------- */
+.cam-wrap{position:relative;aspect-ratio:4/3;background:linear-gradient(135deg,#1226aa,#0a1a87);border-radius:14px;overflow:hidden}
+.cam-wrap video{display:block;width:100%;height:100%;object-fit:cover}
+.cam-wrap canvas{position:absolute;inset:0;width:100%;height:100%}
+.cam-count{position:absolute;top:10px;right:10px;background:rgba(255,255,255,.94);border-radius:12px;padding:6px 12px;display:flex;align-items:baseline;gap:6px;color:var(--brand);box-shadow:var(--shadow)}
+.cam-count b{font-size:28px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
+.cam-count span{font-size:12px;font-weight:600;color:var(--muted)}
+.cam-flash{position:absolute;inset:0;border:5px solid #9be564;border-radius:14px;opacity:0;pointer-events:none}
+.cam-flash.on{animation:camFlash .45s ease-out}
+@keyframes camFlash{from{opacity:1}to{opacity:0}}
+.cam-off{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#fff;text-align:center;padding:16px}
+.cam-off span{font-size:34px}.cam-off small{opacity:.75;font-size:12px}
+.cam-status{margin-top:8px;font-size:13px;font-weight:600;color:var(--brand);background:var(--brand-soft);border-radius:10px;padding:8px 10px}
+.cam-tip{background:var(--amber-soft);color:#6b4b00;border-radius:12px;padding:10px 12px;font-size:14px;margin:4px 0 10px}
+.cam-tools{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+.sens{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px;font-weight:600}
+input[type=range]{accent-color:var(--brand)}
+
+/* ---------- Animații: butoane ---------- */
+.btn{position:relative;overflow:hidden;isolation:isolate;transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .25s ease,background .2s ease,filter .2s ease}
+.btn:not(.sec)::after{content:"";position:absolute;top:0;left:-70%;width:45%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.38),transparent);transform:skewX(-20deg);pointer-events:none}
+@media (hover:hover){
+  .btn:not([disabled]):hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(18,38,170,.24)}
+  .btn.sec:not([disabled]):hover{box-shadow:0 8px 18px rgba(18,38,170,.12);border-color:var(--brand)}
+  .btn:not(.sec):not([disabled]):hover::after{animation:shine .85s ease}
+  .chip:hover{transform:translateY(-1px)}
+}
+.btn:not([disabled]):active,.chip:active{transform:scale(.96);transition-duration:.08s}
+@keyframes shine{to{left:140%}}
+.btn.grad{background:linear-gradient(90deg,#e7004c 0%,#1226aa 50%,#e7004c 100%);background-size:200% 100%;animation:gradMove 5s ease-in-out infinite alternate}
+@keyframes gradMove{from{background-position:0 0}to{background-position:100% 0}}
+.chip,.seg button,.stepper button{position:relative;overflow:hidden;transition:transform .18s cubic-bezier(.2,.8,.2,1),background .2s ease,border-color .2s ease,color .2s ease}
+.chip.on{animation:chipPop .3s cubic-bezier(.3,1.5,.5,1)}
+@keyframes chipPop{40%{transform:scale(1.07)}}
+.rip{position:absolute;border-radius:50%;background:currentColor;opacity:.28;transform:scale(0);animation:rip .6s ease-out forwards;pointer-events:none;z-index:-1}
+@keyframes rip{to{transform:scale(1);opacity:0}}
+.rv #start{animation:fadeUp .5s cubic-bezier(.2,.8,.2,1) .25s backwards,pulse 2.6s ease-out 1.2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(18,38,170,.45)}70%{box-shadow:0 0 0 16px rgba(18,38,170,0)}100%{box-shadow:0 0 0 0 rgba(18,38,170,0)}}
+
+/* ---------- Animații: text ---------- */
+.w{display:inline-block;overflow:hidden;vertical-align:top;padding:.12em 0;margin:-.12em 0}
+.w>span{display:inline-block}
+.rv .w>span{animation:wordUp .6s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i) * 55ms + 120ms)}
+@keyframes wordUp{from{transform:translateY(110%)}to{transform:none}}
+.rv > *:not(h1):not(h2){animation:fadeUp .5s cubic-bezier(.2,.8,.2,1) backwards}
+.rv > *:nth-child(2){animation-delay:.06s} .rv > *:nth-child(3){animation-delay:.12s} .rv > *:nth-child(4){animation-delay:.18s}
+.rv > *:nth-child(5){animation-delay:.24s} .rv > *:nth-child(6){animation-delay:.3s} .rv > *:nth-child(n+7){animation-delay:.36s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.rv .verdict .vt{animation:stamp .55s cubic-bezier(.3,1.5,.5,1) .35s both}
+@keyframes stamp{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
+.pop{animation:fadeUp .45s cubic-bezier(.2,.8,.2,1) backwards}
+.kicker::before{transform-origin:top}
+.rv .kicker::before{animation:lineGrow .5s cubic-bezier(.2,.8,.2,1) .1s both}
+@keyframes lineGrow{from{transform:scaleY(0)}to{transform:none}}
+
+/* ---------- Tranziția între pagini: paletizare ---------- */
+#pt{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#1226aa,#0a1a87);color:#fff;visibility:hidden;pointer-events:none}
+#pt.in{visibility:visible;animation:ptIn .32s cubic-bezier(.7,0,.3,1) both}
+#pt.out{visibility:visible;animation:ptOut .4s cubic-bezier(.7,0,.3,1) both}
+@keyframes ptIn{from{transform:translateX(100%)}to{transform:none}}
+@keyframes ptOut{from{transform:none}to{transform:translateY(-100%)}}
+#pt svg{width:190px;height:auto;overflow:visible}
+.pt-b{transform-box:fill-box}
+#pt.in .pt-b{animation:drop .22s cubic-bezier(.3,1.4,.5,1) both;animation-delay:calc(var(--i) * 28ms + 70ms)}
+@keyframes drop{from{transform:translateY(-46px);opacity:0}to{transform:none;opacity:1}}
+.pt-label{margin-top:14px;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;opacity:.92}
+.pt-label b{color:#8cb6e1;font-weight:700}
+.pt-line{position:absolute;left:0;right:0;bottom:0;height:5px;background:linear-gradient(90deg,#e7004c,#1226aa)}
+#pt.in .pt-wm{animation:fadeUp .3s ease .1s both}
+.pt-wm{position:absolute;top:calc(22px + env(safe-area-inset-top));left:24px;font-weight:800;font-size:18px;letter-spacing:-.5px;color:#fff;display:flex;align-items:center}
+.pt-wm i{display:inline-block;width:6px;height:6px;border-radius:50%;background:#e7004c;margin:0 2px}
+
+@media (prefers-reduced-motion: reduce){ *{animation:none!important;transition:none!important} }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-row">
+    <button class="logo" id="home" aria-label="Înapoi la început">
+      <span class="wm" aria-label="Tech-Con">Tech<i></i>Con</span>
+      <span class="prod">Tura de mâine<small>paletizare cu UR20</small></span>
+    </button>
+    <div class="steps" id="steps" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+  </div>
+</header>
+
+<main id="app">
+
+<!-- INTRO -->
+<section class="screen active" id="s-intro">
+  <h1 class="home-h">Se potrivește robotul UR20 pe linia ta?</h1>
+  <p class="lead desk-only">Numără gălețile un minut și află pe loc dacă paletizarea robotizată ține pasul cu linia ta. Pe telefon o faci direct din hală, iar pe calculator alegi „Știu deja cifra”.</p>
+  <div class="howto-stage">
+    <svg id="how" viewBox="0 0 360 190" role="img" aria-label="Cum funcționează: stai lângă bandă, atingi telefonul la fiecare găleată, vezi rezultatul">
+      <rect width="360" height="190" fill="#eef2f9"/>
+      <rect y="168" width="360" height="22" fill="#d9e2ef"/>
+      <g id="h-conv">
+        <rect x="18" y="142" width="4" height="26" fill="#5b6075"/><rect x="110" y="142" width="4" height="26" fill="#5b6075"/><rect x="190" y="142" width="4" height="26" fill="#5b6075"/>
+        <rect x="-10" y="132" width="214" height="10" rx="2" fill="#4b5068"/>
+        <rect x="-10" y="130" width="214" height="3" fill="#2e3245"/>
+        <line x1="198" y1="70" x2="198" y2="168" stroke="#e7004c" stroke-width="1.5" stroke-dasharray="4 4"/>
+      </g>
+      <g id="h-belt"></g>
+      <g id="h-phone"></g>
+    </svg>
+    <ol class="howto" id="howto">
+      <li class="on"><b>1</b>Stai lângă bandă</li>
+      <li><b>2</b>Atinge la fiecare găleată</li>
+      <li><b>3</b>Vezi rezultatul</li>
+    </ol>
+  </div>
+  <button class="btn big" id="start">Numără gălețile acum</button>
+  <div class="btn-row">
+    <button class="btn sec" id="start-manual">Știu deja cifra</button>
+    <button class="btn sec" id="demo">Vezi un exemplu</button>
+  </div>
+  <button class="install" id="install" hidden>⬇ Instalează pe telefon · merge și fără internet în hală</button>
+  <p class="ios-hint" id="ios-hint" hidden>Pe iPhone: apasă <b>Partajează</b> ⬆ și apoi <b>Adaugă pe ecranul principal</b>.</p>
+  <div class="qr-card desk-only" id="qr-card" hidden>
+    <div id="qr"></div>
+    <div><b>Ești la calculator?</b><br><span class="muted small">Scanează cu telefonul și numără gălețile direct lângă bandă.</span></div>
+  </div>
+</section>
+
+<!-- MEASURE -->
+<section class="screen" id="s-measure">
+  <button class="back" data-go="s-intro">← Înapoi</button>
+  <h2>Câte găleți pe minut?</h2>
+  <div class="seg" role="tablist">
+    <button id="mode-cam" role="tab">📷 Cu camera</button>
+    <button class="on" id="mode-tap" role="tab">Atingând</button>
+    <button id="mode-manual" role="tab">Știu cifra</button>
+  </div>
+
+  <div id="cam-panel" hidden>
+    <div class="cam-tip">📌 <b>Sprijină telefonul</b> de ceva (o cană, un perete, marginea benzii). Trebuie să stea <b>complet nemișcat</b> cât numără.</div>
+    <p class="muted small">Ține telefonul nemișcat, cu banda trecând prin fața camerei. Când vede un obiect, apare un <b>punct verde</b> pe el. Fiecare obiect e numărat <b>o singură dată</b>, când punctul trece de linie. N-ai bandă acum? Deschide pe laptop <b>…/tura-de-maine/#banda</b> și filmează ecranul.</p>
+    <div class="cam-wrap" id="cam-wrap">
+      <video id="cam-video" playsinline muted></video>
+      <canvas id="cam-overlay"></canvas>
+      <div class="cam-count"><b id="cam-n">0</b><span>găleți</span></div>
+      <div class="cam-flash" id="cam-flash"></div>
+      <div class="cam-off" id="cam-off"><span>📷</span><b>Camera e oprită</b><small>Merge pe telefon, prin link securizat (https).</small></div>
+    </div>
+    <div class="cam-status" id="cam-status">Apasă „Pornește camera”.</div>
+    <div class="timer"><span><b id="c-left">60</b> s rămase</span><span><b id="c-rate">–</b> găleți/min</span></div>
+    <div class="bar"><i id="c-bar"></i></div>
+    <div class="cam-tools">
+      <button class="chip" id="cam-rotate" type="button">↻ Linie orizontală</button>
+      <label class="sens">Sensibilitate <input type="range" id="cam-sens" min="1" max="5" value="3"></label>
+    </div>
+    <div class="btn-row">
+      <button class="btn" id="cam-start">Pornește camera</button>
+      <button class="btn sec" id="cam-stop" disabled>Gata</button>
+    </div>
+  </div>
+
+  <div id="tap-panel">
+    <p class="muted small">La capătul benzii: START, apoi atinge cercul la fiecare găleată.</p>
+    <div class="tapzone">
+      <button class="tap" id="tap" aria-live="polite"><span class="big" id="tap-big" style="font-size:40px">START</span><span class="lbl" id="tap-lbl">60 de secunde</span></button>
+      <div class="timer"><span><b id="t-left">60</b> s rămase</span><span><b id="t-rate">–</b> găleți/min</span></div>
+      <div class="bar"><i id="t-bar"></i></div>
+      <div class="btn-row" style="width:100%">
+        <button class="btn sec" id="t-stop" disabled>Gata mai devreme</button>
+        <button class="btn sec" id="t-reset">Reia</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="manual-panel" hidden>
+    <div class="field" id="f-manual">
+      <label for="manual-rate">Găleți pe minut la capătul liniei</label>
+      <input type="number" id="manual-rate" inputmode="decimal" min="0.5" max="40" step="0.1" placeholder="ex: 7">
+      <div class="err" id="e-manual"></div>
+    </div>
+  </div>
+
+  <div class="card result" id="m-result" hidden>
+    <div class="muted small">Linia ta</div>
+    <div class="val" id="m-val">–</div>
+    <div class="muted small" id="m-sub">găleți pe minut</div>
+  </div>
+  <div class="formerr" id="m-err"></div>
+  <button class="btn" id="m-next" disabled>Continuă</button>
+</section>
+
+<!-- DETAILS -->
+<section class="screen" id="s-details">
+  <button class="back" data-go="s-measure">← Înapoi</button>
+  <h2>3 întrebări despre linie</h2>
+
+  <div class="field" id="f-weight">
+    <span class="lab">Cât cântărește o găleată plină?</span>
+    <div class="chips" data-group="weightChoice">
+      <button class="chip" data-v="5">5 kg</button>
+      <button class="chip on" data-v="13">13 kg</button>
+      <button class="chip" data-v="other">Altă greutate</button>
+    </div>
+    <div class="inline-input" id="weight-other" hidden><input type="number" id="weight-input" inputmode="decimal" min="1" max="60" step="0.5" placeholder="ex: 10"><span>kg</span></div>
+    <div class="err" id="e-weight"></div>
+  </div>
+
+  <div class="field" id="f-ops">
+    <span class="lab">Câți oameni paletizează pe o tură?</span>
+    <div class="stepper"><button data-step="-1" aria-label="Mai puțini">−</button><output id="ops">2</output><button data-step="1" aria-label="Mai mulți">+</button></div>
+    <div class="err" id="e-ops"></div>
+  </div>
+
+  <div class="field">
+    <span class="lab">Câte ture pe zi?</span>
+    <div class="chips" data-group="shifts">
+      <button class="chip" data-v="1">1 tură</button>
+      <button class="chip" data-v="2">2 ture</button>
+      <button class="chip on" data-v="3">3 ture</button>
+    </div>
+  </div>
+
+  <details class="opt" id="opt-cost">
+    <summary>Mai multe detalii (opțional)</summary>
+  <div class="field" id="f-industry">
+    <span class="lab">Ce produceți?</span>
+    <div class="chips" data-group="industry">
+      <button class="chip on" data-v="alimentar">Alimentar</button>
+      <button class="chip" data-v="vopsele">Vopsele și lacuri</button>
+      <button class="chip" data-v="chimice">Chimice și detergenți</button>
+      <button class="chip" data-v="constructii">Materiale de construcții</button>
+      <button class="chip" data-v="altele">Altele</button>
+    </div>
+  </div>
+  <div class="field">
+    <span class="lab">Găleata are mâner?</span>
+    <div class="chips" data-group="handle">
+      <button class="chip on" data-v="da">Da</button>
+      <button class="chip" data-v="nu">Nu</button>
+    </div>
+  </div>
+  <div class="field" id="f-hours">
+    <label for="hours">Ore de producție pe tură</label>
+    <input type="number" id="hours" inputmode="decimal" min="4" max="12" step="0.5" value="8">
+    <div class="err" id="e-hours"></div>
+  </div>
+  <div class="field" id="f-keeps">
+    <span class="lab">Paletizarea manuală ține pasul cu linia?</span>
+    <div class="chips" data-group="keepsUp">
+      <button class="chip on" data-v="da">Da</button>
+      <button class="chip" data-v="nu">Nu, încetinim linia</button>
+    </div>
+    <div id="pot-wrap" hidden>
+      <div class="hint" style="margin-top:10px">Dacă paletizarea nu ar frâna, cât ar putea produce linia?</div>
+      <div class="inline-input"><input type="number" id="pot-rate" inputmode="decimal" min="0.5" max="40" step="0.1" placeholder="ex: 8"><span>găleți/min</span></div>
+    </div>
+    <div class="err" id="e-pot"></div>
+  </div>
+    <div class="field" id="f-cost">
+      <label for="cost">Cost orar al unui operator (pentru estimarea în bani)</label>
+      <div class="hint">Costul total al firmei, în EUR. Rămâne doar pe telefonul tău.</div>
+      <div class="inline-input"><input type="number" id="cost" inputmode="decimal" min="1" max="100" step="0.5" placeholder="ex: 8"><span>EUR/oră</span></div>
+      <div class="err" id="e-cost"></div>
+    </div>
+  </details>
+
+  <div class="formerr" id="d-err">Verifică câmpurile marcate cu roșu.</div>
+  <button class="btn big" id="d-next">Vezi rezultatul</button>
+</section>
+
+<!-- ANALYSIS -->
+<section class="screen" id="s-analysis">
+  <button class="back" data-go="s-details">← Modifică datele</button>
+  <div class="shared" id="shared-banner" hidden>Ai deschis un raport primit prin link.</div>
+  <div class="kicker">Rezultatul tău</div>
+  <div class="verdict" id="verdict"><div class="vt" id="v-title"></div><div id="v-text"></div></div>
+  <div class="metrics" id="metrics"></div>
+  <ul class="notes" id="notes"></ul>
+  <details class="how">
+    <summary>Cum am calculat?</summary>
+    <ul id="how-list"></ul>
+  </details>
+  <button class="btn" id="to-story">▶ Vezi tura ta de mâine</button>
+  <button class="btn sec" id="to-dossier-quick">Vezi raportul</button>
+</section>
+
+<!-- STORY -->
+<section class="screen" id="s-story">
+  <button class="back" data-go="s-analysis">← Potențialul</button>
+  <div class="stage-wrap">
+    <svg id="stage" viewBox="0 0 360 220" role="img" aria-label="Animație: paletizarea la tine azi și mâine, cu robotul UR20">
+      <defs>
+        <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3f4f8"/><stop offset="1" stop-color="#e4e6ee"/></linearGradient>
+        <radialGradient id="pain"><stop offset="0" stop-color="#ff3b3b" stop-opacity=".9"/><stop offset="1" stop-color="#ff3b3b" stop-opacity="0"/></radialGradient>
+      </defs>
+      <g id="g-bg">
+        <rect width="360" height="192" fill="url(#wall)"/>
+        <g fill="#d6d9e3"><rect x="8" y="30" width="60" height="4"/><rect x="8" y="60" width="60" height="4"/><rect x="8" y="90" width="60" height="4"/><rect x="10" y="26" width="3" height="104"/><rect x="63" y="26" width="3" height="104"/>
+        <rect x="292" y="30" width="60" height="4"/><rect x="292" y="60" width="60" height="4"/><rect x="294" y="26" width="3" height="70"/><rect x="347" y="26" width="3" height="70"/></g>
+        <rect y="192" width="360" height="28" fill="#cfd3dd"/>
+        <rect y="192" width="360" height="2" fill="#bfc4d0"/>
+        <rect x="0" y="207" width="360" height="2.5" fill="#f2c94c" opacity=".8"/>
+        <text id="clock" x="10" y="18" font-size="12" font-weight="700" fill="#0a1a87" font-family="ui-monospace,Menlo,monospace">06:00</text>
+        <text id="scene-tag" x="350" y="18" font-size="10" font-weight="800" fill="#e7004c" text-anchor="end" letter-spacing=".8">AZI</text>
+      </g>
+      <g id="g-conveyor">
+        <rect x="18" y="141" width="4" height="51" fill="#5b6075"/><rect x="92" y="141" width="4" height="51" fill="#5b6075"/><rect x="166" y="141" width="4" height="51" fill="#5b6075"/>
+        <rect x="-10" y="132" width="200" height="10" rx="2" fill="#4b5068"/>
+        <rect x="-10" y="130" width="200" height="3" fill="#2e3245"/>
+        <line id="belt-line" x1="-10" y1="131.5" x2="190" y2="131.5" stroke="#7a809a" stroke-width="1.2" stroke-dasharray="5 7"/>
+        <rect x="30" y="160" width="26" height="18" rx="2" fill="#6b7088"/>
+        <g id="camera"><rect x="174" y="44" width="3" height="22" fill="#5b6075"/><rect x="167" y="62" width="17" height="9" rx="2" fill="#2e3245"/><circle cx="175.5" cy="71" r="2" fill="#5aa9e6"/><polygon id="cam-cone" points="175.5,73 163,110 188,110" fill="#5aa9e6" opacity="0"/></g>
+      </g>
+      <g id="g-zone"></g>
+      <g id="g-pallets"></g>
+      <g id="g-belt"></g>
+      <g id="g-robot"></g>
+      <g id="g-actors"></g>
+      <g id="g-held"></g>
+      <g id="g-fx"></g>
+    </svg>
+    <div class="stage-overlay" id="overlay"><div class="o1" id="o1"></div><div class="o2" id="o2"></div></div>
+  </div>
+  <div class="stats" id="stats">
+    <div class="stat" id="st1"><div class="sl" id="st1l"></div><div class="sv" id="st1v"></div><div class="meter"><i id="st1m"></i></div></div>
+    <div class="stat" id="st2"><div class="sl" id="st2l"></div><div class="sv" id="st2v"></div></div>
+    <div class="stat" id="st3"><div class="sl" id="st3l"></div><div class="sv" id="st3v"></div></div>
+  </div>
+  <div class="caption" aria-live="polite">
+    <div class="kicker" id="cap-k"></div>
+    <div class="cap-t" id="cap-t"></div>
+    <p id="cap-p"></p>
+  </div>
+  <div class="dots" id="dots"><i></i><i></i><i></i><i></i></div>
+  <div class="btn-row" id="story-ctrl">
+    <button class="btn sec" id="replay">↺ Reia</button>
+    <button class="btn sec" id="skip">Sari la bilanț</button>
+  </div>
+  <div id="bilant" hidden>
+    <div class="kicker" style="margin-top:18px">Bilanțul tău</div>
+    <h2>Ce se schimbă la tine</h2>
+    <div class="bil" id="bil"></div>
+    <p class="note" id="bil-note"></p>
+    <button class="btn" id="to-dossier">Vezi raportul complet →</button>
+  </div>
+</section>
+
+<!-- DOSSIER -->
+<section class="screen" id="s-dossier">
+  <button class="back" data-go="s-story">← Povestea</button>
+  <h2>Raportul liniei tale</h2>
+  <p class="muted small">Faptele din aplicația de referință Tech-Con sunt separate de estimările pentru linia ta.</p>
+  <div class="paper" id="paper"></div>
+  <div class="share">
+    <button class="btn wa" id="sh-wa">WhatsApp</button>
+    <button class="btn navy" id="sh-mail">Email</button>
+    <button class="btn sec" id="sh-copy">Copiază textul</button>
+    <button class="btn sec" id="sh-link">Copiază linkul</button>
+    <button class="btn sec wide" id="sh-img">🖼️ Imagine cu rezultatul (pentru WhatsApp)</button>
+  </div>
+  <p class="muted small" style="margin-top:8px">Linkul deschide aplicația direct cu datele tale și cu animația.</p>
+  <button class="btn grad" id="to-request">Cere evaluare Tech&#8209;Con</button>
+</section>
+
+<!-- REQUEST -->
+<section class="screen" id="s-request">
+  <button class="back" data-go="s-dossier">← Raportul</button>
+  <div class="kicker">Cerere de evaluare tehnică</div>
+  <h2>Un inginer Tech-Con primește direct cifrele tale</h2>
+  <div class="warn">Prototip de concurs: folosiți doar date fictive. Nimic nu se trimite, cererea rămâne pe acest telefon.</div>
+  <div id="req-form">
+    <div class="field" id="f-firm"><label for="firm">Numele firmei</label><input type="text" id="firm" placeholder="ex: Fabrica Demo SRL" autocomplete="off"><div class="err">Scrie numele firmei (minimum 2 caractere).</div></div>
+    <div class="field" id="f-region"><label for="region">Unde e fabrica?</label>
+      <select id="region"><option value="">Alege regiunea</option>
+        <option value="Iași">Moldova</option><option value="Iași">Bucovina</option>
+        <option value="Dragomirești-Deal">București–Ilfov</option><option value="Dragomirești-Deal">Muntenia</option><option value="Dragomirești-Deal">Dobrogea</option><option value="Dragomirești-Deal">Oltenia</option><option value="Dragomirești-Deal">Transilvania (centru și sud)</option>
+        <option value="Timișoara">Transilvania (nord-vest)</option><option value="Timișoara">Banat</option><option value="Timișoara">Crișana</option><option value="Timișoara">Maramureș</option>
+      </select><div class="err">Alege regiunea.</div></div>
+    <div class="field" id="f-role"><label for="role">Rolul tău</label>
+      <select id="role"><option value="">Alege</option><option>Director de producție</option><option>Responsabil investiții</option><option>Șef de tură / mentenanță</option><option>Responsabil SSM</option><option>Patron / director general</option></select><div class="err">Alege rolul.</div></div>
+    <div class="field" id="f-email"><label for="email">Email (fictiv)</label><input type="email" id="email" placeholder="ex: test@fabrica-demo.ro" autocomplete="off"><div class="err">Adresa de email nu pare corectă.</div></div>
+    <div class="field"><span class="lab">Ce preferi?</span>
+      <div class="chips" data-group="visit"><button class="chip on" data-v="Vizită tehnică la fabrică">Vizită la fabrică</button><button class="chip" data-v="Demonstrație online">Demo online</button></div></div>
+    <button class="btn grad" id="req-send">Trimite către Tech&#8209;Con</button>
+  </div>
+  <div id="req-ok" hidden>
+    <div class="ok-big"><div class="circle">✓</div><h2 id="ok-title">Cerere înregistrată</h2><p class="muted" id="ok-sub"></p></div>
+    <div class="card"><h3>Ce primește inginerul Tech-Con</h3><ul class="kv" id="ok-kv"></ul>
+      <p class="muted small" style="margin-top:10px">O cerere cu date măsurate, nu un simplu „sunați-mă”. Așa arată o <b>cerere relevantă</b>.</p></div>
+    <button class="btn" id="to-panel">Vezi cum o primește Tech-Con →</button>
+    <button class="btn sec" id="restart">Evaluează altă linie</button>
+  </div>
+</section>
+
+<!-- PANOU TECH-CON -->
+<section class="screen" id="s-panel">
+  <button class="back" data-go="s-intro">← Aplicația clientului</button>
+  <div class="kicker">Panou Tech-Con · vânzări</div>
+  <h2>Cererile venite din „Tura de mâine”</h2>
+  <p class="muted small">Ce vede echipa Tech-Con: fiecare cerere vine cu cifre măsurate și e ordonată după potențial. Firmele „Demo” sunt exemple fictive.</p>
+  <div class="kpis" id="kpis"></div>
+  <div class="card target">
+    <h3>De la buget la țintă</h3>
+    <div class="target-row">
+      <label>Celule de vândut<input type="number" id="t-cells" value="17" min="1" max="200"></label>
+      <label>Cereri relevante → comandă<span class="inline-input"><input type="number" id="t-conv" value="20" min="1" max="100"><span>%</span></span></label>
+      <label>Buget promovare<span class="inline-input"><input type="number" id="t-budget" value="30000" min="0" step="500"><span>€</span></span></label>
+    </div>
+    <p id="t-out" class="t-out"></p>
+  </div>
+  <div class="chips pfilter" data-group="office">
+    <button class="chip on" data-v="toate">Toate</button><button class="chip" data-v="Dragomirești-Deal">Dragomirești-Deal</button><button class="chip" data-v="Iași">Iași</button><button class="chip" data-v="Timișoara">Timișoara</button>
+  </div>
+  <div class="leads" id="leads"></div>
+  <button class="btn sec" id="clear-mine">Șterge cererile mele de test</button>
+</section>
+</main>
+<div class="belt" id="belt" hidden>
+  <div class="belt-top">
+    <span class="wm">Tech<i></i>Con</span>
+    <b>Bandă de test</b>
+    <div class="chips" data-group="beltRate">
+      <button class="chip" data-v="6">6/min</button><button class="chip on" data-v="12">12/min</button><button class="chip" data-v="20">20/min</button>
+    </div>
+    <span class="belt-sent">Trimise: <b id="belt-sent">0</b></span>
+    <button class="btn sec belt-close" id="belt-close">Închide</button>
+  </div>
+  <p class="belt-hint">Pe telefon: „Numără gălețile acum” → „📷 Cu camera”. Îndreaptă camera spre acest ecran, cu linia roșie din telefon în mijlocul benzii.</p>
+  <div class="belt-stage" id="belt-stage"><div class="belt-conv"></div></div>
+</div>
+<div class="demo-pill" id="demo-pill" hidden><span class="dot"></span>Mod prezentare <button id="demo-stop">Oprește</button></div>
+<footer>
+  <div class="f-brand">
+    <span class="wm">Tech<i></i>Con</span>
+    <div class="f-tag">Componente industriale, proiecte complete și servicii tehnice</div>
+    <div class="offices"><span>Dragomirești-Deal</span><span>Iași</span><span>Timișoara</span></div>
+    <div class="f-links"><button id="open-panel">Panou Tech-Con (demo)</button><button id="open-demo">▶ Mod prezentare</button><button id="open-belt">Bandă de test (cameră)</button></div>
+  </div>
+  <p class="f-text">Concept de instrument digital propus pentru Tech-Con, prototip pentru AI-Powered Business Challenge 2026. Nu e o aplicație oficială Tech-Con. Valorile din aplicația de referință sunt rezultate de test, nu garanții. Estimările se bazează pe datele introduse și trebuie validate printr-o evaluare tehnică.</p>
+</footer>
+<div id="pt" aria-hidden="true">
+  <div class="pt-wm">Tech<i></i>Con</div>
+  <svg viewBox="0 0 120 84">
+    <defs>
+      <g id="ptb"><path d="M-8,-17 L8,-17 L6.4,0 L-6.4,0 Z" fill="#fff"/><rect x="-8.8" y="-19.6" width="17.6" height="3.2" rx="1.2" fill="#8cb6e1"/><path d="M-6.6,-18.6 Q0,-26 6.6,-18.6" fill="none" stroke="#8cb6e1" stroke-width="1.3"/></g>
+    </defs>
+    <rect x="18" y="66" width="84" height="5" rx="1" fill="#8cb6e1"/>
+    <rect x="22" y="71" width="8" height="6" fill="#8cb6e1"/><rect x="56" y="71" width="8" height="6" fill="#8cb6e1"/><rect x="90" y="71" width="8" height="6" fill="#8cb6e1"/>
+    <g transform="translate(34,66) scale(1.25)"><g class="pt-b" style="--i:0"><use href="#ptb"/></g></g>
+    <g transform="translate(60,66) scale(1.25)"><g class="pt-b" style="--i:1"><use href="#ptb"/></g></g>
+    <g transform="translate(86,66) scale(1.25)"><g class="pt-b" style="--i:2"><use href="#ptb"/></g></g>
+    <rect x="20" y="40" width="80" height="1.6" fill="#e7004c"/>
+    <g transform="translate(34,40) scale(1.25)"><g class="pt-b" style="--i:3"><use href="#ptb"/></g></g>
+    <g transform="translate(60,40) scale(1.25)"><g class="pt-b" style="--i:4"><use href="#ptb"/></g></g>
+    <g transform="translate(86,40) scale(1.25)"><g class="pt-b" style="--i:5"><use href="#ptb"/></g></g>
+  </svg>
+  <div class="pt-label" id="pt-label"></div>
+  <i class="pt-line"></i>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const nf = d => new Intl.NumberFormat('ro-RO', {maximumFractionDigits: d, minimumFractionDigits: 0});
+const f1 = n => nf(1).format(n);
+const f0 = n => nf(0).format(Math.round(n));
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const buzz = ms => { if (navigator.vibrate && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) navigator.vibrate(ms); };
+const lerp = (a, b, t) => a + (b - a) * t;
+const ease = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+/* ---------- Ipoteze declarate ---------- */
+const A = {
+  days: 250,            // zile de producție pe an
+  palletChangeMin: 3,   // minute de muncă manuală pe schimbare de palet + separator
+  ur20Payload: 20,      // kg, sarcina maximă UR20 (include gripperul)
+  ref: { r5: 8.6, r13: 7.4, p5: 100, p13: 44 }
+};
+
+/* ---------- Stare ---------- */
+const S = {
+  rate: null, rateSource: null,
+  industry: 'alimentar', weightChoice: '13', weight: 13, handle: 'da',
+  operators: 2, shifts: 3, hours: 8, keepsUp: 'da', potRate: null,
+  costHour: null, visit: 'Vizită tehnică la fabrică'
+};
+let RES = null;
+const INDUSTRY = { alimentar: 'industria alimentară', vopsele: 'vopsele și lacuri', chimice: 'chimice și detergenți', constructii: 'materiale de construcții', altele: 'alt domeniu' };
+
+/* ---------- Navigare ---------- */
+const ORDER = ['s-measure', 's-details', 's-analysis', 's-story', 's-dossier'];
+const LABELS = { 's-intro': 'Start', 's-measure': 'Pasul 1 · <b>Măsurare</b>', 's-details': 'Pasul 2 · <b>Linia ta</b>', 's-analysis': 'Pasul 3 · <b>Rezultat</b>', 's-story': '<b>Tura de mâine</b>', 's-dossier': '<b>Raportul tău</b>', 's-request': '<b>Tech-Con</b>', 's-panel': 'Panou <b>Tech-Con</b>' };
+const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+let navTimer = null, navOutTimer = null;
+// Tranziția: paletul se umple cu găleți, apoi „pleacă” în sus și arată pagina nouă
+function go(id, instant) {
+  const cur = $('.screen.active');
+  if (instant || reducedMotion() || (cur && cur.id === id)) { showScreen(id); return; }
+  const pt = $('#pt'); $('#pt-label').innerHTML = LABELS[id] || '';
+  clearTimeout(navTimer); clearTimeout(navOutTimer);
+  pt.className = ''; void pt.offsetWidth; pt.className = 'in';
+  navTimer = setTimeout(() => {
+    showScreen(id); pt.className = 'out';
+    navOutTimer = setTimeout(() => { pt.className = ''; }, 420);
+  }, 420);
+}
+function splitWords(el) {
+  if (el.dataset.split) return;
+  const esc = w => w.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  el.innerHTML = el.textContent.trim().split(/\s+/).map((w, i) => `<span class="w"><span style="--i:${i}">${esc(w)}</span></span>`).join(' ');
+  el.dataset.split = '1';
+}
+function revealScreen(screen) {
+  screen.querySelectorAll('h1, h2').forEach(splitWords);
+  screen.classList.remove('rv'); void screen.offsetWidth; screen.classList.add('rv');
+  countUp(screen);
+}
+function countUp(root) {
+  root.querySelectorAll('.cnt').forEach(el => {
+    const to = Number(el.dataset.to), d = Number(el.dataset.d || 0), t0 = performance.now(), dur = 900;
+    const tick = now => { const k = clamp((now - t0) / dur, 0, 1), v = to * (1 - Math.pow(1 - k, 3)); el.textContent = nf(d).format(k < 1 ? v : to); if (k < 1) requestAnimationFrame(tick); };
+    if (reducedMotion()) el.textContent = nf(d).format(to); else requestAnimationFrame(tick);
+  });
+}
+function showScreen(id) {
+  $$('.screen').forEach(s => s.classList.toggle('active', s.id === id));
+  window.scrollTo({ top: 0 });
+  revealScreen($('#' + id));
+  const idx = id === 's-request' ? 5 : ORDER.indexOf(id);
+  $$('#steps i').forEach((d, i) => d.classList.toggle('on', i <= idx - (id === 's-request' ? 1 : 0) && idx >= 0));
+  if (id !== 's-story') Story.stop();
+  if (id === 's-intro') Home.play(); else Home.stop();
+  if (id !== 's-measure') { M.cancel(); Cam.stop(false); }
+}
+$$('[data-go]').forEach(b => b.addEventListener('click', () => go(b.dataset.go)));
+$('#home').addEventListener('click', () => go('s-intro'));
+$('#start').addEventListener('click', () => go('s-measure'));
+$('#start-manual').addEventListener('click', () => { go('s-measure'); $('#mode-manual').click(); });
+
+// Undă la atingerea butoanelor
+document.addEventListener('pointerdown', e => {
+  const b = e.target.closest('.btn, .chip, .seg button, .stepper button');
+  if (!b || b.disabled || reducedMotion()) return;
+  const r = b.getBoundingClientRect(), size = Math.max(r.width, r.height) * 2.2;
+  const rip = document.createElement('span'); rip.className = 'rip';
+  rip.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - r.left - size / 2}px;top:${e.clientY - r.top - size / 2}px`;
+  b.appendChild(rip); rip.addEventListener('animationend', () => rip.remove());
+});
+
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('show'), 2200); }
+
+/* ---------- Chips ---------- */
+$$('.chips[data-group]').forEach(group => {
+  group.addEventListener('click', e => {
+    const b = e.target.closest('.chip'); if (!b) return;
+    group.querySelectorAll('.chip').forEach(c => c.classList.toggle('on', c === b));
+    const key = group.dataset.group; S[key] = b.dataset.v;
+    if (key === 'weightChoice') $('#weight-other').hidden = b.dataset.v !== 'other';
+    if (key === 'keepsUp') $('#pot-wrap').hidden = b.dataset.v !== 'nu';
+  });
+});
+function setChip(group, v) { $$(`.chips[data-group="${group}"] .chip`).forEach(c => c.classList.toggle('on', c.dataset.v === String(v))); }
+
+/* ---------- Pasul 1: măsurare ---------- */
+function setBig(v) { const b = $('#tap-big'); b.textContent = v; b.style.fontSize = typeof v === 'string' && isNaN(v) ? '40px' : ''; }
+const M = {
+  running: false, taps: 0, t0: 0, iv: null, dur: 60, minStop: 20,
+  start() {
+    this.running = true; this.taps = 0; this.t0 = performance.now();
+    $('#m-result').hidden = true; $('#m-err').classList.remove('show'); $('#m-next').disabled = true;
+    setBig('0'); $('#tap-lbl').textContent = 'atinge la fiecare găleată';
+    this.iv = setInterval(() => this.tick(), 100);
+  },
+  tick() {
+    const el = (performance.now() - this.t0) / 1000;
+    $('#t-left').textContent = Math.max(0, Math.ceil(this.dur - el));
+    $('#t-bar').style.width = clamp(el / this.dur * 100, 0, 100) + '%';
+    $('#t-rate').textContent = el > 5 ? f1(this.taps / el * 60) : '–';
+    $('#t-stop').disabled = el < this.minStop;
+    if (el >= this.dur) this.finish();
+  },
+  tap() {
+    if (!this.running) { this.start(); return; }
+    this.taps++; setBig(this.taps);
+    const b = $('#tap'); b.classList.add('bump'); setTimeout(() => b.classList.remove('bump'), 80);
+    buzz(12);
+  },
+  finish() {
+    if (!this.running) return;
+    clearInterval(this.iv); this.running = false;
+    const el = Math.min(this.dur, (performance.now() - this.t0) / 1000);
+    const rate = Math.round(this.taps / el * 60 * 10) / 10;
+    setBig('START'); $('#tap-lbl').textContent = 'măsoară din nou'; $('#t-stop').disabled = true;
+    if (this.taps < 3) return mError(`Ai numărat doar ${this.taps} ${this.taps === 1 ? 'găleată' : 'găleți'}. E prea puțin pentru o măsurătoare. Mai încearcă o dată sau introdu cifra manual.`);
+    if (rate > 40) return mError(`${f1(rate)} găleți/min nu pare realist pentru paletizare. Probabil ai atins de mai multe ori pe aceeași găleată. Mai încearcă o dată.`);
+    setRate(rate, 'măsurat pe linie, ' + Math.round(el) + ' s');
+  },
+  cancel() { if (this.running) { clearInterval(this.iv); this.running = false; this.reset(); } },
+  reset() {
+    clearInterval(this.iv); this.running = false; this.taps = 0;
+    setBig('START'); $('#tap-lbl').textContent = '60 de secunde';
+    $('#t-left').textContent = this.dur; $('#t-rate').textContent = '–'; $('#t-bar').style.width = '0'; $('#t-stop').disabled = true;
+  }
+};
+$('#tap').addEventListener('pointerdown', e => { e.preventDefault(); M.tap(); });
+$('#tap').addEventListener('keydown', e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); M.tap(); } });
+$('#t-stop').addEventListener('click', () => M.finish());
+$('#t-reset').addEventListener('click', () => { M.reset(); $('#m-result').hidden = true; $('#m-err').classList.remove('show'); $('#m-next').disabled = true; });
+
+function mError(msg) { $('#m-err').textContent = msg; $('#m-err').classList.add('show'); $('#m-result').hidden = true; $('#m-next').disabled = true; S.rate = null; }
+function setRate(rate, source) {
+  S.rate = rate; S.rateSource = source;
+  $('#m-val').textContent = f1(rate); $('#m-sub').textContent = 'găleți pe minut · ' + source;
+  $('#m-result').hidden = false; $('#m-err').classList.remove('show'); $('#m-next').disabled = false;
+}
+function setMode(mode) {
+  ['cam', 'tap', 'manual'].forEach(m => { $('#mode-' + m).classList.toggle('on', m === mode); $('#' + m + '-panel').hidden = m !== mode; });
+  if (mode !== 'tap') M.cancel();
+  if (mode !== 'cam') Cam.stop(false);
+  if (mode === 'manual') $('#manual-rate').focus();
+}
+$('#mode-cam').addEventListener('click', () => setMode('cam'));
+$('#mode-tap').addEventListener('click', () => setMode('tap'));
+$('#mode-manual').addEventListener('click', () => setMode('manual'));
+
+/* ---------- Numărare automată cu camera ----------
+   Compară fiecare cadru cu fundalul învățat, doar într-o fâșie îngustă în jurul liniei roșii.
+   Când fâșia se „umple” și apoi se golește, a trecut o găleată. Totul rulează pe telefon, fără internet. */
+const Cam = {
+  stream: null, raf: null, running: false, t0: 0, count: 0, dur: 60,
+  W: 120, H: 90, bg: null, lastCount: 0, horizontal: false, occ: 0, side: null, dir: null, cx: null, lastSeen: 0, bigSince: 0,
+  async start() {
+    $('#m-err').classList.remove('show'); $('#m-result').hidden = true; $('#m-next').disabled = true;
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return mError('Browserul nu permite accesul la cameră aici. Deschide aplicația prin linkul https sau numără atingând.');
+    try {
+      this.stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 640 }, height: { ideal: 480 } }, audio: false });
+    } catch (e) {
+      return mError('Nu am primit acces la cameră. Permite accesul din browser sau numără atingând ecranul.');
+    }
+    const v = $('#cam-video'); v.srcObject = this.stream; v.play().catch(() => {}); // nu așteptăm: frame() verifică singur dacă există imagine
+    $('#cam-off').hidden = true;
+    this.work = document.createElement('canvas'); this.work.width = this.W; this.work.height = this.H;
+    this.wctx = this.work.getContext('2d', { willReadFrequently: true });
+    this.bg = null; this.side = null; this.dir = null; this.cx = null; this.lastSeen = 0; this.bigSince = 0; this.count = 0; this.lastCount = 0; this.lastNow = 0; this.t0 = performance.now(); this.running = true;
+    $('#cam-n').textContent = '0'; $('#cam-start').disabled = true; $('#cam-stop').disabled = false;
+    const loop = now => { if (!this.running) return; this.frame(now); this.raf = requestAnimationFrame(loop); };
+    this.raf = requestAnimationFrame(loop);
+  },
+  /* Metoda: comparăm fiecare cadru cu fundalul învățat și găsim zona care s-a schimbat
+     în „culoarul” din mijlocul imaginii (60% din lățime). Urmărim CENTRUL acestei zone.
+     Numărăm o singură dată când centrul trece de pe o parte a liniei pe cealaltă, în direcția benzii.
+     Așa, golurile din obiect (mâner, degete) nu mai dau numărări duble, iar obiectele rapide nu mai sunt ratate. */
+  BAND: [.2, .8], SPLIT: [.42, .58], MIN_AREA: .015, REFRACT: 550,
+  median(arr, len) { const a = arr.subarray(0, len).slice().sort(); return a[len >> 1] || 0; },
+  status(t) { const s = $('#cam-status'); if (s.textContent !== t) s.textContent = t; },
+  frame(now) {
+    this.lastNow = now;
+    const el = (now - this.t0) / 1000;
+    $('#c-left').textContent = Math.max(0, Math.ceil(this.dur - el));
+    $('#c-bar').style.width = clamp(el / this.dur * 100, 0, 100) + '%';
+    $('#c-rate').textContent = el > 5 ? f1(this.count / el * 60) : '–';
+    if (el >= this.dur) return this.finish();
+    const v = $('#cam-video');
+    if (v.readyState < 2 || !v.videoWidth) {
+      this.status(el > 4 ? '⚠️ Camera nu trimite imagine. Închide alte aplicații care folosesc camera și apasă din nou „Pornește camera”.' : 'Pornesc camera…');
+      return;
+    }
+    const W = this.W, H = this.H, n = W * H;
+    this.wctx.drawImage(v, 0, 0, W, H);
+    const px = this.wctx.getImageData(0, 0, W, H).data;
+    if (!this.bg || this.bg.length !== n * 3) {
+      this.bg = new Float32Array(n * 3); for (let i = 0; i < n; i++) for (let c = 0; c < 3; c++) this.bg[i * 3 + c] = px[i * 4 + c];
+      this.dR = new Float32Array(n); this.dG = new Float32Array(n); this.dB = new Float32Array(n);
+      this.mask = new Uint8Array(n); this.prof = new Float32Array(Math.max(W, H)); this.drawOverlay(); return;
+    }
+    // 1) Compensăm luminozitatea automată a telefonului: scădem schimbarea „tipică” (mediana) a întregii imagini
+    let k = 0;
+    for (let i = 0; i < n; i += 3, k++) { this.dR[k] = px[i * 4] - this.bg[i * 3]; this.dG[k] = px[i * 4 + 1] - this.bg[i * 3 + 1]; this.dB[k] = px[i * 4 + 2] - this.bg[i * 3 + 2]; }
+    const oR = this.median(this.dR, k), oG = this.median(this.dG, k), oB = this.median(this.dB, k);
+    // 2) Masca de mișcare și profilul ei de-a lungul direcției benzii
+    const sens = Number($('#cam-sens').value), thr = 50 - sens * 7; // sensibilitate mare = prag mic
+    const hor = this.horizontal, L = hor ? H : W;                 // axa pe care se mișcă obiectele
+    const a0 = Math.floor(L * this.BAND[0]), a1 = Math.ceil(L * this.BAND[1]);
+    this.prof.fill(0); let total = 0, whole = 0;
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      const i = y * W + x, p = i * 4, b = i * 3;
+      const d = Math.max(Math.abs(px[p] - this.bg[b] - oR), Math.abs(px[p + 1] - this.bg[b + 1] - oG), Math.abs(px[p + 2] - this.bg[b + 2] - oB));
+      const on = d > thr ? 1 : 0; this.mask[i] = on; whole += on;
+      const a = hor ? y : x;
+      if (on && a >= a0 && a < a1) { this.prof[a]++; total++; }
+    }
+    // 3) Fundalul învață doar unde nu se mișcă nimic; peste tot, foarte încet (lumina se schimbă pe parcursul zilei)
+    for (let i = 0; i < n; i++) {
+      const r = this.mask[i] ? .003 : .06, p = i * 4, b = i * 3;
+      this.bg[b] += (px[p] - this.bg[b]) * r; this.bg[b + 1] += (px[p + 1] - this.bg[b + 1]) * r; this.bg[b + 2] += (px[p + 2] - this.bg[b + 2]) * r;
+    }
+    // telefonul s-a mișcat sau scena s-a schimbat complet: reînvățăm fundalul, fără să numărăm
+    if (whole / n > .55) { if (!this.bigSince) this.bigSince = now; if (now - this.bigSince > 1200) { this.bg = null; this.bigSince = 0; this.side = null; this.status('↻ Imaginea s-a schimbat mult. Țin telefonul nemișcat? Reînvăț fundalul…'); return; } }
+    else this.bigSince = 0;
+    // 4) Centrul obiectului și trecerea liniei
+    const area = total / ((a1 - a0) * (hor ? W : H));
+    this.occ = area; this.cx = null;
+    if (area >= this.MIN_AREA) {
+      let s = 0; for (let a = a0; a < a1; a++) s += a * this.prof[a];
+      const cx = (s / total - a0) / (a1 - a0); this.cx = cx; this.lastSeen = now;
+      const side = cx < this.SPLIT[0] ? 'A' : cx > this.SPLIT[1] ? 'B' : this.side;
+      if (side && this.side && side !== this.side) {
+        const dir = this.side + side;                               // 'AB' sau 'BA'
+        if (!this.dir) this.dir = dir;                              // prima trecere stabilește sensul benzii
+        if (dir === this.dir && now - this.lastCount > this.REFRACT) { this.count++; this.lastCount = now; this.flash(); }
+      }
+      if (side) this.side = side;
+    } else if (now - (this.lastSeen || 0) > 350) this.side = null;   // obiectul a ieșit: următorul începe de la zero
+    const arrow = this.dir ? (hor ? (this.dir === 'AB' ? '↓' : '↑') : (this.dir === 'AB' ? '→' : '←')) : '';
+    this.status(this.cx !== null ? `🟢 Văd un obiect${arrow ? ' · sensul benzii ' + arrow : ''}` : `Camera merge. Trece un obiect prin fața camerei, peste linia roșie${arrow ? ' (sens ' + arrow + ')' : ''}.`);
+    this.drawOverlay();
+  },
+  drawOverlay() {
+    const c = $('#cam-overlay'), wrap = $('#cam-wrap'), w = wrap.clientWidth, h = wrap.clientHeight;
+    if (c.width !== w || c.height !== h) { c.width = w; c.height = h; }
+    const g = c.getContext('2d'); g.clearRect(0, 0, w, h);
+    const hor = this.horizontal, seen = this.cx != null, L = hor ? h : w;
+    // culoarul în care urmărim obiectele
+    g.fillStyle = 'rgba(18,38,170,.10)';
+    if (hor) g.fillRect(0, h * this.BAND[0], w, h * (this.BAND[1] - this.BAND[0])); else g.fillRect(w * this.BAND[0], 0, w * (this.BAND[1] - this.BAND[0]), h);
+    g.strokeStyle = seen ? '#9be564' : '#e7004c'; g.lineWidth = 4; g.setLineDash([12, 8]);
+    g.beginPath(); if (hor) { g.moveTo(0, h / 2); g.lineTo(w, h / 2); } else { g.moveTo(w / 2, 0); g.lineTo(w / 2, h); } g.stroke(); g.setLineDash([]);
+    if (seen) { // centrul obiectului
+      const pos = (this.BAND[0] + this.cx * (this.BAND[1] - this.BAND[0])) * L;
+      g.fillStyle = '#9be564'; g.strokeStyle = '#0a1a87'; g.lineWidth = 3;
+      g.beginPath(); if (hor) g.arc(w / 2, pos, 12, 0, Math.PI * 2); else g.arc(pos, h / 2, 12, 0, Math.PI * 2); g.fill(); g.stroke();
+    }
+  },
+  flash() {
+    $('#cam-n').textContent = this.count;
+    const f = $('#cam-flash'); f.classList.remove('on'); void f.offsetWidth; f.classList.add('on');
+    buzz(15);
+  },
+  finish() {
+    if (!this.running) return;
+    const el = Math.min(this.dur, ((this.lastNow || performance.now()) - this.t0) / 1000), n = this.count;
+    this.stop(true);
+    const rate = Math.round(n / el * 60 * 10) / 10;
+    if (el < 15) return mError('Măsurătoarea a fost prea scurtă. Lasă camera să numere cel puțin 15 secunde.');
+    if (n < 3) return mError(`Camera a numărat doar ${n} ${n === 1 ? 'găleată' : 'găleți'}. Apropie telefonul de bandă, mărește sensibilitatea sau numără atingând.`);
+    if (rate > 40) return mError('Camera a numărat prea multe treceri. Ține telefonul nemișcat, scade sensibilitatea și mai încearcă o dată.');
+    setRate(rate, 'numărat cu camera, ' + Math.round(el) + ' s');
+  },
+  stop(keep) {
+    this.running = false; if (this.raf) cancelAnimationFrame(this.raf); this.raf = null;
+    if (this.stream) { this.stream.getTracks().forEach(t => t.stop()); this.stream = null; }
+    $('#cam-video').srcObject = null; $('#cam-off').hidden = false; this.status('Camera e oprită.');
+    $('#cam-start').disabled = false; $('#cam-stop').disabled = true;
+    if (!keep) { $('#c-left').textContent = this.dur; $('#c-rate').textContent = '–'; $('#c-bar').style.width = '0'; }
+  }
+};
+$('#cam-start').addEventListener('click', () => Cam.start());
+$('#cam-stop').addEventListener('click', () => Cam.finish());
+$('#cam-rotate').addEventListener('click', () => { Cam.horizontal = !Cam.horizontal; Cam.bg = null; Cam.side = null; Cam.dir = null; $('#cam-rotate').textContent = Cam.horizontal ? '↻ Linie verticală' : '↻ Linie orizontală'; Cam.drawOverlay(0); });
+$('#manual-rate').addEventListener('input', () => {
+  const v = $('#manual-rate').value.trim(); const n = parseFloat(v.replace(',', '.'));
+  const f = $('#f-manual');
+  if (v === '') { f.classList.remove('bad'); $('#m-result').hidden = true; $('#m-next').disabled = true; return; }
+  let err = '';
+  if (!isFinite(n) || n <= 0) err = 'Introdu un număr mai mare decât 0.';
+  else if (n < 0.5) err = 'Sub 0,5 găleți/min paletizarea manuală nu e o problemă reală. Verifică cifra.';
+  else if (n > 40) err = 'Peste 40 găleți/min nu e realist pentru o linie de găleți. Verifică cifra.';
+  f.classList.toggle('bad', !!err); $('#e-manual').textContent = err;
+  if (err) { $('#m-result').hidden = true; $('#m-next').disabled = true; S.rate = null; }
+  else setRate(Math.round(n * 10) / 10, 'introdus manual');
+});
+$('#m-next').addEventListener('click', () => { if (S.rate) go('s-details'); });
+
+/* ---------- Pasul 2: detalii ---------- */
+$$('.stepper button').forEach(b => b.addEventListener('click', () => {
+  S.operators = clamp(S.operators + Number(b.dataset.step), 1, 6); $('#ops').textContent = S.operators;
+}));
+function num(id) { const v = $(id).value.trim(); if (v === '') return null; const n = parseFloat(v.replace(',', '.')); return isFinite(n) ? n : NaN; }
+function readDetails() {
+  const errs = {};
+  S.weight = S.weightChoice === 'other' ? num('#weight-input') : Number(S.weightChoice);
+  if (S.weightChoice === 'other') {
+    if (S.weight === null) errs.weight = 'Scrie greutatea găleții în kg.';
+    else if (isNaN(S.weight) || S.weight < 1) errs.weight = 'Greutatea trebuie să fie de cel puțin 1 kg.';
+    else if (S.weight > 60) errs.weight = 'Peste 60 kg nu mai e o găleată. Verifică cifra.';
+  }
+  S.hours = num('#hours');
+  if (S.hours === null || isNaN(S.hours)) errs.hours = 'Scrie câte ore durează o tură.';
+  else if (S.hours < 4 || S.hours > 12) errs.hours = 'O tură are între 4 și 12 ore.';
+  S.shifts = Number(S.shifts);
+  if (S.keepsUp === 'nu') {
+    S.potRate = num('#pot-rate');
+    if (S.potRate === null || isNaN(S.potRate)) errs.pot = 'Scrie ritmul pe care l-ar putea avea linia.';
+    else if (S.potRate <= S.rate) errs.pot = `Ritmul posibil trebuie să fie mai mare decât cel măsurat (${f1(S.rate)}/min).`;
+    else if (S.potRate > 40) errs.pot = 'Peste 40 găleți/min nu e realist. Verifică cifra.';
+  } else S.potRate = null;
+  S.costHour = num('#cost');
+  if (S.costHour !== null && (isNaN(S.costHour) || S.costHour <= 0 || S.costHour > 100)) errs.cost = 'Costul orar trebuie să fie între 1 și 100 EUR.';
+  const map = { weight: '#f-weight', hours: '#f-hours', pot: '#f-keeps', cost: '#f-cost' };
+  Object.entries(map).forEach(([k, sel]) => { $(sel).classList.toggle('bad', !!errs[k]); const e = $('#e-' + k); if (e) e.textContent = errs[k] || ''; });
+  if (errs.cost || errs.hours || errs.pot) $('#opt-cost').open = true;
+  $('#d-err').classList.toggle('show', Object.keys(errs).length > 0);
+  return Object.keys(errs).length === 0;
+}
+$('#d-next').addEventListener('click', () => {
+  if (!readDetails()) { const bad = $('.field.bad'); if (bad) bad.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+  RES = compute(S); renderAnalysis(RES); $('#shared-banner').hidden = true; go('s-analysis');
+});
+
+/* ---------- Calcule ---------- */
+function robotRate(w) { if (w <= 5) return A.ref.r5; if (w <= 13) return A.ref.r5 - (w - 5) * (A.ref.r5 - A.ref.r13) / 8; return A.ref.r13; }
+function perPallet(w) { if (w === 5) return A.ref.p5; if (w === 13) return A.ref.p13; const load = w <= 5 ? 500 : w <= 13 ? 500 + (w - 5) * 9 : 572; return Math.max(1, Math.round(load / w)); }
+// NIOSH (ecuația revizuită de ridicare), multiplicator de frecvență pentru durată > 2h
+const FM_LO = [[0.2, .85], [0.5, .81], [1, .75], [2, .65], [3, .55], [4, .45], [5, .35], [6, .27], [7, .22], [8, .18], [9, 0]];
+const FM_HI = [[0.2, .85], [0.5, .81], [1, .75], [2, .65], [3, .55], [4, .45], [5, .35], [6, .27], [7, .22], [8, .18], [9, .15], [10, .13], [11, 0]];
+function interp(tab, x) { if (x <= tab[0][0]) return tab[0][1]; for (let i = 1; i < tab.length; i++) if (x <= tab[i][0]) { const [x0, y0] = tab[i - 1], [x1, y1] = tab[i]; return y0 + (y1 - y0) * (x - x0) / (x1 - x0); } return 0; }
+function rwl({ H, V, D, Ang, F, CM }) {
+  const HM = H <= 25 ? 1 : 25 / H, VM = 1 - 0.003 * Math.abs(V - 75), DM = D <= 25 ? 1 : 0.82 + 4.5 / D, AM = 1 - 0.0032 * Ang;
+  const FM = interp(V < 75 ? FM_LO : FM_HI, F);
+  return 23 * HM * VM * DM * AM * FM * CM;
+}
+function liftingIndex(w, F, handle) {
+  const origin = rwl({ H: 40, V: 80, D: 65, Ang: 45, F, CM: 1 });                       // de pe bandă (~80 cm)
+  const dest = rwl({ H: 50, V: 15, D: 65, Ang: 45, F, CM: handle === 'da' ? 1 : 0.95 });   // pe primul strat al paletului (~15 cm)
+  const worst = Math.min(origin, dest);
+  return worst <= 0.05 ? Infinity : w / worst;
+}
+function riskOf(li) { if (li <= 1) return { lvl: 'green', label: 'scăzut' }; if (li <= 3) return { lvl: 'amber', label: 'crescut' }; return { lvl: 'red', label: 'foarte ridicat' }; }
+
+function compute(s) {
+  const w = s.weight, L = s.rate, N = s.operators, h = s.hours, sh = s.shifts, days = A.days;
+  const R = robotRate(w);
+  const slowed = s.keepsUp === 'nu' && s.potRate > L;
+  const Lt = slowed ? s.potRate : L;
+  const cells = Math.max(1, Math.ceil(Lt / R - 1e-9));
+  const bucketsShift = L * 60 * h;
+  const liftsPerOp = bucketsShift / N;
+  const tonsShift = bucketsShift * w / 1000;
+  const tonsPerOp = tonsShift / N;
+  const tonsYear = tonsShift * sh * days;
+  const F = L / N;
+  const LI = liftingIndex(w, F, s.handle);
+  const risk = riskOf(LI);
+  const pp = perPallet(w);
+  const palletsShift = Lt * 60 * h / pp;
+  const fillMin = pp / (Lt / cells);
+  const manualMinShift = palletsShift * A.palletChangeMin;
+  const hoursFreedYear = Math.max(0, N * h - manualMinShift / 60) * sh * days;
+  const value = s.costHour ? hoursFreedYear * s.costHour : null;
+  const extraYear = slowed ? (Lt - L) * 60 * h * sh * days : 0;
+  const extraPct = slowed ? (Lt - L) / L * 100 : 0;
+  const reserve = (R * cells - Lt) / (R * cells) * 100;
+
+  let v;
+  if (w > A.ur20Payload) v = { lvl: 'red', title: 'Nepotrivit pentru UR20', text: `O găleată de ${f1(w)} kg depășește singură sarcina maximă de ${A.ur20Payload} kg a robotului UR20, care trebuie să includă și gripperul. E nevoie de alt tip de robot.` };
+  else if (cells > 2) v = { lvl: 'red', title: 'Necesită o soluție dedicată', text: `La ${f1(Lt)} găleți/min ar fi nevoie de ${cells} celule UR20. Cere o evaluare tehnică pentru o soluție potrivită acestui ritm.` };
+  else if (cells === 2 || w > 13 || s.handle === 'nu') v = { lvl: 'amber', title: 'Potențial bun, cu evaluare tehnică', text: 'Linia ta e aproape de aplicația de referință Tech-Con, dar are diferențe care trebuie verificate de un inginer Tech-Con.' };
+  else v = { lvl: 'green', title: 'Potențial ridicat', text: `Linia ta seamănă cu aplicația de referință Tech-Con: găleți de ${f1(w)} kg, iar ritmul de ${f1(Lt)}/min se încadrează în ritmul testat (${f1(R)}/min).` };
+
+  const notes = [];
+  if (w > 13 && w <= A.ur20Payload) notes.push(`Peste 13 kg ieși din domeniul testat în aplicația de referință. Sarcina totală (găleată + gripper) trebuie verificată față de limita de ${A.ur20Payload} kg a UR20.`);
+  if (cells === 2) notes.push(`Linia ta (${f1(Lt)}/min) depășește ritmul testat al unei celule (${f1(R)}/min). Și în aplicația de referință s-au instalat 2 celule, deci varianta cu 2 celule trebuie evaluată.`);
+  if (s.handle === 'nu') notes.push('În aplicația de referință, gălețile aveau mâner, iar o cameră îi verifica poziția înainte de prindere. Fără mâner, gripperul trebuie adaptat și testat.');
+  if (s.industry !== 'alimentar') notes.push(`Rezultatele de referință vin din industria alimentară. Pentru ${INDUSTRY[s.industry]}, cerințele tehnice se validează separat.`);
+  else notes.push({ info: true, t: 'În industria alimentară, cerințele de igienă intră în evaluarea tehnică.' });
+  notes.push({ info: true, t: 'Schimbarea paleților și amplasarea separatoarelor rămân manuale, ca în aplicația de referință.' });
+  notes.push({ info: true, t: 'Robotul nu accelerează singur toată fabrica. Verifică și ce e înainte (umplerea) și după (înfolierea, depozitul).' });
+
+  return { s: { ...s }, w, L, Lt, R, N, h, sh, days, slowed, cells, bucketsShift, liftsPerOp, tonsShift, tonsPerOp, tonsYear, F, LI, risk, pp, palletsShift, fillMin, manualMinShift, hoursFreedYear, value, extraYear, extraPct, reserve, v, notes };
+}
+const liTxt = li => li === Infinity ? '> 5' : f1(li);
+
+/* ---------- Pasul 3: potențial ---------- */
+function renderAnalysis(r) {
+  const vd = $('#verdict'); vd.className = 'verdict ' + r.v.lvl; $('#v-title').textContent = r.v.title; $('#v-text').textContent = r.v.text;
+  const maxR = Math.max(r.Lt, r.R * r.cells, r.L) * 1.1;
+  const robotCap = r.R * r.cells;
+  $('#metrics').innerHTML = `
+    <div class="metric"><div class="ml">Ritm: linia ta vs. robotul</div>
+      <div class="mv"><span class="cnt" data-to="${r.Lt}" data-d="1">${f1(r.Lt)}</span> <span class="muted" style="font-size:15px;font-weight:600">găleți/min</span></div>
+      <div class="cmp">
+        <div class="row"><span>Linia ta</span><div class="track"><i style="width:${r.Lt / maxR * 100}%;background:var(--brand)"></i></div><b>${f1(r.Lt)}</b></div>
+        <div class="row"><span>${r.cells > 1 ? r.cells + ' celule' : 'UR20 (test)'}</span><div class="track"><i style="width:${robotCap / maxR * 100}%;background:${r.Lt <= robotCap ? 'var(--green)' : 'var(--red)'}"></i></div><b>${f1(robotCap)}</b></div>
+      </div>
+      <div class="ms">${r.w > A.ur20Payload ? 'Greutate peste limita UR20.' : r.Lt <= robotCap ? (r.cells > 1 ? `Cu ${r.cells} celule, ritmul e acoperit.` : `Robotul ține pasul, cu o rezervă de ~${f0(r.reserve)}%.`) : 'Robotul nu ține pasul la acest ritm.'}${r.slowed ? ` Azi linia merge la ${f1(r.L)}/min ca să țină pasul oamenii.` : ''}</div>
+    </div>
+    <div class="metric"><div class="ml">Efortul de azi, pe om</div>
+      <div class="mv"><span class="cnt" data-to="${r.tonsPerOp}" data-d="1">${f1(r.tonsPerOp)}</span> t / tură</div>
+      <div class="ms">~${f0(r.liftsPerOp)} ridicări de ${f1(r.w)} kg pe tură</div>
+      <span class="badge ${r.risk.lvl}">Indice NIOSH ${liTxt(r.LI)} · risc ${r.risk.label}</span>
+    </div>
+    <div class="metric"><div class="ml">Paleți</div>
+      <div class="mv">la ~<span class="cnt" data-to="${r.fillMin}" data-d="1">${f1(r.fillMin)}</span> min</div>
+      <div class="ms">un palet plin (${r.pp} găleți) · ~${f0(r.palletsShift)} paleți pe tură</div>
+    </div>`;
+  $('#notes').innerHTML = r.notes.map(n => typeof n === 'string' ? `<li>${n}</li>` : `<li class="info">${n.t}</li>`).join('');
+  $('#how-list').innerHTML = `
+    <li><b>Ritmul robotului</b>: rezultatele de test ale aplicației de referință Tech-Con, 8,6 găleți/min la 5 kg și 7,4 la 13 kg. Între ele am interpolat liniar. Sunt rezultate de test, nu o garanție.</li>
+    <li><b>Efortul</b>: găleți/min × 60 × ${f1(r.h)} h × ${f1(r.w)} kg, împărțit la ${r.N} ${r.N === 1 ? 'om' : 'oameni'}.</li>
+    <li><b>Indicele NIOSH</b> (ecuația revizuită de ridicare): presupunem preluarea de pe bandă la ~80 cm, așezarea pe primul strat la ~15 cm, distanța față de corp 40–50 cm, rotație de 45° și ${f1(r.F)} ridicări/min pe om, pe toată tura. Peste 1 înseamnă risc crescut. E o estimare orientativă, nu evaluarea SSM oficială.</li>
+    <li><b>Paleți</b>: ${A.ref.p5} găleți de 5 kg sau ${A.ref.p13} de 13 kg pe palet (ca în aplicația de referință). Pentru alte greutăți am estimat după masa paletului.</li>
+    <li><b>Timp eliberat</b>: orele de paletizare manuală minus ~${A.palletChangeMin} min de muncă pentru fiecare schimbare de palet și separator, pe ${A.days} zile de producție pe an.</li>
+    <li>Nu sunt incluse prețul celulei și recuperarea investiției. Acestea se stabilesc la evaluarea tehnică.</li>`;
+}
+$('#to-story').addEventListener('click', () => { go('s-story'); Story.start(RES); });
+$('#to-dossier-quick').addEventListener('click', () => { renderDossier(RES); go('s-dossier'); });
+
+/* ---------- Animația ---------- */
+const NS = 'http://www.w3.org/2000/svg';
+function mk(tag, attrs, parent) { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
+function bucketEl(parent) {
+  const g = mk('g', {}, parent);
+  mk('path', { d: 'M-8,-17 L8,-17 L6.4,0 L-6.4,0 Z', fill: '#8b5a2b' }, g);
+  mk('rect', { x: -8.8, y: -19.6, width: 17.6, height: 3.2, rx: 1.2, fill: '#6b4220' }, g);
+  mk('rect', { x: -6.6, y: -11, width: 13.2, height: 4, fill: '#f4e3c9', opacity: .9 }, g);
+  mk('path', { d: 'M-6.6,-18.6 Q0,-26 6.6,-18.6', fill: 'none', stroke: '#3d3d4d', 'stroke-width': 1.2 }, g);
+  return g;
+}
+const place = (el, x, y, extra = '') => el.setAttribute('transform', `translate(${x.toFixed(1)},${y.toFixed(1)})${extra}`);
+
+function makePallet(cx, parent) {
+  const g = mk('g', {}, parent);
+  mk('rect', { x: cx - 25, y: 184, width: 50, height: 3.5, fill: '#c9a26b' }, g);
+  [cx - 23, cx - 2, cx + 19].forEach(x => mk('rect', { x, y: 187.5, width: 4.5, height: 4.5, fill: '#a9824d' }, g));
+  const stack = mk('g', {}, g);
+  return { g, cx, stack, count: 0, reserved: 0, cap: 12, busy: false };
+}
+function slotPos(p, i) { const col = i % 3, layer = Math.floor(i / 3); return { x: p.cx - 16 + col * 16, y: 184 - layer * 21 }; }
+function addToPallet(p, bEl, i) {
+  const { x, y } = slotPos(p, i); p.stack.appendChild(bEl); place(bEl, x, y);
+  if (i % 3 === 2 && i < p.cap - 1) { const sep = mk('rect', { x: p.cx - 25, y: y - 21, width: 50, height: 1.4, fill: '#d9c39a' }, p.stack); }
+}
+
+function workerEl(parent, color = '#2f5fd0', vest = null) {
+  const g = mk('g', {}, parent);
+  const legs = mk('path', { stroke: '#2b2d42', 'stroke-width': 4, 'stroke-linecap': 'round', fill: 'none' }, g);
+  const pain = mk('circle', { r: 9, fill: 'url(#pain)', opacity: 0 }, g);
+  const torso = mk('line', { stroke: color, 'stroke-width': 8, 'stroke-linecap': 'round' }, g);
+  const vestEl = vest ? mk('line', { stroke: vest, 'stroke-width': 8, 'stroke-linecap': 'round', opacity: .9 }, g) : null;
+  const arm = mk('path', { stroke: color, 'stroke-width': 3.6, 'stroke-linecap': 'round', fill: 'none' }, g);
+  const head = mk('circle', { r: 5.2, fill: '#e9b98a' }, g);
+  const helmet = mk('path', { fill: '#f4c20d' }, g);
+  const sweat = mk('path', { d: 'M0,0 q2,3 0,4 q-2,-1 0,-4', fill: '#5aa9e6', opacity: 0 }, g);
+  return { g, legs, pain, torso, vestEl, arm, head, helmet, sweat };
+}
+// hip = punctul de pivot; hand = unde sunt mâinile (sau null)
+function poseWorker(wk, hx, hy, lean, hand, t, scale = 1) {
+  const L = 28 * scale, legL = 30 * scale;
+  wk.legs.setAttribute('d', `M${hx},${hy} L${hx - 4 * scale},${hy + legL} M${hx},${hy} L${hx + 4 * scale},${hy + legL}`);
+  const sx = hx + Math.sin(lean) * L, sy = hy - Math.cos(lean) * L;
+  wk.torso.setAttribute('x1', hx); wk.torso.setAttribute('y1', hy); wk.torso.setAttribute('x2', sx); wk.torso.setAttribute('y2', sy);
+  if (wk.vestEl) { wk.vestEl.setAttribute('x1', hx + Math.sin(lean) * 8); wk.vestEl.setAttribute('y1', hy - Math.cos(lean) * 8); wk.vestEl.setAttribute('x2', sx - Math.sin(lean) * 4); wk.vestEl.setAttribute('y2', sy + Math.cos(lean) * 4); }
+  const hdx = sx + Math.sin(lean) * 8 * scale, hdy = sy - Math.cos(lean) * 8 * scale;
+  wk.head.setAttribute('cx', hdx); wk.head.setAttribute('cy', hdy); wk.head.setAttribute('r', 5.2 * scale);
+  const deg = lean * 180 / Math.PI;
+  wk.helmet.setAttribute('d', `M${-6 * scale},${-1 * scale} A${6 * scale},${6 * scale} 0 0 1 ${6 * scale},${-1 * scale} Z`);
+  wk.helmet.setAttribute('transform', `translate(${hdx},${hdy}) rotate(${deg})`);
+  const ax = sx - Math.sin(lean) * 3, ay = sy + Math.cos(lean) * 3;
+  if (hand) { const mx = (ax + hand.x) / 2 + 3, my = (ay + hand.y) / 2 + 4; wk.arm.setAttribute('d', `M${ax},${ay} Q${mx},${my} ${hand.x},${hand.y}`); }
+  else wk.arm.setAttribute('d', `M${ax},${ay} L${ax + Math.sin(lean) * 4},${ay + 20 * scale}`);
+  const strain = clamp(lean / 0.75, 0, 1) * (hand ? 1 : 0.2);
+  wk.pain.setAttribute('cx', hx + Math.sin(lean) * 6); wk.pain.setAttribute('cy', hy - Math.cos(lean) * 6); wk.pain.setAttribute('opacity', (strain * 0.9).toFixed(2));
+  const sw = (t % 900) / 900; wk.sweat.setAttribute('opacity', strain > .5 ? (1 - sw).toFixed(2) : 0);
+  wk.sweat.setAttribute('transform', `translate(${hdx + 6},${hdy - 2 + sw * 8})`);
+}
+
+function makeRobot(parent) {
+  const g = mk('g', {}, parent);
+  mk('rect', { x: 203, y: 150, width: 22, height: 42, rx: 3, fill: '#1226aa' }, g);
+  mk('rect', { x: 199, y: 187, width: 30, height: 5, rx: 1, fill: '#2a2e40' }, g);
+  mk('rect', { x: 206, y: 158, width: 16, height: 3, rx: 1.5, fill: '#e7004c' }, g);
+  const l1 = mk('line', { stroke: '#d9dde6', 'stroke-width': 10, 'stroke-linecap': 'round' }, g);
+  const l2 = mk('line', { stroke: '#d9dde6', 'stroke-width': 8, 'stroke-linecap': 'round' }, g);
+  const j0 = mk('circle', { r: 7.5, fill: '#8cb6e1', stroke: '#1226aa', 'stroke-width': 1.5 }, g);
+  const j1 = mk('circle', { r: 6.5, fill: '#8cb6e1', stroke: '#1226aa', 'stroke-width': 1.5 }, g);
+  const j2 = mk('circle', { r: 5, fill: '#8cb6e1', stroke: '#1226aa', 'stroke-width': 1.5 }, g);
+  const grip = mk('g', {}, g);
+  mk('rect', { x: -3, y: -10, width: 6, height: 8, fill: '#3a3f55' }, grip);
+  mk('path', { d: 'M-7,-2 L7,-2 M-7,-2 L-7,2 M7,-2 L7,2', stroke: '#3a3f55', 'stroke-width': 2, fill: 'none' }, grip);
+  return { g, l1, l2, j0, j1, j2, grip, sx: 214, sy: 146, len: 72 };
+}
+function ik(sx, sy, tx, ty, l) {
+  const dx = tx - sx, dy = ty - sy; let d = Math.hypot(dx, dy); d = clamp(d, 1, 2 * l - 0.5);
+  const a = Math.atan2(dy, dx), b = Math.acos(clamp(d / (2 * l), -1, 1));
+  const e1 = { x: sx + l * Math.cos(a - b), y: sy + l * Math.sin(a - b) }, e2 = { x: sx + l * Math.cos(a + b), y: sy + l * Math.sin(a + b) };
+  return e1.y < e2.y ? e1 : e2;
+}
+function poseRobot(rb, tip) {
+  const wx = tip.x, wy = tip.y - 10; const e = ik(rb.sx, rb.sy, wx, wy, rb.len);
+  rb.l1.setAttribute('x1', rb.sx); rb.l1.setAttribute('y1', rb.sy); rb.l1.setAttribute('x2', e.x); rb.l1.setAttribute('y2', e.y);
+  rb.l2.setAttribute('x1', e.x); rb.l2.setAttribute('y1', e.y); rb.l2.setAttribute('x2', wx); rb.l2.setAttribute('y2', wy);
+  rb.j0.setAttribute('cx', rb.sx); rb.j0.setAttribute('cy', rb.sy); rb.j1.setAttribute('cx', e.x); rb.j1.setAttribute('cy', e.y);
+  rb.j2.setAttribute('cx', wx); rb.j2.setAttribute('cy', wy); place(rb.grip, tip.x, tip.y);
+}
+function path(pts, p) { // pts: [[t, {x,y}], ...]
+  for (let i = 1; i < pts.length; i++) if (p <= pts[i][0]) { const [t0, a] = pts[i - 1], [t1, b] = pts[i]; const k = ease(clamp((p - t0) / (t1 - t0), 0, 1)); return { x: lerp(a.x, b.x, k), y: lerp(a.y, b.y, k) }; }
+  return pts[pts.length - 1][1];
+}
+
+const Story = (() => {
+  const SC = [{ id: 'today', dur: 12000 }, { id: 'switch', dur: 3600 }, { id: 'tomorrow', dur: 14000 }];
+  const END_X = 180, BELT_V = 70;
+  let raf = null, last = 0, idx = 0, st = 0, r = null, sim = null, beltOff = 0, capStage = -1;
+  let speed = 1;
+  const g = id => document.getElementById(id);
+
+  function clear() { ['g-zone', 'g-pallets', 'g-belt', 'g-robot', 'g-actors', 'g-held', 'g-fx'].forEach(id => g(id).replaceChildren()); }
+  function caption(k, t, p) {
+    $('#cap-k').textContent = k; $('#cap-t').textContent = t; $('#cap-p').textContent = p;
+    ['#cap-t', '#cap-p'].forEach(s => { const e = $(s); e.classList.remove('pop'); void e.offsetWidth; e.classList.add('pop'); });
+  }
+  function dots(i) { $$('#dots i').forEach((d, j) => d.classList.toggle('on', j === i)); }
+  function overlay(show, a = '', b = '') { $('#o1').textContent = a; $('#o2').textContent = b; $('#overlay').classList.toggle('show', show); }
+  function stats(a, b, c) {
+    [[a, 'st1'], [b, 'st2'], [c, 'st3']].forEach(([s, id]) => { $('#' + id + 'l').textContent = s.l; $('#' + id + 'v').textContent = s.v; $('#' + id).className = 'stat ' + (s.cls || ''); });
+  }
+
+  function setup() {
+    clear(); capStage = -1;
+    const sc = SC[idx].id; dots(idx);
+    g('camera').style.display = sc === 'today' ? 'none' : '';
+    if (sc === 'today') {
+      g('scene-tag').textContent = 'AZI';
+      const pal = makePallet(282, g('g-pallets'));
+      const nVis = Math.min(r.N, 2);
+      const workers = []; for (let i = 0; i < nVis; i++) workers.push(workerEl(g('g-actors')));
+      if (r.N > 2) mk('text', { x: 236, y: 120, 'font-size': 11, 'font-weight': 800, fill: '#0a1a87' }, g('g-fx')).textContent = '×' + r.N;
+      sim = { mode: 'workers', belt: [], spawnEvery: 1050, spawnAcc: 0, cycle: 1050, pick: null, pallets: [pal], active: 0, pause: 0, workers, nPick: 0, t: 0 };
+      prefill();
+    } else if (sc === 'switch') {
+      g('scene-tag').textContent = '';
+      overlay(true, 'Aceeași linie. Aceleași găleți.', `De ${r.sh} ori pe zi, ${r.days} de zile pe an: ~${f0(r.tonsYear)} tone ridicate de mână.`);
+      caption('Ce se schimbă', 'O altă tură', 'Robotul preia ridicarea. Oamenii rămân la ce nu e greu.');
+      stats({ l: 'Tone pe an', v: f0(r.tonsYear), cls: 'hot' }, { l: 'Ture pe zi', v: r.sh }, { l: 'Zile pe an', v: r.days });
+      sim = null;
+    } else {
+      overlay(false); g('scene-tag').textContent = 'MÂINE';
+      const zone = mk('rect', { x: 232, y: 176, width: 120, height: 24, rx: 3, fill: '#f2c94c', opacity: 0, stroke: '#d9a400', 'stroke-dasharray': '4 3' }, g('g-zone'));
+      [[234, 188], [348, 188], [292, 196]].forEach(([x, y]) => mk('rect', { x: x - 4, y: y - 4, width: 8, height: 7, rx: 1.5, fill: '#f4c20d', stroke: '#8a6d00', 'stroke-width': .8 }, g('g-zone')));
+      const pA = makePallet(262, g('g-pallets')), pB = makePallet(320, g('g-pallets'));
+      fillPallet(pA, 7);
+      const sign = mk('g', {}, g('g-zone'));
+      mk('rect', { x: 236, y: 34, width: 74, height: 22, rx: 4, fill: '#fff', stroke: '#d9e2ef' }, sign);
+      mk('text', { x: 244, y: 49, 'font-size': 11, 'font-weight': 800, fill: '#1226aa', 'font-family': 'Inter,Arial,sans-serif', 'letter-spacing': '-.3' }, sign).textContent = 'Tech';
+      mk('circle', { cx: 272, cy: 45.5, r: 1.8, fill: '#e7004c' }, sign);
+      mk('text', { x: 275, y: 49, 'font-size': 11, 'font-weight': 800, fill: '#1226aa', 'font-family': 'Inter,Arial,sans-serif', 'letter-spacing': '-.3' }, sign).textContent = 'Con';
+      const robot = makeRobot(g('g-robot'));
+      const op = workerEl(g('g-actors'), '#2f5fd0', '#9be564');
+      const ratio = r.Lt / r.R; // >1 => linia e mai rapidă decât un robot
+      sim = { mode: 'robot', belt: [], spawnEvery: 900 / ratio, spawnAcc: 0, cycle: 900, pick: null, pallets: [pA, pB], active: 0, pause: 0, robot, op, opState: { x: 346, task: null, t: 0 }, zone, slow: 1, nPick: 0, t: 0 };
+      prefill();
+      poseRobot(robot, { x: END_X, y: 112 });
+    }
+  }
+  function fillPallet(p, n) { for (let i = 0; i < n; i++) { addToPallet(p, bucketEl(p.stack), i); } p.count = p.reserved = n; }
+  function prefill() {
+    const gap = Math.max(20, BELT_V * sim.spawnEvery / 1000);
+    for (let x = END_X - gap * 0.6; x > -12; x -= gap) { const el = bucketEl(g('g-belt')); const b = { x, el }; place(el, x, 132); sim.belt.push(b); }
+  }
+
+  function stepBelt(dt) {
+    sim.spawnAcc += dt;
+    if (sim.spawnAcc >= sim.spawnEvery) { sim.spawnAcc -= sim.spawnEvery; const tail = sim.belt[sim.belt.length - 1]; if (!tail || tail.x > 10) { const el = bucketEl(g('g-belt')); sim.belt.push({ x: -12, el }); } }
+    let moving = false;
+    sim.belt.forEach((b, i) => { const max = i === 0 ? END_X : sim.belt[i - 1].x - 19.5; const nx = Math.min(b.x + BELT_V * dt / 1000, max); if (nx > b.x + .01) moving = true; b.x = nx; place(b.el, b.x, 132); });
+    if (moving || sim.belt.length === 0) { beltOff = (beltOff - BELT_V * dt / 1000) % 12; g('belt-line').setAttribute('stroke-dashoffset', beltOff.toFixed(1)); }
+  }
+  function palletFor() {
+    const ps = sim.pallets;
+    for (let k = 0; k < ps.length; k++) { const p = ps[(sim.active + k) % ps.length]; if (!p.busy && p.reserved < p.cap) { sim.active = ps.indexOf(p); return p; } }
+    return null;
+  }
+  function stepPick(dt) {
+    if (sim.pause > 0) { sim.pause -= dt; }
+    sim.pallets.forEach(p => { if (p.resetAt && sim.t >= p.resetAt) { p.resetAt = 0; resetPallet(p); } });
+    if (!sim.pick && sim.pause <= 0 && sim.belt[0] && sim.belt[0].x >= END_X - .5) {
+      const p = palletFor();
+      if (p) { const b = sim.belt.shift(); g('g-held').appendChild(b.el); sim.pick = { b, p, slot: p.reserved++, t: 0, released: false, who: sim.nPick++ % Math.max(1, (sim.workers || [1]).length) }; }
+    }
+    const pk = sim.pick;
+    if (sim.mode === 'robot') {
+      const cone = document.getElementById('cam-cone');
+      cone.setAttribute('opacity', sim.belt[0] && sim.belt[0].x > END_X - 25 ? .22 : 0);
+    }
+    if (!pk) { idlePose(); return; }
+    pk.t += dt * (sim.mode === 'robot' ? sim.slow : 1);
+    const p = clamp(pk.t / sim.cycle, 0, 1);
+    const s = slotPos(pk.p, pk.slot);
+    let bpos;
+    if (sim.mode === 'robot') {
+      const P0 = { x: END_X, y: 112 }, P1 = { x: END_X, y: 86 }, top = s.y - 20, above = { x: s.x, y: Math.min(top - 16, 88) }, P3 = { x: s.x, y: top };
+      const tip = path([[0, P0], [.18, P1], [.55, above], [.72, P3], [.8, above], [.95, P1], [1, P0]], p);
+      poseRobot(sim.robot, tip);
+      if (!pk.released) bpos = { x: tip.x, y: tip.y + 20 };
+    } else {
+      const wk = sim.workers[pk.who]; const hx = 222 + pk.who * 22, hy = 160;
+      const P0 = { x: END_X, y: 132 }, P1 = { x: hx + 6, y: 126 }, above = { x: s.x, y: Math.min(s.y - 12, 128) }, P3 = { x: s.x, y: s.y };
+      const bp = path([[0, P0], [.32, P1], [.6, above], [.76, P3], [1, P3]], p);
+      if (!pk.released) bpos = bp;
+      const handY = (pk.released ? 120 : bp.y - 22);
+      const lean = clamp((handY - 112) / 48, 0, 1) * 0.95 * (bp.x >= hx ? 1 : -1);
+      poseWorker(wk, hx, hy, pk.released ? lean * (1 - (p - .76) / .24) : lean, pk.released ? null : { x: bp.x, y: bp.y - 22 }, sim.t);
+      sim.workers.forEach((w, i) => { if (i !== pk.who) poseWorker(w, 222 + i * 22, 160, 0, null, sim.t); });
+    }
+    if (bpos) place(pk.b.el, bpos.x, bpos.y);
+    if (!pk.released && p >= (sim.mode === 'robot' ? .72 : .76)) {
+      pk.released = true; addToPallet(pk.p, pk.b.el, pk.slot); pk.p.count++;
+      if (pk.p.count >= pk.p.cap) palletFull(pk.p);
+    }
+    if (p >= 1) sim.pick = null;
+  }
+  function idlePose() {
+    if (sim.mode === 'robot') poseRobot(sim.robot, { x: END_X, y: 112 });
+    else sim.workers.forEach((w, i) => poseWorker(w, 222 + i * 22, 160, 0, null, sim.t));
+  }
+  function resetPallet(p) { p.stack.replaceChildren(); p.count = 0; p.reserved = 0; p.busy = false; p.stack.style.opacity = 1; }
+  function palletFull(p) {
+    p.busy = true;
+    if (sim.mode === 'workers') {
+      sim.pause = 1100; p.stack.style.transition = 'opacity .8s'; p.stack.style.opacity = .15;
+      p.resetAt = sim.t + 900;
+    } else {
+      sim.active = (sim.pallets.indexOf(p) + 1) % 2;
+      sim.opState.task = { p, phase: 'walk', t: 0 };
+    }
+  }
+  function stepOperator(dt) {
+    const o = sim.opState, idleX = 346; let x = o.x, near = false;
+    if (o.task) {
+      o.task.t += dt; const tx = o.task.p.cx + 14;
+      if (o.task.phase === 'walk') { x = lerp(idleX, tx, ease(clamp(o.task.t / 900, 0, 1))); if (o.task.t >= 900) { o.task.phase = 'swap'; o.task.t = 0; o.task.p.stack.style.transition = 'opacity .7s'; o.task.p.stack.style.opacity = .1; } }
+      else if (o.task.phase === 'swap') { x = tx; near = true; if (o.task.t >= 1100) { resetPallet(o.task.p); o.task.phase = 'back'; o.task.t = 0; } }
+      else { x = lerp(tx, idleX, ease(clamp(o.task.t / 900, 0, 1))); if (o.task.t >= 900) o.task = null; }
+      near = near || (o.task && o.task.phase !== 'back' && o.task.t > 500) || false;
+    } else x = idleX;
+    o.x = x;
+    poseWorker(sim.op, x, 186, near ? 0.35 : 0, null, sim.t, 0.95);
+    sim.slow = near ? 0.55 : 1;
+    sim.zone.setAttribute('opacity', near ? (0.25 + 0.15 * Math.sin(sim.t / 120)).toFixed(2) : 0);
+  }
+
+  function hud(sc, k) {
+    const hh = 6 + Math.floor(k * 8), mm = Math.floor((k * 8 % 1) * 60);
+    g('clock').textContent = String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
+    if (sc === 'today') {
+      stats({ l: 'Ridicări / om', v: f0(r.liftsPerOp * k), cls: 'hot' }, { l: 'Tone / om', v: f1(r.tonsPerOp * k), cls: 'hot' }, { l: 'Ritm linie', v: f1(r.L) + '/min' });
+      $('#st1m').style.width = (clamp(r.LI / 4, .15, 1) * Math.sqrt(k) * 100) + '%';
+      const stage = k < .33 ? 0 : k < .66 ? 1 : 2;
+      if (stage !== capStage) {
+        capStage = stage;
+        if (stage === 0) caption('Azi, la tine în fabrică', `${r.N} ${r.N === 1 ? 'om' : 'oameni'} la paletizare`, `Găleți de ${f1(r.w)} kg, luate de pe bandă și puse pe palet una câte una, ${r.sh} ${r.sh === 1 ? 'tură' : 'ture'} pe zi.`);
+        if (stage === 1) caption('Azi, la tine în fabrică', `~${f0(r.liftsPerOp)} ridicări pe om, pe tură`, `Adică ~${f1(r.tonsPerOp)} tone mutate cu mâinile de fiecare om, până la ora 14:00.`);
+        if (stage === 2) caption('Azi, la tine în fabrică', `Risc ${r.risk.label} pentru spate`, `Indice NIOSH estimat: ${liTxt(r.LI)} (peste 1 = risc). Cele mai grele ridicări sunt cele de pe primul strat, aplecat.${r.slowed ? ` Iar linia e ținută la ${f1(r.L)}/min ca să țină pasul oamenii.` : ''}`);
+      }
+    } else if (sc === 'tomorrow') {
+      const capOk = r.Lt <= r.R * 1.0001;
+      stats({ l: 'Ridicări / om', v: '0', cls: 'cool' }, { l: 'Paleți plini', v: f0(r.palletsShift * k) }, { l: 'Ritm', v: f1(r.Lt) + '/min', cls: capOk ? 'cool' : 'hot' });
+      $('#st1m').style.width = '0%';
+      const stage = k < .33 ? 0 : k < .66 ? 1 : 2;
+      if (stage !== capStage) {
+        capStage = stage;
+        if (stage === 0) caption('Mâine, cu robotul UR20', 'Robotul preia fiecare găleată', 'Camera verifică poziția mânerului, apoi gripperul prinde găleata și o așază după modelul programat.');
+        if (stage === 1) caption('Mâine, cu robotul UR20', `Palet plin la ~${f1(r.fillMin)} min`, 'Robotul trece pe a doua poziție. Omul schimbă paletul plin, iar scanerele încetinesc robotul cât timp e cineva în zonă.');
+        if (stage === 2) {
+          if (r.cells > 1) caption('Mâine, cu robotul UR20', 'Atenție: o celulă nu ajunge', `La ${f1(r.Lt)}/min gălețile se adună pe bandă. Varianta corectă e cu ${r.cells} celule, de verificat la evaluarea tehnică.`);
+          else if (r.slowed) caption('Mâine, cu robotul UR20', `Linia nu mai e frânată: +${f0(r.extraPct)}%`, `${f1(r.Lt)} găleți/min în loc de ${f1(r.L)}, adică ~${f0(r.extraYear)} găleți în plus pe an. Doar dacă și restul liniei ține ritmul.`);
+          else caption('Mâine, cu robotul UR20', 'Același volum, alt efort', `Același ritm de ${f1(r.Lt)}/min, de la prima la ultima oră. Ridicări de mână: 0. Omul doar schimbă paleții și pune separatoarele.`);
+        }
+      }
+    }
+  }
+
+  function loop(now) {
+    const dt = Math.min(100, now - last) * speed; last = now; st += dt;
+    const sc = SC[idx];
+    if (sim) { sim.t += dt; stepBelt(dt); stepPick(dt); if (sim.mode === 'robot') stepOperator(dt); }
+    hud(sc.id, clamp(st / sc.dur, 0, 1));
+    if (sc.id === 'switch') {
+      const k = st / sc.dur;
+      if (k > .55) $('#o1').textContent = 'Altă tură.';
+    }
+    if (st >= sc.dur) { idx++; st = 0; if (idx >= SC.length) { finish(); return; } setup(); }
+    raf = requestAnimationFrame(loop);
+  }
+  function start(res) {
+    r = res; stop(); idx = 0; st = 0; $('#bilant').hidden = true; $('#story-ctrl').hidden = false; overlay(false); setup();
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { finish(); return; }
+    last = performance.now(); raf = requestAnimationFrame(loop);
+  }
+  function stop() { if (raf) cancelAnimationFrame(raf); raf = null; }
+  function finish() {
+    stop(); dots(3); overlay(false);
+    caption('Bilanțul', 'Tura ta de mâine', 'Mai jos e ce se schimbă concret, pe cifrele tale.');
+    renderBilant(r); $('#bilant').hidden = false;
+    setTimeout(() => $('#bilant').scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+  }
+  return { start, stop, finish, setSpeed: v => { speed = v; } };
+})();
+$('#replay').addEventListener('click', () => Story.start(RES));
+$('#skip').addEventListener('click', () => Story.finish());
+
+function renderBilant(r) {
+  const cards = [], fits = r.w <= A.ur20Payload;
+  cards.push(fits ? `<div class="bcard"><div class="bh"><span class="ico">💪</span>Efort</div>
+    <div class="ba"><div class="side"><small>Azi, pe om</small><b>${f1(r.tonsPerOp)} t/tură</b></div><div class="arrow">→</div><div class="side after"><small>Cu UR20</small><b>0 găleți ridicate</b></div></div>
+    <p>~${f0(r.tonsYear)} tone pe an nu mai sunt ridicate de mână. Indicele NIOSH de ${liTxt(r.LI)} (risc ${r.risk.label}) dispare din paletizare. Rămân schimbarea paleților și separatoarele.</p></div>`
+    : `<div class="bcard"><div class="bh"><span class="ico">💪</span>Efort</div>
+    <div class="ba"><div class="side"><small>Azi, pe om</small><b>${f1(r.tonsPerOp)} t/tură</b></div><div class="arrow">→</div><div class="side"><small>Cu UR20</small><b>nepotrivit</b></div></div>
+    <p>Problema există (indice NIOSH ${liTxt(r.LI)}, risc ${r.risk.label}), dar găleata depășește limita de ${A.ur20Payload} kg a UR20. Tech-Con poate evalua o altă soluție.</p></div>`);
+  let vol;
+  if (r.w > A.ur20Payload) vol = `<p>Greutatea depășește limita UR20, deci nu putem estima volumul cu acest robot.</p>`;
+  else if (r.cells > 1) vol = `<div class="ba"><div class="side"><small>Linia ta</small><b>${f1(r.Lt)}/min</b></div><div class="arrow">→</div><div class="side after"><small>${r.cells} celule</small><b>${f1(r.R * r.cells)}/min</b></div></div><p>O singură celulă nu ține pasul. Cu ${r.cells} celule ritmul e acoperit, de confirmat la evaluarea tehnică.</p>`;
+  else if (r.slowed) vol = `<div class="ba"><div class="side"><small>Azi</small><b>${f1(r.L)}/min</b></div><div class="arrow">→</div><div class="side after"><small>Cu UR20</small><b>${f1(r.Lt)}/min</b></div></div><p>+${f0(r.extraPct)}%, adică ~${f0(r.extraYear)} găleți pe an, dacă umplerea și depozitul țin acest ritm.</p>`;
+  else vol = `<div class="ba"><div class="side"><small>Azi</small><b>${f1(r.L)}/min</b></div><div class="arrow">→</div><div class="side after"><small>Cu UR20</small><b>${f1(r.Lt)}/min</b></div></div><p>Același volum, cu același ritm de la prima la ultima oră și o rezervă de ~${f0(r.reserve)}%. Robotul nu accelerează singur fabrica, dar paletizarea nu mai e frâna.</p>`;
+  cards.push(`<div class="bcard"><div class="bh"><span class="ico">📦</span>Volum</div>${vol}</div>`);
+  cards.push(`<div class="bcard"><div class="bh"><span class="ico">🔁</span>Paleți</div>
+    <div class="ba"><div class="side"><small>Palet plin</small><b>~${f1(r.fillMin)} min</b></div><div class="arrow">·</div><div class="side"><small>Pe tură</small><b>~${f0(r.palletsShift)} paleți</b></div></div>
+    <p>Două poziții de paletizare: robotul umple una, iar omul schimbă paletul pe cealaltă. Scanerele reduc viteza sau opresc robotul când intră cineva în zonă.</p></div>`);
+  if (!fits) { /* fără estimare în bani pentru o soluție nepotrivită */ }
+  else if (r.value !== null) cards.push(`<div class="bcard"><div class="bh"><span class="ico">💶</span>Bani (estimarea ta)</div>
+    <div class="ba"><div class="side"><small>Ore eliberate/an</small><b>~${f0(r.hoursFreedYear)}</b></div><div class="arrow">×</div><div class="side after"><small>la ${f1(r.s.costHour)} €/oră</small><b>~${f0(r.value)} €</b></div></div>
+    <p>Valoarea timpului care nu mai e petrecut ridicând găleți, calculată pe costul introdus de tine. Nu e o economie garantată: oamenii pot fi mutați pe alte sarcini. Prețul celulei se discută la evaluare.</p></div>`);
+  else cards.push(`<div class="bcard"><div class="bh"><span class="ico">💶</span>Bani</div><p>Vrei și o estimare în bani? Adaugă costul orar al unui operator la pasul 2. Rămâne doar pe telefonul tău.</p></div>`);
+  $('#bil').innerHTML = cards.join('');
+  $$('#bil .bcard').forEach((c, i) => setTimeout(() => c.classList.add('show'), 120 + i * 220));
+  $('#bil-note').textContent = `Referință: testele celulei UR20 din aplicația de referință Tech-Con (7,4–8,6 găleți/min). Estimările folosesc datele tale și ${A.days} de zile de producție pe an. Nu sunt garanții și trebuie validate la evaluarea tehnică Tech-Con.`;
+}
+$('#to-dossier').addEventListener('click', () => { renderDossier(RES); go('s-dossier'); });
+
+/* ---------- Pasul 4: dosarul ---------- */
+const SHARE_KEYS = ['rate', 'rateSource', 'industry', 'weight', 'handle', 'operators', 'shifts', 'hours', 'keepsUp', 'potRate'];
+function shareLink(s) {
+  const o = {}; SHARE_KEYS.forEach(k => o[k] = s[k]);
+  const enc = btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  return location.href.split('#')[0] + '#d=' + enc;
+}
+function dossierParts(r) {
+  const s = r.s;
+  const measured = [
+    `Linia: ${f1(r.L)} găleți/min (${s.rateSource})`,
+    `Găleți de ${f1(r.w)} kg, ${s.handle === 'da' ? 'cu' : 'fără'} mâner · ${INDUSTRY[s.industry]}`,
+    `${r.N} ${r.N === 1 ? 'operator' : 'operatori'} pe tură · ${r.sh} ${r.sh === 1 ? 'tură' : 'ture'} × ${f1(r.h)} h`
+  ];
+  if (r.slowed) measured.push(`Linia e încetinită din cauza paletizării; ar putea merge la ${f1(r.Lt)}/min`);
+  const problem = [
+    `Fiecare operator ridică ~${f0(r.liftsPerOp)} găleți, adică ~${f1(r.tonsPerOp)} t pe tură`,
+    `~${f0(r.tonsYear)} tone pe an ridicate manual`,
+    `Indice de ridicare NIOSH estimat: ${liTxt(r.LI)}, risc ${r.risk.label} pentru spate`
+  ];
+  const facts = [
+    'Aplicație de referință Tech-Con, industria alimentară: 2 celule UR20, cu cameră pentru mâner și 2 poziții de paletizare pe celulă',
+    'Teste: 7,4 găleți/min (13 kg) și 8,6 găleți/min (5 kg), cu ținta de minimum 6/min; la FAT nu au fost observate preluări nereușite',
+    'Schimbarea paleților și separatoarele au rămas manuale; livrare în ~4 luni'
+  ];
+  const est = [];
+  if (r.w > A.ur20Payload) est.push(`Greutatea de ${f1(r.w)} kg depășește limita UR20 (${A.ur20Payload} kg), deci e nevoie de altă soluție`);
+  else {
+    est.push(r.cells === 1 ? `Un robot UR20 ține ritmul liniei (rezervă ~${f0(r.reserve)}%)` : `Sunt necesare ~${r.cells} celule pentru ${f1(r.Lt)} găleți/min`);
+    est.push('Ridicările manuale de găleți dispar; rămân schimbarea paleților și separatoarele');
+    est.push(`Un palet plin la ~${f1(r.fillMin)} min, ~${f0(r.palletsShift)} paleți pe tură`);
+    if (r.slowed) est.push(`Volum: +${f0(r.extraPct)}% (~${f0(r.extraYear)} găleți/an), dacă restul liniei ține ritmul`);
+    if (r.value !== null) est.push(`~${f0(r.hoursFreedYear)} ore/an eliberate din ridicare (~${f0(r.value)} EUR la ${f1(s.costHour)} EUR/oră)`);
+  }
+  const verify = ['Forma, materialul și stabilitatea găleții; gripperul și sarcina totală', 'Spațiul, accesul și cele 2 poziții de paletizare', 'Integrarea cu banda, semnalele de proces, evaluarea riscurilor' + (s.industry === 'alimentar' ? ' și igiena' : '')];
+  return { measured, problem, facts, est, verify };
+}
+function renderDossier(r) {
+  const d = dossierParts(r), s = r.s;
+  const date = new Date().toLocaleDateString('ro-RO', { day: 'numeric', month: 'long', year: 'numeric' });
+  const li = arr => arr.map(x => `<li>${x}</li>`).join('');
+  $('#paper').innerHTML = `
+    <h3>Paletizare robotizată UR20: pre-evaluarea liniei</h3>
+    <div class="meta">Pre-evaluare · ${date}</div>
+    <h4>Ce am măsurat la noi</h4><ul>${li(d.measured)}</ul>
+    <h4>Problema de azi</h4><ul>${li(d.problem)}</ul>
+    <h4>Ce s-a dovedit în altă parte <span class="tag f">FAPTE</span></h4><ul>${li(d.facts)}</ul>
+    <h4>Ce ar însemna la noi <span class="tag e">ESTIMARE</span></h4><ul>${li(d.est)}</ul>
+    <h4>Ce trebuie verificat de Tech-Con</h4><ul>${li(d.verify)}</ul>
+    <h4>Pasul următor</h4><p style="margin:0">O evaluare tehnică cu Tech-Con (${s.visit.toLowerCase()}), înainte de orice decizie de investiție.</p>
+    <div class="meta" style="margin:14px 0 0;border-top:1px solid #d9e2ef;padding-top:10px">Pre-evaluare generată cu <b style="color:#1226aa">Tech·Con „Tura de mâine”</b> · birouri în Dragomirești-Deal, Iași și Timișoara</div>`;
+}
+function dossierText(r) {
+  const d = dossierParts(r), s = r.s, b = a => a.map(x => '• ' + x).join('\n');
+  return `PRE-EVALUARE: paletizare robotizată UR20\n\nCE AM MĂSURAT LA NOI\n${b(d.measured)}\n\nPROBLEMA DE AZI\n${b(d.problem)}\n\nCE S-A DOVEDIT ÎN ALTĂ PARTE (fapte)\n${b(d.facts)}\n\nCE AR ÎNSEMNA LA NOI (estimare)\n${b(d.est)}\n\nCE TREBUIE VERIFICAT\n${b(d.verify)}\n\nPASUL URMĂTOR\n• O evaluare tehnică cu Tech-Con, înainte de orice decizie.\n\nVezi povestea liniei noastre (Tech-Con · Tura de mâine): ${shareLink(s)}`;
+}
+async function copy(text, msg) {
+  try { await navigator.clipboard.writeText(text); toast(msg); }
+  catch { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); toast(msg); } catch { toast('Nu am putut copia automat.'); } ta.remove(); }
+}
+$('#sh-wa').addEventListener('click', () => window.open('https://wa.me/?text=' + encodeURIComponent(dossierText(RES)), '_blank', 'noopener'));
+$('#sh-mail').addEventListener('click', () => { location.href = 'mailto:?subject=' + encodeURIComponent('Pre-evaluare paletizare robotizată UR20') + '&body=' + encodeURIComponent(dossierText(RES)); });
+$('#sh-copy').addEventListener('click', () => copy(dossierText(RES), 'Textul raportului a fost copiat'));
+$('#sh-link').addEventListener('click', () => copy(shareLink(RES.s), 'Linkul a fost copiat'));
+$('#to-request').addEventListener('click', () => { $('#req-form').hidden = false; $('#req-ok').hidden = true; go('s-request'); });
+
+/* ---------- Cererea către Tech-Con ---------- */
+$('#req-send').addEventListener('click', () => {
+  const firm = $('#firm').value.trim(), region = $('#region'), role = $('#role').value, email = $('#email').value.trim();
+  const bad = { '#f-firm': firm.length < 2, '#f-region': !region.value, '#f-role': !role, '#f-email': !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) };
+  Object.entries(bad).forEach(([sel, b]) => $(sel).classList.toggle('bad', b));
+  if (Object.values(bad).some(Boolean)) { $('.field.bad').scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+  const ref = 'TDM-' + Math.floor(1000 + Math.random() * 9000);
+  const office = region.value, regionName = region.options[region.selectedIndex].text;
+  const r = RES;
+  try { const all = JSON.parse(localStorage.getItem('tdm_requests') || '[]'); all.push({ ref, firm, regionName, office, role, email, visit: S.visit, inputs: r.s, at: new Date().toISOString() }); localStorage.setItem('tdm_requests', JSON.stringify(all)); } catch { }
+  $('#ok-title').textContent = 'Cererea ' + ref + ' a fost înregistrată';
+  $('#ok-sub').textContent = `Biroul Tech-Con cel mai apropiat de ${regionName}: ${office}. În versiunea reală, cererea ajunge în CRM împreună cu pre-evaluarea.`;
+  $('#ok-kv').innerHTML = [
+    ['Firma', firm], ['Rol', role], ['Preferință', S.visit],
+    ['Ritm linie', f1(r.L) + ' găleți/min (' + r.s.rateSource + ')'],
+    ['Găleată', f1(r.w) + ' kg, ' + (r.s.handle === 'da' ? 'cu mâner' : 'fără mâner')],
+    ['Operatori / ture', r.N + ' × ' + r.sh + ' ture × ' + f1(r.h) + ' h'],
+    ['Risc NIOSH estimat', liTxt(r.LI) + ' (' + r.risk.label + ')'],
+    ['Verdict', r.v.title], ['Birou alocat', office]
+  ].map(([k, v]) => `<li><span>${k}</span><b>${v}</b></li>`).join('');
+  $('#req-form').hidden = true; $('#req-ok').hidden = false; window.scrollTo({ top: 0 });
+});
+$('#restart').addEventListener('click', () => { M.reset(); $('#m-result').hidden = true; $('#m-next').disabled = true; S.rate = null; $('#manual-rate').value = ''; go('s-measure'); });
+
+/* ---------- Exemplu demo ---------- */
+$('#demo').addEventListener('click', () => {
+  Object.assign(S, { rate: 7, rateSource: 'exemplu demonstrativ', industry: 'alimentar', weightChoice: '13', weight: 13, handle: 'da', operators: 2, shifts: 3, hours: 8, keepsUp: 'da', potRate: null, costHour: null });
+  syncForm(); setRate(7, 'exemplu demonstrativ');
+  RES = compute(S); renderAnalysis(RES); $('#shared-banner').hidden = true; go('s-analysis');
+});
+function syncForm() {
+  setChip('industry', S.industry); setChip('handle', S.handle); setChip('shifts', S.shifts); setChip('keepsUp', S.keepsUp);
+  const wc = [5, 13].includes(Number(S.weight)) ? String(S.weight) : 'other'; S.weightChoice = wc; setChip('weightChoice', wc);
+  $('#weight-other').hidden = wc !== 'other'; if (wc === 'other') $('#weight-input').value = S.weight;
+  $('#ops').textContent = S.operators; $('#hours').value = S.hours;
+  $('#pot-wrap').hidden = S.keepsUp !== 'nu'; $('#pot-rate').value = S.potRate || '';
+  $('#cost').value = S.costHour || '';
+}
+
+/* ---------- Pagina de start: cum se folosește, ca o mini-poveste ---------- */
+const Home = (() => {
+  const LOOP = 10500, SPAWN = 950, SPEED = 85, LINE = 198, TAPS_SHOWN = 7;
+  const FONT = 'Inter,Arial,sans-serif';
+  let raf = null, last = 0, t = 0, belt = [], spawnAcc = 0, count = 0, tapT = -1, step = -1, ph = null;
+  const txt = (parent, x, y, size, weight, fill, content) => { const e = mk('text', { x, y, 'font-size': size, 'font-weight': weight, fill, 'text-anchor': 'middle', 'font-family': FONT }, parent); if (content) e.textContent = content; return e; };
+  function buildPhone() {
+    const root = mk('g', {}, document.getElementById('h-phone'));
+    mk('rect', { x: 248, y: 22, width: 86, height: 152, rx: 14, fill: '#0a1a87' }, root);
+    mk('rect', { x: 254, y: 32, width: 74, height: 132, rx: 8, fill: '#fff' }, root);
+    mk('rect', { x: 282, y: 26, width: 18, height: 3, rx: 1.5, fill: '#3a4aa8' }, root);
+    const timer = txt(root, 291, 48, 9, 700, '#5e6478');
+    const ring = mk('circle', { cx: 291, cy: 102, r: 26, fill: 'none', stroke: '#1226aa', 'stroke-width': 2, opacity: 0 }, root);
+    const btn = mk('circle', { cx: 291, cy: 102, r: 24, fill: '#1226aa' }, root);
+    const num = txt(root, 291, 110, 22, 700, '#fff');
+    const lbl = txt(root, 291, 66, 7.5, 600, '#5e6478');
+    const res = mk('g', { opacity: 0 }, root);
+    txt(res, 291, 84, 26, 700, '#1226aa', '7');
+    txt(res, 291, 98, 8.5, 600, '#5e6478', 'găleți/min');
+    mk('rect', { x: 256, y: 110, width: 70, height: 20, rx: 10, fill: '#e5f3e6' }, res);
+    txt(res, 291, 123.5, 8.5, 700, '#1e7b24', '✓ Se potrivește');
+    txt(res, 291, 148, 8, 700, '#e7004c', 'Tura de mâine ›');
+    const hand = mk('g', {}, root);
+    mk('path', { d: 'M0,0 q6,-2 7,6 l3,26 q1,8 -8,10 q-12,2 -14,-8 l-4,-16 q-1,-5 4,-4 l5,8 l-1,-18 q0,-5 5,-4 z', fill: '#f1c9a5', stroke: '#c99a73', 'stroke-width': 1 }, hand);
+    ph = { root, timer, ring, btn, num, lbl, res, hand };
+  }
+  function phonePose() {
+    const k = clamp(t / 900, 0, 1);
+    ph.root.setAttribute('transform', `translate(${((1 - ease(k)) * 140).toFixed(1)},0)`);
+    const showRes = t > 8000;
+    ph.res.setAttribute('opacity', showRes ? clamp((t - 8000) / 300, 0, 1).toFixed(2) : 0);
+    [ph.btn, ph.num, ph.lbl].forEach(e => e.setAttribute('opacity', showRes ? 0 : 1));
+    ph.num.textContent = t < 1200 ? 'START' : count;
+    ph.num.setAttribute('font-size', t < 1200 ? 11 : 22); ph.num.setAttribute('y', t < 1200 ? 106 : 110);
+    ph.lbl.textContent = count ? 'găleți numărate' : 'atinge la fiecare găleată';
+    ph.timer.textContent = t < 1200 ? '60 s' : showRes ? 'gata' : 'măsor…';
+    const since = tapT >= 0 ? t - tapT : 999, press = since < 160 ? 1 - since / 160 : 0;
+    ph.hand.setAttribute('transform', `translate(296,${(110 + (1 - press) * 10).toFixed(1)})`);
+    ph.hand.setAttribute('opacity', showRes ? 0 : 1);
+    ph.btn.setAttribute('r', (24 - press * 2).toFixed(1));
+    const rp = since < 450 ? since / 450 : 1;
+    ph.ring.setAttribute('r', (24 + rp * 14).toFixed(1)); ph.ring.setAttribute('opacity', since < 450 ? (1 - rp).toFixed(2) : 0);
+  }
+  function setStep(i) { if (i === step) return; step = i; $$('#howto li').forEach((li, j) => li.classList.toggle('on', j === i)); }
+  function clearBelt() { document.getElementById('h-belt').replaceChildren(); belt = []; }
+  function reset() { t = 0; count = 0; tapT = -1; spawnAcc = SPAWN * .6; clearBelt(); }
+  function frame(now) {
+    const dt = Math.min(100, now - last); last = now; t += dt;
+    if (t >= LOOP) reset();
+    setStep(t < 1200 ? 0 : t < 8000 ? 1 : 2);
+    if (t > 300 && t < 7600) { spawnAcc += dt; if (spawnAcc >= SPAWN) { spawnAcc -= SPAWN; belt.push({ x: -14, el: bucketEl(document.getElementById('h-belt')), counted: false }); } }
+    belt.forEach(b => {
+      b.x += SPEED * dt / 1000; place(b.el, b.x, 132);
+      if (!b.counted && b.x >= LINE) { b.counted = true; if (t > 1200 && count < TAPS_SHOWN) { count++; tapT = t; } }
+      b.el.setAttribute('opacity', b.x > 205 ? clamp(1 - (b.x - 205) / 25, 0, 1).toFixed(2) : 1);
+    });
+    const gone = belt.filter(b => b.x > 232); gone.forEach(b => b.el.parentNode && b.el.parentNode.removeChild(b.el));
+    belt = belt.filter(b => b.x <= 232);
+    phonePose();
+    raf = requestAnimationFrame(frame);
+  }
+  function play() {
+    if (!ph) buildPhone();
+    stop(); reset();
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { t = 8600; count = 7; phonePose(); setStep(2); return; }
+    last = performance.now(); raf = requestAnimationFrame(frame);
+  }
+  function stop() { if (raf) cancelAnimationFrame(raf); raf = null; }
+  return { play, stop };
+})();
+
+/* ---------- Panou Tech-Con: cererile, ordonate după potențial ---------- */
+const DEMO_LEADS = [
+  { firm: 'Demo Lactate SRL', regionName: 'Moldova', office: 'Iași', role: 'Director de producție', days: 0, inputs: { rate: 6.8, rateSource: 'numărat cu camera, 60 s', industry: 'alimentar', weight: 13, handle: 'da', operators: 2, shifts: 3, hours: 8, keepsUp: 'da', potRate: null } },
+  { firm: 'Demo Detergenți SA', regionName: 'Crișana', office: 'Timișoara', role: 'Responsabil investiții', days: 1, inputs: { rate: 6.5, rateSource: 'măsurat pe linie, 60 s', industry: 'chimice', weight: 10, handle: 'da', operators: 2, shifts: 3, hours: 8, keepsUp: 'nu', potRate: 7.6 } },
+  { firm: 'Demo Sosuri SRL', regionName: 'Oltenia', office: 'Dragomirești-Deal', role: 'Director de producție', days: 2, inputs: { rate: 8, rateSource: 'măsurat pe linie, 45 s', industry: 'alimentar', weight: 5, handle: 'da', operators: 2, shifts: 2, hours: 8, keepsUp: 'da', potRate: null } },
+  { firm: 'Demo Vopsele SA', regionName: 'Banat', office: 'Timișoara', role: 'Șef de tură / mentenanță', days: 3, inputs: { rate: 11.5, rateSource: 'introdus manual', industry: 'vopsele', weight: 5, handle: 'da', operators: 2, shifts: 2, hours: 8, keepsUp: 'da', potRate: null } },
+  { firm: 'Demo Adezivi SRL', regionName: 'Muntenia', office: 'Dragomirești-Deal', role: 'Responsabil SSM', days: 4, inputs: { rate: 6, rateSource: 'introdus manual', industry: 'constructii', weight: 16, handle: 'nu', operators: 2, shifts: 2, hours: 8, keepsUp: 'da', potRate: null } },
+  { firm: 'Demo Patiserie SRL', regionName: 'Transilvania (centru și sud)', office: 'Dragomirești-Deal', role: 'Patron / director general', days: 6, inputs: { rate: 3, rateSource: 'introdus manual', industry: 'alimentar', weight: 13, handle: 'da', operators: 1, shifts: 1, hours: 8, keepsUp: 'da', potRate: null } },
+  { firm: 'Demo Mortare SRL', regionName: 'Bucovina', office: 'Iași', role: 'Director de producție', days: 7, inputs: { rate: 5, rateSource: 'introdus manual', industry: 'constructii', weight: 25, handle: 'nu', operators: 2, shifts: 2, hours: 8, keepsUp: 'da', potRate: null } }
+];
+function leadScore(r) {
+  let s = r.v.lvl === 'green' ? 40 : r.v.lvl === 'amber' ? 25 : 5;
+  s += r.risk.lvl === 'red' ? 20 : r.risk.lvl === 'amber' ? 12 : 4;
+  s += r.sh === 3 ? 15 : r.sh === 2 ? 10 : 5;
+  s += /camera|pe linie/.test(r.s.rateSource || '') ? 15 : 7;   // date măsurate valorează mai mult
+  s += r.slowed ? 10 : 0;                                        // paletizarea frânează azi linia
+  return Math.min(100, s);
+}
+const prio = sc => sc >= 75 ? 'A' : sc >= 55 ? 'B' : 'C';
+const NEXT = {
+  A: '<b>Sună azi.</b> Propune vizita tehnică și trimite studiul de caz Tech-Con.',
+  B: '<b>În 3 zile:</b> demo online cu video UR20, apoi decizie despre vizită.',
+  C: '<b>Nurture:</b> newsletter și invitație la webinar, fără vizită acum.'
+};
+const Panel = {
+  office: 'toate',
+  mine() { try { return JSON.parse(localStorage.getItem('tdm_requests') || '[]'); } catch { return []; } },
+  all() {
+    const now = Date.now();
+    const officeFor = name => ([...$('#region').options].find(o => o.text === name) || {}).value || 'Dragomirești-Deal';
+    const mine = this.mine().map(x => ({ ...x, office: x.office || officeFor(x.regionName), mine: true, when: new Date(x.at).getTime() }));
+    const demo = DEMO_LEADS.map(x => ({ ...x, demo: true, when: now - x.days * 864e5 - 3600e3 }));
+    return [...mine, ...demo].map(x => {
+      const inp = { ...x.inputs, costHour: null, weightChoice: String(x.inputs.weight) };
+      const r = compute(inp); const sc = leadScore(r);
+      return { ...x, r, sc, p: prio(sc), relevant: sc >= 55 && r.w <= A.ur20Payload };
+    }).sort((a, b) => b.sc - a.sc);
+  },
+  render() {
+    const list = this.all(), shown = list.filter(x => this.office === 'toate' || x.office === this.office);
+    const rel = list.filter(x => x.relevant).length, budget = Math.max(0, Number($('#t-budget').value) || 0);
+    $('#kpis').innerHTML = `
+      <div class="kpi"><small>Cereri primite</small><b>${list.length}</b></div>
+      <div class="kpi hl"><small>Cereri relevante</small><b>${rel}</b></div>
+      <div class="kpi"><small>De sunat azi (A)</small><b>${list.filter(x => x.p === 'A').length}</b></div>
+      <div class="kpi"><small>Date măsurate</small><b>${Math.round(list.filter(x => /camera|pe linie/.test(x.inputs.rateSource)).length / list.length * 100)}%</b></div>`;
+    const cells = Math.max(1, Number($('#t-cells').value) || 1), conv = clamp(Number($('#t-conv').value) || 1, 1, 100) / 100;
+    const need = Math.ceil(cells / conv), maxCost = budget / need;
+    $('#t-out').innerHTML = `Pentru <b>${cells} celule</b> la o rată de ${Math.round(conv * 100)}% sunt necesare <b>~${need} cereri relevante pe an</b> (~${f1(need / 12)} pe lună). Cu ${f0(budget)} € de promovare, o cerere relevantă poate costa cel mult <b>~${f0(maxCost)} €</b>.`;
+    const fmtDate = t => { const d = Math.round((Date.now() - t) / 864e5); return d <= 0 ? 'azi' : d === 1 ? 'ieri' : `acum ${d} zile`; };
+    const srcIcon = s => /camera/.test(s) ? '📷 cameră' : /pe linie/.test(s) ? '👆 măsurat' : '✍️ declarat';
+    $('#leads').innerHTML = shown.length ? shown.map(x => `
+      <div class="lcard ${x.mine ? 'mine' : ''}">
+        <div class="score ${x.p}">${x.sc}<small>${x.p}</small></div>
+        <h4>${x.firm.replace(/</g, '&lt;')} ${x.mine ? '<span class="tag me">cererea ta</span>' : '<span class="tag demo">exemplu</span>'}</h4>
+        <div class="meta">${x.regionName} → birou ${x.office} · ${x.role} · ${fmtDate(x.when)}</div>
+        <div class="facts">
+          <span>${f1(x.r.L)} găleți/min · ${srcIcon(x.inputs.rateSource)}</span><span>${f1(x.r.w)} kg</span><span>${x.r.N}×${x.r.sh} ture</span>
+          <span class="badge ${x.r.v.lvl}" style="margin:0">${x.r.v.title}</span><span class="badge ${x.r.risk.lvl}" style="margin:0">NIOSH ${liTxt(x.r.LI)}</span>
+        </div>
+        <div class="next">${x.r.w > A.ur20Payload ? '<b>Nu e pentru UR20.</b> Răspuns politicos și propunere de altă soluție.' : NEXT[x.p]}</div>
+      </div>`).join('') : '<div class="empty">Nicio cerere pentru acest birou.</div>';
+  }
+};
+$$('.chips[data-group="office"] .chip').forEach(c => c.addEventListener('click', () => { Panel.office = c.dataset.v; Panel.render(); }));
+['#t-cells', '#t-conv', '#t-budget'].forEach(id => $(id).addEventListener('input', () => Panel.render()));
+$('#clear-mine').addEventListener('click', () => { try { localStorage.removeItem('tdm_requests'); } catch { } Panel.render(); toast('Cererile tale de test au fost șterse'); });
+function openPanel() { Panel.render(); go('s-panel'); }
+$('#to-panel').addEventListener('click', openPanel);
+$('#open-panel').addEventListener('click', openPanel);
+
+/* ---------- Mod prezentare: demonstrație automată pentru pitch ---------- */
+const Demo = {
+  on: false,
+  wait(ms) { return new Promise((res, rej) => setTimeout(() => this.on ? res() : rej(new Error('stop')), ms)); },
+  async run() {
+    if (this.on) return;
+    this.on = true; $('#demo-pill').hidden = false;
+    try {
+      go('s-intro'); await this.wait(3200);
+      go('s-measure'); await this.wait(900); setMode('tap');
+      M.start(); for (let i = 0; i < 7; i++) { await this.wait(420); M.tap(); }
+      await this.wait(500); M.reset(); setRate(7, 'măsurat pe linie, 60 s'); await this.wait(1600);
+      Object.assign(S, { industry: 'alimentar', weightChoice: '13', weight: 13, handle: 'da', operators: 2, shifts: 3, hours: 8, keepsUp: 'da', potRate: null, costHour: 8 });
+      syncForm(); go('s-details'); await this.wait(2400);
+      $('#d-next').click(); await this.wait(4800);
+      Story.setSpeed(1.7); $('#to-story').click(); await this.wait(19000);
+      await this.wait(3800);
+      $('#to-dossier').click(); await this.wait(2600);
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); await this.wait(2600);
+      $('#to-request').click(); await this.wait(900);
+      $('#firm').value = 'Fabrica Demo Prezentare'; $('#region').selectedIndex = 1; $('#role').selectedIndex = 1; $('#email').value = 'demo@fabrica-demo.ro';
+      try { localStorage.setItem('tdm_requests', JSON.stringify(Panel.mine().filter(x => x.firm !== 'Fabrica Demo Prezentare'))); } catch { }
+      await this.wait(1200); $('#req-send').click(); await this.wait(3200);
+      openPanel(); await this.wait(6000);
+    } catch (e) { /* oprit de utilizator */ }
+    this.stop();
+  },
+  stop() { this.on = false; Story.setSpeed(1); $('#demo-pill').hidden = true; }
+};
+$('#open-demo').addEventListener('click', () => Demo.run());
+$('#demo-stop').addEventListener('click', e => { e.stopPropagation(); Demo.stop(); });
+document.addEventListener('pointerdown', e => { if (Demo.on && !e.target.closest('#demo-pill')) Demo.stop(); }, true);
+
+/* ---------- Imagine cu rezultatul, gata de trimis ---------- */
+async function resultImage(r) {
+  if (document.fonts && document.fonts.ready) await document.fonts.ready;
+  const W = 1080, H = 1350, c = document.createElement('canvas'); c.width = W; c.height = H; const g = c.getContext('2d');
+  const grad = g.createLinearGradient(0, 0, W, H); grad.addColorStop(0, '#1226aa'); grad.addColorStop(1, '#0a1a87'); g.fillStyle = grad; g.fillRect(0, 0, W, H);
+  g.strokeStyle = 'rgba(140,182,225,.14)'; g.lineWidth = 70; g.beginPath(); g.arc(W - 40, 60, 230, 0, Math.PI * 2); g.stroke();
+  const F = (w, s) => `${w} ${s}px Inter, Arial, sans-serif`;
+  g.fillStyle = '#fff'; g.font = F(800, 52); g.fillText('Tech', 80, 130); const tw = g.measureText('Tech').width;
+  g.fillStyle = '#e7004c'; g.beginPath(); g.arc(80 + tw + 13, 113, 8, 0, Math.PI * 2); g.fill();
+  g.fillStyle = '#fff'; g.fillText('Con', 80 + tw + 26, 130);
+  g.fillStyle = '#8cb6e1'; g.font = F(700, 28); g.fillText('TURA DE MÂINE · PRE-EVALUARE PALETIZARE UR20', 80, 220);
+  g.fillStyle = '#fff'; g.font = F(500, 56); g.fillText('Linia mea', 80, 330);
+  g.font = F(700, 190); g.fillText(f1(r.L), 74, 520); const nw = g.measureText(f1(r.L)).width;
+  g.font = F(500, 48); g.fillStyle = 'rgba(255,255,255,.85)'; g.fillText('găleți/min', 90 + nw, 520);
+  const col = { green: ['#e5f3e6', '#1e7b24'], amber: ['#fff4d6', '#8a5c00'], red: ['#fde8ec', '#c0001f'] }[r.v.lvl];
+  g.font = F(700, 40); const vt = (r.v.lvl === 'green' ? '✓ ' : '') + r.v.title, vw = g.measureText(vt).width + 70;
+  g.fillStyle = col[0]; g.beginPath(); g.roundRect(80, 580, vw, 86, 43); g.fill(); g.fillStyle = col[1]; g.fillText(vt, 115, 637);
+  const rows = [
+    ['Robot UR20 (test de referință)', f1(r.R) + ' găleți/min'],
+    ['Efort azi, pe om', f1(r.tonsPerOp) + ' t / tură'],
+    ['Risc pentru spate (NIOSH)', liTxt(r.LI) + ' · ' + r.risk.label],
+    ['Cu robotul UR20', r.w > A.ur20Payload ? 'nepotrivit' : '0 găleți ridicate de mână']
+  ];
+  rows.forEach(([k, v], i) => {
+    const y = 760 + i * 120; g.fillStyle = 'rgba(255,255,255,.08)'; g.beginPath(); g.roundRect(80, y, W - 160, 100, 22); g.fill();
+    g.fillStyle = '#8cb6e1'; g.font = F(600, 30); g.fillText(k, 115, y + 62);
+    g.fillStyle = '#fff'; g.font = F(700, 36); g.textAlign = 'right'; g.fillText(v, W - 115, y + 63); g.textAlign = 'left';
+  });
+  g.fillStyle = 'rgba(255,255,255,.7)'; g.font = F(500, 26); g.fillText('Estimare orientativă. Se validează printr-o evaluare tehnică Tech-Con.', 80, 1270);
+  const lg = g.createLinearGradient(0, 0, W, 0); lg.addColorStop(0, '#e7004c'); lg.addColorStop(1, '#1226aa'); g.fillStyle = lg; g.fillRect(0, H - 16, W, 16);
+  return new Promise(res => c.toBlob(res, 'image/png'));
+}
+$('#sh-img').addEventListener('click', async () => {
+  const blob = await resultImage(RES); const file = new File([blob], 'tura-de-maine-rezultat.png', { type: 'image/png' });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) { try { await navigator.share({ files: [file], title: 'Tura de mâine', text: 'Rezultatul liniei mele: ' + shareLink(RES.s) }); return; } catch (e) { if (e.name === 'AbortError') return; } }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file.name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000); toast('Imaginea a fost salvată');
+});
+
+/* ---------- Cod QR pe calculator + instalare pe telefon ---------- */
+function showQR() {
+  if (!matchMedia('(min-width:960px)').matches || $('#qr').childElementCount) return;
+  const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js';
+  s.onload = () => { try { const q = qrcode(0, 'M'); q.addData(location.href.split('#')[0]); q.make(); $('#qr').innerHTML = q.createSvgTag({ cellSize: 3, margin: 0, scalable: true }); $('#qr-card').hidden = false; } catch { } };
+  document.head.appendChild(s);
+}
+let installEvt = null;
+const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; if (!standalone) $('#install').hidden = false; });
+if (!standalone && /iPhone|iPad|iPod/.test(navigator.userAgent)) $('#install').hidden = false;
+$('#install').addEventListener('click', async () => {
+  if (installEvt) { installEvt.prompt(); await installEvt.userChoice.catch(() => {}); installEvt = null; $('#install').hidden = true; }
+  else $('#ios-hint').hidden = !$('#ios-hint').hidden;
+});
+window.addEventListener('appinstalled', () => { $('#install').hidden = true; toast('Aplicația a fost instalată'); });
+showQR(); matchMedia('(min-width:960px)').addEventListener('change', showQR);
+
+/* ---------- Bandă de test: găleți pe ecran, ca să poți încerca numărarea cu camera ---------- */
+const Belt = {
+  rate: 12, raf: null, last: 0, acc: 0, items: [], sent: 0, CROSS: 3600,
+  svg: '<svg viewBox="-11 -28 22 30"><path d="M-8,-17 L8,-17 L6.4,0 L-6.4,0 Z" fill="#5a3a1c"/><rect x="-8.8" y="-19.6" width="17.6" height="3.2" rx="1.2" fill="#3b2410"/><rect x="-6.6" y="-11" width="13.2" height="4" fill="#f4e3c9"/><path d="M-6.6,-18.6 Q0,-26 6.6,-18.6" fill="none" stroke="#1a1a1a" stroke-width="1.3"/></svg>',
+  open() {
+    $('#belt').hidden = false; this.sent = 0; $('#belt-sent').textContent = '0';
+    this.items.forEach(it => it.el.remove()); this.items = []; this.acc = 60000 / this.rate; // prima găleată pornește imediat
+    this.last = performance.now(); this.raf = requestAnimationFrame(t => this.frame(t));
+    try { document.documentElement.requestFullscreen && document.documentElement.requestFullscreen().catch(() => {}); } catch { }
+  },
+  close() {
+    $('#belt').hidden = true; if (this.raf) cancelAnimationFrame(this.raf); this.raf = null;
+    if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+    if (location.hash === '#banda') history.replaceState(null, '', location.pathname);
+  },
+  frame(now) {
+    const dt = Math.min(100, now - this.last); this.last = now;
+    const stage = $('#belt-stage'), W = stage.clientWidth, size = Math.min(stage.clientHeight * .42, W * .16);
+    this.acc += dt;
+    if (this.acc >= 60000 / this.rate) {
+      this.acc = 0; const el = document.createElement('div'); el.className = 'belt-b'; el.innerHTML = this.svg;
+      el.style.width = size + 'px'; el.style.height = size * 30 / 22 + 'px'; stage.appendChild(el);
+      this.items.push({ el, t: 0 }); this.sent++; $('#belt-sent').textContent = this.sent;
+    }
+    this.items.forEach(it => { it.t += dt; const x = -size + (W + size) * (it.t / this.CROSS); it.el.style.transform = `translateX(${x.toFixed(1)}px)`; });
+    this.items = this.items.filter(it => { if (it.t > this.CROSS) { it.el.remove(); return false; } return true; });
+    this.raf = requestAnimationFrame(t => this.frame(t));
+  }
+};
+$$('.chips[data-group="beltRate"] .chip').forEach(c => c.addEventListener('click', () => { Belt.rate = Number(c.dataset.v); Belt.acc = 0; }));
+$('#belt-close').addEventListener('click', () => Belt.close());
+$('#open-belt').addEventListener('click', () => Belt.open());
+window.addEventListener('hashchange', () => { if (['#banda', '#panou', '#prezentare'].includes(location.hash)) loadFromHash(); });
+
+/* ---------- Raport primit prin link ---------- */
+function loadFromHash() {
+  if (location.hash === '#panou') { Panel.render(); go('s-panel', true); return; }
+  if (location.hash === '#banda') { Belt.open(); return; }
+  if (location.hash === '#prezentare') { setTimeout(() => Demo.run(), 600); return; }
+  const m = location.hash.match(/^#d=([A-Za-z0-9_-]+)/); if (!m) return;
+  try {
+    const json = decodeURIComponent(escape(atob(m[1].replace(/-/g, '+').replace(/_/g, '/'))));
+    const o = JSON.parse(json);
+    const ok = isFinite(o.rate) && o.rate >= .5 && o.rate <= 40 && isFinite(o.weight) && o.weight >= 1 && o.weight <= 60 && [1, 2, 3, 4, 5, 6].includes(o.operators) && [1, 2, 3].includes(Number(o.shifts)) && o.hours >= 4 && o.hours <= 12 && INDUSTRY[o.industry];
+    if (!ok) throw new Error('invalid');
+    SHARE_KEYS.forEach(k => { if (o[k] !== undefined) S[k] = o[k]; });
+    S.shifts = Number(S.shifts); S.costHour = null;
+    syncForm(); setRate(S.rate, S.rateSource || 'primit prin link');
+    RES = compute(S); renderAnalysis(RES); $('#shared-banner').hidden = false; go('s-analysis', true);
+  } catch { toast('Linkul primit nu conține date valide.'); }
+}
+if ($('#s-intro').classList.contains('active')) { revealScreen($('#s-intro')); Home.play(); }
+loadFromHash();
+
+/* ---------- PWA ---------- */
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) navigator.serviceWorker.register('sw.js').catch(() => { });
+</script>
+</body>
+</html>

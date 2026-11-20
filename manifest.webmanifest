@@ -1,0 +1,14 @@
+{
+  "name": "Tura de mâine · Tech-Con paletizare UR20",
+  "short_name": "Tura de mâine",
+  "description": "Măsoară-ți linia, vezi potențialul paletizării robotizate UR20 și trimite-i șefului dosarul.",
+  "lang": "ro",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3f6fb",
+  "theme_color": "#1226aa",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
