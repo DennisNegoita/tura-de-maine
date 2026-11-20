@@ -292,6 +292,10 @@ footer .offices span{background:#fff;border:1px solid var(--line);border-radius:
 
   /* cerere */
   #s-request.active{max-width:720px;margin:0 auto}
+  /* celula în hală */
+  #s-place.active{grid-template-columns:1.7fr 1fr}
+  #s-place #pl-pick{max-width:520px}
+  #s-place #pl-edit:not([hidden]){display:grid;grid-template-columns:1.7fr 1fr;column-gap:32px;align-items:start}
   /* panou */
   #s-panel .kpis{grid-template-columns:repeat(4,1fr)}
   #s-panel .target-row{grid-template-columns:repeat(3,1fr)}
@@ -342,6 +346,20 @@ footer .offices span{background:#fff;border:1px solid var(--line);border-radius:
 .share .wide{grid-column:1/-1}
 .f-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .f-links button{background:none;border:0;padding:0;color:var(--brand);font-weight:600;font-size:12px;text-decoration:underline;cursor:pointer}
+
+/* ---------- Celula în hala ta ---------- */
+.pl-stage{position:relative;border-radius:var(--radius);overflow:hidden;background:#0a1a87;touch-action:none;user-select:none;-webkit-user-select:none;box-shadow:var(--shadow)}
+.pl-stage img{display:block;width:100%;height:auto;pointer-events:none}
+.pl-cell{position:absolute;left:0;top:0;cursor:grab;touch-action:none;transform-origin:0 0;filter:drop-shadow(0 6px 10px rgba(0,0,0,.35))}
+.pl-cell:active{cursor:grabbing}
+.pl-cell svg{display:block;width:100%;height:auto;overflow:visible}
+.pl-cell.flip svg{transform:scaleX(-1)}
+.pl-cell .tagtxt{transform-box:fill-box}
+.pl-cell.flip .tagtxt{transform:scaleX(-1);transform-origin:center}
+.pl-hint{font-size:14px;background:var(--brand-soft);color:var(--brand);border-radius:12px;padding:10px 12px;margin:12px 0}
+.pl-size{display:flex;align-items:center;gap:10px;font-weight:600;color:var(--brand);font-size:14px;margin-bottom:10px}
+.pl-size input{flex:1}
+.pl-thumb{width:100%;border-radius:10px;margin-top:6px;display:block}
 
 /* ---------- Bandă de test ---------- */
 .belt{position:fixed;inset:0;z-index:120;background:#f3f6fb;display:flex;flex-direction:column}
@@ -636,6 +654,7 @@ input[type=range]{accent-color:var(--brand)}
     <ul id="how-list"></ul>
   </details>
   <button class="btn" id="to-story">▶ Vezi tura ta de mâine</button>
+  <button class="btn sec" id="to-place">📷 Vezi celula în hala ta</button>
   <button class="btn sec" id="to-dossier-quick">Vezi raportul</button>
 </section>
 
@@ -696,6 +715,7 @@ input[type=range]{accent-color:var(--brand)}
     <h2>Ce se schimbă la tine</h2>
     <div class="bil" id="bil"></div>
     <p class="note" id="bil-note"></p>
+    <button class="btn sec" id="to-place-2">📷 Vezi celula în hala ta</button>
     <button class="btn" id="to-dossier">Vezi raportul complet →</button>
   </div>
 </section>
@@ -744,6 +764,42 @@ input[type=range]{accent-color:var(--brand)}
       <p class="muted small" style="margin-top:10px">O cerere cu date măsurate, nu un simplu „sunați-mă”. Așa arată o <b>cerere relevantă</b>.</p></div>
     <button class="btn" id="to-panel">Vezi cum o primește Tech-Con →</button>
     <button class="btn sec" id="restart">Evaluează altă linie</button>
+  </div>
+</section>
+
+<!-- CELULA ÎN HALA TA -->
+<section class="screen" id="s-place">
+  <button class="back" id="pl-back">← Înapoi</button>
+  <div class="kicker">Celula în hala ta</div>
+  <h2>Unde ar sta robotul la tine?</h2>
+  <div id="pl-pick">
+    <p class="muted">Fă o poză locului de lângă bandă unde paletizați azi. Punem celula robotică peste poză, ca să vezi cum ar arăta.</p>
+    <label class="btn big" for="pl-cam">📷 Fă o poză</label><input type="file" id="pl-cam" accept="image/*" capture="environment" hidden>
+    <div class="btn-row">
+      <label class="btn sec" for="pl-gal">🖼️ Din galerie</label><input type="file" id="pl-gal" accept="image/*" hidden>
+      <button class="btn sec" id="pl-sample">Hală exemplu</button>
+    </div>
+    <p class="muted small" style="margin-top:10px">Poza rămâne doar pe telefonul tău.</p>
+  </div>
+  <div id="pl-edit" hidden>
+    <div class="pl-stage" id="pl-stage">
+      <img id="pl-photo" alt="Poza locului de paletizare">
+      <div class="pl-cell" id="pl-cell"></div>
+    </div>
+    <div class="pl-side">
+      <p class="pl-hint">👆 <b>Trage</b> celula cu degetul. Cu <b>două degete</b> o mărești sau o micșorezi.<br>📏 Pentru scară, potrivește un palet desenat peste un palet real din poză: un europalet are 1,2 × 0,8 m.</p>
+      <label class="pl-size">Mărime <input type="range" id="pl-size" min="15" max="100" value="60"></label>
+      <div class="chips">
+        <button class="chip" id="pl-flip" type="button">⇋ Oglindește</button>
+        <button class="chip on" id="pl-zone" type="button">Zonă protejată</button>
+      </div>
+      <p class="muted small" style="margin-top:10px">Ilustrativ. Spațiul exact, accesul și siguranța se verifică la vizita tehnică Tech-Con.</p>
+      <div class="btn-row">
+        <button class="btn sec" id="pl-new">Altă poză</button>
+        <button class="btn sec" id="pl-save">Salvează imaginea</button>
+      </div>
+      <button class="btn" id="pl-report">Adaug-o la raport →</button>
+    </div>
   </div>
 </section>
 
@@ -846,7 +902,7 @@ const INDUSTRY = { alimentar: 'industria alimentară', vopsele: 'vopsele și lac
 
 /* ---------- Navigare ---------- */
 const ORDER = ['s-measure', 's-details', 's-analysis', 's-story', 's-dossier'];
-const LABELS = { 's-intro': 'Start', 's-measure': 'Pasul 1 · <b>Măsurare</b>', 's-details': 'Pasul 2 · <b>Linia ta</b>', 's-analysis': 'Pasul 3 · <b>Rezultat</b>', 's-story': '<b>Tura de mâine</b>', 's-dossier': '<b>Raportul tău</b>', 's-request': '<b>Tech-Con</b>', 's-panel': 'Panou <b>Tech-Con</b>' };
+const LABELS = { 's-intro': 'Start', 's-measure': 'Pasul 1 · <b>Măsurare</b>', 's-details': 'Pasul 2 · <b>Linia ta</b>', 's-analysis': 'Pasul 3 · <b>Rezultat</b>', 's-story': '<b>Tura de mâine</b>', 's-dossier': '<b>Raportul tău</b>', 's-request': '<b>Tech-Con</b>', 's-panel': 'Panou <b>Tech-Con</b>', 's-place': '<b>Celula în hala ta</b>' };
 const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 let navTimer = null, navOutTimer = null;
 // Tranziția: paletul se umple cu găleți, apoi „pleacă” în sus și arată pagina nouă
@@ -1633,12 +1689,13 @@ function renderDossier(r) {
     <h4>Ce s-a dovedit în altă parte <span class="tag f">FAPTE</span></h4><ul>${li(d.facts)}</ul>
     <h4>Ce ar însemna la noi <span class="tag e">ESTIMARE</span></h4><ul>${li(d.est)}</ul>
     <h4>Ce trebuie verificat de Tech-Con</h4><ul>${li(d.verify)}</ul>
+    ${Place.shot ? `<h4>Unde ar sta celula <span class="tag e">ILUSTRATIV</span></h4><img class="pl-thumb" src="${Place.shot}" alt="Celula UR20 desenată în hala noastră">` : ''}
     <h4>Pasul următor</h4><p style="margin:0">O evaluare tehnică cu Tech-Con (${s.visit.toLowerCase()}), înainte de orice decizie de investiție.</p>
     <div class="meta" style="margin:14px 0 0;border-top:1px solid #d9e2ef;padding-top:10px">Pre-evaluare generată cu <b style="color:#1226aa">Tech·Con „Tura de mâine”</b> · birouri în Dragomirești-Deal, Iași și Timișoara</div>`;
 }
 function dossierText(r) {
   const d = dossierParts(r), s = r.s, b = a => a.map(x => '• ' + x).join('\n');
-  return `PRE-EVALUARE: paletizare robotizată UR20\n\nCE AM MĂSURAT LA NOI\n${b(d.measured)}\n\nPROBLEMA DE AZI\n${b(d.problem)}\n\nCE S-A DOVEDIT ÎN ALTĂ PARTE (fapte)\n${b(d.facts)}\n\nCE AR ÎNSEMNA LA NOI (estimare)\n${b(d.est)}\n\nCE TREBUIE VERIFICAT\n${b(d.verify)}\n\nPASUL URMĂTOR\n• O evaluare tehnică cu Tech-Con, înainte de orice decizie.\n\nVezi povestea liniei noastre (Tech-Con · Tura de mâine): ${shareLink(s)}`;
+  return `PRE-EVALUARE: paletizare robotizată UR20\n\nCE AM MĂSURAT LA NOI\n${b(d.measured)}\n\nPROBLEMA DE AZI\n${b(d.problem)}\n\nCE S-A DOVEDIT ÎN ALTĂ PARTE (fapte)\n${b(d.facts)}\n\nCE AR ÎNSEMNA LA NOI (estimare)\n${b(d.est)}\n\nCE TREBUIE VERIFICAT\n${b(d.verify)}\n\n${Place.shot ? 'AMPLASARE (ilustrativ)\n• Am pregătit o poză cu celula desenată în locul unde paletizăm azi.\n\n' : ''}PASUL URMĂTOR\n• O evaluare tehnică cu Tech-Con, înainte de orice decizie.\n\nVezi povestea liniei noastre (Tech-Con · Tura de mâine): ${shareLink(s)}`;
 }
 async function copy(text, msg) {
   try { await navigator.clipboard.writeText(text); toast(msg); }
@@ -1668,7 +1725,7 @@ $('#req-send').addEventListener('click', () => {
     ['Găleată', f1(r.w) + ' kg, ' + (r.s.handle === 'da' ? 'cu mâner' : 'fără mâner')],
     ['Operatori / ture', r.N + ' × ' + r.sh + ' ture × ' + f1(r.h) + ' h'],
     ['Risc NIOSH estimat', liTxt(r.LI) + ' (' + r.risk.label + ')'],
-    ['Verdict', r.v.title], ['Birou alocat', office]
+    ['Verdict', r.v.title], ['Poză amplasare', Place.shot ? 'atașată' : '—'], ['Birou alocat', office]
   ].map(([k, v]) => `<li><span>${k}</span><b>${v}</b></li>`).join('');
   $('#req-form').hidden = true; $('#req-ok').hidden = false; window.scrollTo({ top: 0 });
 });
@@ -1920,6 +1977,152 @@ $('#install').addEventListener('click', async () => {
 });
 window.addEventListener('appinstalled', () => { $('#install').hidden = true; toast('Aplicația a fost instalată'); });
 showQR(); matchMedia('(min-width:960px)').addEventListener('change', showQR);
+
+/* ---------- Celula în hala ta: celula UR20 desenată peste poza clientului ---------- */
+const Place = {
+  img: null, fx: .2, fy: .4, fw: .6, flip: false, zone: true, shot: null, from: 's-analysis',
+  VW: 320, VH: 214,
+  // Desenul celulei, văzut din față. Un europalet (1,2 m) = 90 de unități, ca utilizatorul să-l poată pune la scară.
+  svg() {
+    const bucket = (x, y) => `<g transform="translate(${x},${y})"><path d="M-11,-24 L11,-24 L9,0 L-9,0 Z" fill="#8b5a2b"/><rect x="-12" y="-27" width="24" height="4" rx="1.5" fill="#6b4220"/><rect x="-9" y="-15" width="18" height="5" fill="#f4e3c9"/><path d="M-9,-26 Q0,-35 9,-26" fill="none" stroke="#3d3d4d" stroke-width="1.4"/></g>`;
+    const pallet = (x0, layers) => {
+      let s = `<rect x="${x0}" y="181" width="90" height="5" fill="#c9a26b"/><rect x="${x0 + 3}" y="186" width="10" height="6" fill="#a9824d"/><rect x="${x0 + 40}" y="186" width="10" height="6" fill="#a9824d"/><rect x="${x0 + 77}" y="186" width="10" height="6" fill="#a9824d"/>`;
+      for (let l = 0; l < layers; l++) { const yb = 181 - l * 28; for (let c = 0; c < 3; c++) s += bucket(x0 + 17 + c * 28, yb); if (l < layers - 1) s += `<rect x="${x0}" y="${yb - 28}" width="90" height="1.6" fill="#d9c39a"/>`; }
+      return s;
+    };
+    const art = `
+      ${this.zone ? `<polygon points="4,212 316,212 300,190 20,190" fill="#f2c94c" fill-opacity=".42" stroke="#c99400" stroke-width="2" stroke-dasharray="7 4"/>
+      <g><rect x="10" y="194" width="10" height="9" rx="2" fill="#f4c20d" stroke="#8a6d00"/><circle cx="15" cy="198" r="2" fill="#2e3245"/></g>
+      <g><rect x="300" y="194" width="10" height="9" rx="2" fill="#f4c20d" stroke="#8a6d00"/><circle cx="305" cy="198" r="2" fill="#2e3245"/></g>` : ''}
+      ${pallet(30, 3)}
+      ${pallet(200, 1)}
+      <rect x="144" y="186" width="32" height="6" rx="1.5" fill="#0a1a87"/>
+      <rect x="149" y="118" width="22" height="70" rx="3" fill="#1226aa"/>
+      <rect x="152" y="128" width="16" height="3" rx="1.5" fill="#e7004c"/>
+      <line x1="160" y1="112" x2="194" y2="60" stroke="#d9dde6" stroke-width="11" stroke-linecap="round"/>
+      <line x1="194" y1="60" x2="232" y2="84" stroke="#d9dde6" stroke-width="9" stroke-linecap="round"/>
+      <rect x="228" y="84" width="8" height="12" fill="#3a3f55"/><path d="M222,97 L242,97 M222,97 L222,101 M242,97 L242,101" stroke="#3a3f55" stroke-width="2.4" fill="none"/>
+      ${bucket(232, 128)}
+      <circle cx="160" cy="112" r="8.5" fill="#8cb6e1" stroke="#1226aa" stroke-width="1.6"/>
+      <circle cx="194" cy="60" r="7.5" fill="#8cb6e1" stroke="#1226aa" stroke-width="1.6"/>
+      <circle cx="232" cy="84" r="6" fill="#8cb6e1" stroke="#1226aa" stroke-width="1.6"/>
+      <g fill="#0a1a87" stroke="#fff" stroke-width="3" paint-order="stroke" font-family="Arial,sans-serif" font-size="9.5" font-weight="700"><text x="75" y="207" text-anchor="middle">1,2 m</text><text x="245" y="207" text-anchor="middle">1,2 m</text></g>`;
+    const tag = `<g><rect x="113" y="6" width="94" height="22" rx="11" fill="#fff" stroke="#d9e2ef"/><text x="160" y="21" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="800" fill="#1226aa">Tech<tspan fill="#e7004c">•</tspan>Con UR20</text></g>`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${this.VW} ${this.VH}" width="${this.VW}" height="${this.VH}">
+      <g ${this.flip ? `transform="translate(${this.VW},0) scale(-1,1)"` : ''}>${art}</g>${tag}</svg>`;
+  },
+  open(from) {
+    this.from = from || 's-analysis';
+    $('#pl-back').textContent = this.from === 's-story' ? '← Povestea' : '← Rezultatul';
+    if (this.img) this.showEditor(); else { $('#pl-pick').hidden = false; $('#pl-edit').hidden = true; }
+    go('s-place');
+  },
+  fromFile(file) {
+    if (!file) return;
+    if (!/^image\//.test(file.type)) return toast('Alege o imagine (fotografie).');
+    const url = URL.createObjectURL(file), im = new Image();
+    im.onload = () => {
+      const max = 1600, k = Math.min(1, max / Math.max(im.naturalWidth, im.naturalHeight));
+      const c = document.createElement('canvas'); c.width = Math.round(im.naturalWidth * k); c.height = Math.round(im.naturalHeight * k);
+      c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
+      this.img = c.toDataURL('image/jpeg', .86); this.reset(); this.showEditor();
+    };
+    im.onerror = () => { URL.revokeObjectURL(url); toast('Nu am putut deschide poza. Încearcă alta.'); };
+    im.src = url;
+  },
+  sample() { // o hală desenată, pentru demo fără cameră
+    const W = 1280, H = 853, c = document.createElement('canvas'); c.width = W; c.height = H; const g = c.getContext('2d');
+    let gr = g.createLinearGradient(0, 0, 0, 470); gr.addColorStop(0, '#f1f3f8'); gr.addColorStop(1, '#dde2ea'); g.fillStyle = gr; g.fillRect(0, 0, W, 470);
+    g.fillStyle = '#fff'; for (let i = 0; i < 5; i++) { g.globalAlpha = .9; g.fillRect(90 + i * 250, 26, 150, 14); } g.globalAlpha = 1;
+    g.fillStyle = '#c3c9d4'; for (let x of [40, 260]) { g.fillRect(x, 120, 12, 350); g.fillRect(x + 190, 120, 12, 350); for (let y of [170, 270, 370]) g.fillRect(x, y, 202, 10); }
+    g.fillStyle = '#b58b5a'; for (let x of [55, 275]) for (let y of [130, 230, 330]) for (let k = 0; k < 4; k++) g.fillRect(x + k * 44, y, 38, 38);
+    gr = g.createLinearGradient(0, 470, 0, H); gr.addColorStop(0, '#c9ced8'); gr.addColorStop(1, '#aeb4c0'); g.fillStyle = gr; g.fillRect(0, 470, W, H - 470);
+    g.strokeStyle = 'rgba(255,255,255,.18)'; g.lineWidth = 2; for (let i = -6; i <= 6; i++) { g.beginPath(); g.moveTo(640, 330); g.lineTo(640 + i * 260, H); g.stroke(); }
+    g.strokeStyle = '#f2c94c'; g.lineWidth = 10; g.beginPath(); g.moveTo(0, 800); g.lineTo(W, 760); g.stroke();
+    g.fillStyle = '#5b6075'; for (let x of [60, 260, 450]) g.fillRect(x, 560, 14, 120);
+    g.fillStyle = '#4b5068'; g.fillRect(0, 530, 520, 34); g.fillStyle = '#2e3245'; g.fillRect(0, 524, 520, 8);
+    const bk = (x, y, s) => { g.fillStyle = '#8b5a2b'; g.beginPath(); g.moveTo(x - 30 * s, y - 70 * s); g.lineTo(x + 30 * s, y - 70 * s); g.lineTo(x + 24 * s, y); g.lineTo(x - 24 * s, y); g.fill(); g.fillStyle = '#6b4220'; g.fillRect(x - 33 * s, y - 78 * s, 66 * s, 10 * s); g.fillStyle = '#f4e3c9'; g.fillRect(x - 24 * s, y - 42 * s, 48 * s, 14 * s); };
+    [90, 230, 370].forEach(x => bk(x, 524, 1));
+    g.fillStyle = '#c9a26b'; g.fillRect(760, 700, 300, 16); g.fillStyle = '#a9824d'; [770, 900, 1030].forEach(x => g.fillRect(x, 716, 20, 18));
+    [810, 910, 1010].forEach(x => bk(x, 700, 1.15));
+    this.img = c.toDataURL('image/jpeg', .9); this.reset(); this.showEditor();
+  },
+  reset() { this.fx = .2; this.fy = .42; this.fw = .6; this.shot = null; },
+  showEditor() {
+    $('#pl-pick').hidden = true; $('#pl-edit').hidden = false;
+    const ph = $('#pl-photo'); ph.onload = () => this.layout(); ph.src = this.img;
+    $('#pl-cell').innerHTML = this.svg(); this.layout();
+  },
+  fh() { const st = $('#pl-stage'); return this.fw * st.clientWidth * (this.VH / this.VW) / (st.clientHeight || 1); },
+  layout() {
+    const st = $('#pl-stage'), W = st.clientWidth, H = st.clientHeight; if (!W || !H) return;
+    const cell = $('#pl-cell'); cell.style.width = (this.fw * W) + 'px';
+    cell.style.transform = `translate(${(this.fx * W).toFixed(1)}px,${(this.fy * H).toFixed(1)}px)`;
+    $('#pl-size').value = Math.round(this.fw * 100);
+  },
+  resizeTo(fw) { // păstrăm centrul celulei pe loc
+    const cx = this.fx + this.fw / 2, cy = this.fy + this.fh() / 2;
+    this.fw = clamp(fw, .12, 1.3); this.fx = cx - this.fw / 2; this.fy = cy - this.fh() / 2; this.layout();
+  },
+  async composite() {
+    const im = $('#pl-photo'), NW = im.naturalWidth, NH = im.naturalHeight, band = Math.round(NW * .085);
+    const c = document.createElement('canvas'); c.width = NW; c.height = NH + band; const g = c.getContext('2d');
+    g.drawImage(im, 0, 0, NW, NH);
+    const sv = new Image(); await new Promise((res, rej) => { sv.onload = res; sv.onerror = rej; sv.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(this.svg()); });
+    const w = this.fw * NW, h = w * this.VH / this.VW;
+    g.save(); g.shadowColor = 'rgba(0,0,0,.35)'; g.shadowBlur = NW * .012; g.shadowOffsetY = NW * .006; g.drawImage(sv, this.fx * NW, this.fy * NH, w, h); g.restore();
+    const gr = g.createLinearGradient(0, 0, NW, 0); gr.addColorStop(0, '#1226aa'); gr.addColorStop(1, '#0a1a87'); g.fillStyle = gr; g.fillRect(0, NH, NW, band);
+    const fs = band * .32; g.fillStyle = '#fff'; g.font = `800 ${fs * 1.2}px Inter, Arial, sans-serif`; g.textBaseline = 'middle';
+    g.fillText('Tech', band * .35, NH + band / 2); const tw = g.measureText('Tech').width;
+    g.fillStyle = '#e7004c'; g.beginPath(); g.arc(band * .35 + tw + fs * .22, NH + band / 2, fs * .16, 0, Math.PI * 2); g.fill();
+    g.fillStyle = '#fff'; g.fillText('Con', band * .35 + tw + fs * .44, NH + band / 2);
+    g.font = `600 ${fs * .78}px Inter, Arial, sans-serif`; g.fillStyle = 'rgba(255,255,255,.9)'; g.textAlign = 'right';
+    g.fillText('Celula UR20 în hala noastră · ilustrativ, de verificat la vizita tehnică', NW - band * .35, NH + band / 2); g.textAlign = 'left';
+    const lg = g.createLinearGradient(0, 0, NW, 0); lg.addColorStop(0, '#e7004c'); lg.addColorStop(1, '#1226aa'); g.fillStyle = lg; g.fillRect(0, NH + band - band * .07, NW, band * .07);
+    return c;
+  }
+};
+$('#to-place').addEventListener('click', () => Place.open('s-analysis'));
+$('#to-place-2').addEventListener('click', () => Place.open('s-story'));
+$('#pl-back').addEventListener('click', () => go(Place.from));
+['#pl-cam', '#pl-gal'].forEach(id => $(id).addEventListener('change', e => { Place.fromFile(e.target.files[0]); e.target.value = ''; }));
+$('#pl-sample').addEventListener('click', () => Place.sample());
+$('#pl-new').addEventListener('click', () => { $('#pl-pick').hidden = false; $('#pl-edit').hidden = true; });
+$('#pl-size').addEventListener('input', e => Place.resizeTo(Number(e.target.value) / 100));
+$('#pl-flip').addEventListener('click', () => { Place.flip = !Place.flip; $('#pl-flip').classList.toggle('on', Place.flip); $('#pl-cell').innerHTML = Place.svg(); });
+$('#pl-zone').addEventListener('click', () => { Place.zone = !Place.zone; $('#pl-zone').classList.toggle('on', Place.zone); $('#pl-cell').innerHTML = Place.svg(); });
+window.addEventListener('resize', () => { if ($('#s-place').classList.contains('active')) Place.layout(); });
+// mutare cu un deget, mărire cu două degete
+(() => {
+  const st = $('#pl-stage'), pts = new Map(); let last = null;
+  const mid = () => { const a = [...pts.values()]; return { x: (a[0].x + a[1].x) / 2, y: (a[0].y + a[1].y) / 2, d: Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y) }; };
+  st.addEventListener('pointerdown', e => { try { st.setPointerCapture(e.pointerId); } catch { } pts.set(e.pointerId, { x: e.clientX, y: e.clientY }); last = pts.size === 2 ? mid() : { x: e.clientX, y: e.clientY }; });
+  st.addEventListener('pointermove', e => {
+    if (!pts.has(e.pointerId)) return; pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    const W = st.clientWidth, H = st.clientHeight;
+    if (pts.size === 1) {
+      Place.fx = clamp(Place.fx + (e.clientX - last.x) / W, -Place.fw * .6, 1 - Place.fw * .4);
+      Place.fy = clamp(Place.fy + (e.clientY - last.y) / H, -Place.fh() * .6, 1 - Place.fh() * .4);
+      last = { x: e.clientX, y: e.clientY }; Place.layout();
+    } else if (pts.size === 2) {
+      const m = mid(); if (last && last.d) { Place.fx += (m.x - last.x) / W; Place.fy += (m.y - last.y) / H; Place.resizeTo(Place.fw * m.d / last.d); } last = m;
+    }
+    Place.shot = null;
+  });
+  const up = e => { pts.delete(e.pointerId); last = pts.size === 1 ? [...pts.values()][0] : pts.size === 2 ? mid() : null; };
+  st.addEventListener('pointerup', up); st.addEventListener('pointercancel', up);
+})();
+$('#pl-save').addEventListener('click', async () => {
+  const c = await Place.composite(); const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', .9));
+  const file = new File([blob], 'celula-in-hala.jpg', { type: 'image/jpeg' });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) { try { await navigator.share({ files: [file], title: 'Celula UR20 în hala noastră' }); return; } catch (e) { if (e.name === 'AbortError') return; } }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file.name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000); toast('Imaginea a fost salvată');
+});
+$('#pl-report').addEventListener('click', async () => {
+  const c = await Place.composite(); Place.shot = c.toDataURL('image/jpeg', .82);
+  renderDossier(RES); go('s-dossier'); toast('Poza a fost adăugată în raport');
+});
 
 /* ---------- Bandă de test: găleți pe ecran, ca să poți încerca numărarea cu camera ---------- */
 const Belt = {
