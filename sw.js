@@ -1,4 +1,4 @@
-const CACHE = 'tura-de-maine-v11';
+const CACHE = 'tura-de-maine-v12';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon.svg'];
 
 self.addEventListener('install', e => {

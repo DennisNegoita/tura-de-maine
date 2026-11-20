@@ -26,7 +26,7 @@ Prototip pentru AI-Powered Business Challenge 2026 (studiul de caz Tech-Con, pal
 
 ## Ce mai are
 
-- **Celula în hala ta:** din rezultat sau din bilanț, „📷 Vezi celula în hala ta”. Faci o poză locului de paletizare (sau alegi „Hală exemplu”) și pui peste ea celula UR20 desenată. O muți cu degetul, o mărești cu două degete și o pui la scară după un europalet (1,2 × 0,8 m). Imaginea se salvează sau se adaugă în raport și în cererea către Tech-Con.
+- **Celula în hala ta:** din rezultat sau din bilanț, „📷 Vezi celula în hala ta”. Faci o poză locului de paletizare (sau alegi „Hală exemplu”) și pui peste ea celula UR20 desenată. Se așază singură pe podea; o atingere pe poză o mută acolo, două degete o măresc. Celula e desenată 3D, la scară (europalet 1,2 × 0,8 m), și își potrivește luminozitatea cu poza. Imaginea se salvează sau se adaugă în raport și în cererea către Tech-Con.
 
 - **Imagine cu rezultatul:** în raport, butonul „Imagine cu rezultatul” creează o imagine în stil Tech-Con, gata de trimis pe WhatsApp.
 - **Instalare:** pe telefon apare „Instalează pe telefon”. Aplicația se pune pe ecranul principal și merge și fără internet în hală.
