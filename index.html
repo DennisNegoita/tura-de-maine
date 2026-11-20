@@ -26,6 +26,8 @@
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
+.i{width:1.15em;height:1.15em;flex:0 0 auto;vertical-align:-.22em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.cam-status[data-on="1"]::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:8px;vertical-align:1px;box-shadow:0 0 0 3px rgba(30,123,36,.18)}
 html,body{margin:0}
 body{background:var(--bg);color:var(--text);font:16px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;font-weight:400;-webkit-font-smoothing:antialiased;min-height:100vh}
 button,input,select{font:inherit;color:inherit}
@@ -178,7 +180,8 @@ details.how li{margin:4px 0}
 .bcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;opacity:0;transform:translateY(8px);transition:opacity .4s ease,transform .4s ease}
 .bcard.show{opacity:1;transform:none}
 .bcard .bh{display:flex;align-items:center;gap:8px;font-weight:600;font-size:16px;color:var(--brand)}
-.bcard .ico{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;background:var(--brand-soft)}
+.bcard .ico{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--brand-soft);color:var(--brand)}
+.bcard .ico .i{width:19px;height:19px}
 .ba{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-top:10px}
 .ba .side{background:var(--bg);border-radius:10px;padding:8px 10px}
 .ba .side small{display:block;font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase}
@@ -368,7 +371,9 @@ footer .offices span{background:#fff;border:1px solid var(--line);border-radius:
 .cam-flash.on{animation:camFlash .45s ease-out}
 @keyframes camFlash{from{opacity:1}to{opacity:0}}
 .cam-off{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#fff;text-align:center;padding:16px}
-.cam-off span{font-size:34px}.cam-off small{opacity:.75;font-size:12px}
+.cam-off .i{width:38px;height:38px;stroke-width:1.5;opacity:.9}
+.ok-big .circle .i{width:36px;height:36px;stroke-width:2.4}
+.cam-tip .i{color:#8a5c00}.cam-off small{opacity:.75;font-size:12px}
 .cam-status{margin-top:8px;font-size:13px;font-weight:600;color:var(--brand);background:var(--brand-soft);border-radius:10px;padding:8px 10px}
 .cam-tip{background:var(--amber-soft);color:#6b4b00;border-radius:12px;padding:10px 12px;font-size:14px;margin:4px 0 10px}
 .cam-tools{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
@@ -433,6 +438,23 @@ input[type=range]{accent-color:var(--brand)}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M7 11H6a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.6v.1"/></symbol>
+  <symbol id="i-rotate" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></symbol>
+  <symbol id="i-replay" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v5h5"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-weight" viewBox="0 0 24 24"><path d="M8.5 8a3.5 3.5 0 1 1 7 0"/><path d="M6.6 9h10.8l1.6 11H5z"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24"><path d="M3.5 7.5L12 3l8.5 4.5v9L12 21l-8.5-4.5z"/><path d="M3.5 7.5L12 12l8.5-4.5M12 12v9"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 12.5l9 5 9-5"/><path d="M3 16.5l9 5 9-5"/></symbol>
+  <symbol id="i-euro" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.6a4.2 4.2 0 1 0 0 6.8M7.5 11h6M7.5 13.5h6"/></symbol>
+  <symbol id="i-tap" viewBox="0 0 24 24"><circle cx="12" cy="9" r="2.2"/><path d="M8 9a4 4 0 1 1 8 0"/><path d="M12 11.2V21"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/></symbol>
+</defs></svg>
 <header class="top">
   <div class="top-row">
     <button class="logo" id="home" aria-label="Înapoi la început">
@@ -473,8 +495,8 @@ input[type=range]{accent-color:var(--brand)}
     <button class="btn sec" id="start-manual">Știu deja cifra</button>
     <button class="btn sec" id="demo">Vezi un exemplu</button>
   </div>
-  <button class="install" id="install" hidden>⬇ Instalează pe telefon · merge și fără internet în hală</button>
-  <p class="ios-hint" id="ios-hint" hidden>Pe iPhone: apasă <b>Partajează</b> ⬆ și apoi <b>Adaugă pe ecranul principal</b>.</p>
+  <button class="install" id="install" hidden><svg class="i" aria-hidden="true"><use href="#i-download"/></svg> Instalează pe telefon · merge și fără internet în hală</button>
+  <p class="ios-hint" id="ios-hint" hidden>Pe iPhone: apasă <b>Partajează</b> <svg class="i" aria-hidden="true"><use href="#i-share"/></svg> și apoi <b>Adaugă pe ecranul principal</b>.</p>
   <div class="qr-card desk-only" id="qr-card" hidden>
     <div id="qr"></div>
     <div><b>Ești la calculator?</b><br><span class="muted small">Scanează cu telefonul și numără gălețile direct lângă bandă.</span></div>
@@ -486,26 +508,26 @@ input[type=range]{accent-color:var(--brand)}
   <button class="back" data-go="s-intro">← Înapoi</button>
   <h2>Câte găleți pe minut?</h2>
   <div class="seg" role="tablist">
-    <button id="mode-cam" role="tab">📷 Cu camera</button>
+    <button id="mode-cam" role="tab"><svg class="i" aria-hidden="true"><use href="#i-camera"/></svg> Cu camera</button>
     <button class="on" id="mode-tap" role="tab">Atingând</button>
     <button id="mode-manual" role="tab">Știu cifra</button>
   </div>
 
   <div id="cam-panel" hidden>
-    <div class="cam-tip">📌 <b>Sprijină telefonul</b> de ceva (o cană, un perete, marginea benzii). Trebuie să stea <b>complet nemișcat</b> cât numără.</div>
+    <div class="cam-tip"><svg class="i" aria-hidden="true"><use href="#i-info"/></svg> <b>Sprijină telefonul</b> de ceva (o cană, un perete, marginea benzii). Trebuie să stea <b>complet nemișcat</b> cât numără.</div>
     <p class="muted small">Ține telefonul nemișcat, cu banda trecând prin fața camerei. Când vede un obiect, apare un <b>punct verde</b> pe el. Fiecare obiect e numărat <b>o singură dată</b>, când punctul trece de linie. N-ai bandă acum? Deschide pe laptop <b>…/tura-de-maine/#banda</b> și filmează ecranul.</p>
     <div class="cam-wrap" id="cam-wrap">
       <video id="cam-video" playsinline muted></video>
       <canvas id="cam-overlay"></canvas>
       <div class="cam-count"><b id="cam-n">0</b><span>găleți</span></div>
       <div class="cam-flash" id="cam-flash"></div>
-      <div class="cam-off" id="cam-off"><span>📷</span><b>Camera e oprită</b><small>Merge pe telefon, prin link securizat (https).</small></div>
+      <div class="cam-off" id="cam-off"><svg class="i" aria-hidden="true"><use href="#i-camera"/></svg><b>Camera e oprită</b><small>Merge pe telefon, prin link securizat (https).</small></div>
     </div>
     <div class="cam-status" id="cam-status">Apasă „Pornește camera”.</div>
     <div class="timer"><span><b id="c-left">60</b> s rămase</span><span><b id="c-rate">–</b> găleți/min</span></div>
     <div class="bar"><i id="c-bar"></i></div>
     <div class="cam-tools">
-      <button class="chip" id="cam-rotate" type="button">↻ Linie orizontală</button>
+      <button class="chip" id="cam-rotate" type="button"><svg class="i" aria-hidden="true"><use href="#i-rotate"/></svg> Linie orizontală</button>
       <label class="sens">Sensibilitate <input type="range" id="cam-sens" min="1" max="5" value="3"></label>
     </div>
     <div class="btn-row">
@@ -635,7 +657,7 @@ input[type=range]{accent-color:var(--brand)}
     <summary>Cum am calculat?</summary>
     <ul id="how-list"></ul>
   </details>
-  <button class="btn" id="to-story">▶ Vezi tura ta de mâine</button>
+  <button class="btn" id="to-story"><svg class="i" aria-hidden="true"><use href="#i-play"/></svg> Vezi tura ta de mâine</button>
   <button class="btn sec" id="to-dossier-quick">Vezi raportul</button>
 </section>
 
@@ -688,7 +710,7 @@ input[type=range]{accent-color:var(--brand)}
   </div>
   <div class="dots" id="dots"><i></i><i></i><i></i><i></i></div>
   <div class="btn-row" id="story-ctrl">
-    <button class="btn sec" id="replay">↺ Reia</button>
+    <button class="btn sec" id="replay"><svg class="i" aria-hidden="true"><use href="#i-replay"/></svg> Reia</button>
     <button class="btn sec" id="skip">Sari la bilanț</button>
   </div>
   <div id="bilant" hidden>
@@ -711,7 +733,7 @@ input[type=range]{accent-color:var(--brand)}
     <button class="btn navy" id="sh-mail">Email</button>
     <button class="btn sec" id="sh-copy">Copiază textul</button>
     <button class="btn sec" id="sh-link">Copiază linkul</button>
-    <button class="btn sec wide" id="sh-img">🖼️ Imagine cu rezultatul (pentru WhatsApp)</button>
+    <button class="btn sec wide" id="sh-img"><svg class="i" aria-hidden="true"><use href="#i-image"/></svg> Imagine cu rezultatul (pentru WhatsApp)</button>
   </div>
   <p class="muted small" style="margin-top:8px">Linkul deschide aplicația direct cu datele tale și cu animația.</p>
   <button class="btn grad" id="to-request">Cere evaluare Tech&#8209;Con</button>
@@ -739,7 +761,7 @@ input[type=range]{accent-color:var(--brand)}
     <button class="btn grad" id="req-send">Trimite către Tech&#8209;Con</button>
   </div>
   <div id="req-ok" hidden>
-    <div class="ok-big"><div class="circle">✓</div><h2 id="ok-title">Cerere înregistrată</h2><p class="muted" id="ok-sub"></p></div>
+    <div class="ok-big"><div class="circle"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></div><h2 id="ok-title">Cerere înregistrată</h2><p class="muted" id="ok-sub"></p></div>
     <div class="card"><h3>Ce primește inginerul Tech-Con</h3><ul class="kv" id="ok-kv"></ul>
       <p class="muted small" style="margin-top:10px">O cerere cu date măsurate, nu un simplu „sunați-mă”. Așa arată o <b>cerere relevantă</b>.</p></div>
     <button class="btn" id="to-panel">Vezi cum o primește Tech-Con →</button>
@@ -780,7 +802,7 @@ input[type=range]{accent-color:var(--brand)}
     <span class="belt-sent">Trimise: <b id="belt-sent">0</b></span>
     <button class="btn sec belt-close" id="belt-close">Închide</button>
   </div>
-  <p class="belt-hint">Pe telefon: „Numără gălețile acum” → „📷 Cu camera”. Îndreaptă camera spre acest ecran, cu linia roșie din telefon în mijlocul benzii.</p>
+  <p class="belt-hint">Pe telefon: „Numără gălețile acum” → „Cu camera”. Îndreaptă camera spre acest ecran, cu linia roșie din telefon în mijlocul benzii.</p>
   <div class="belt-stage" id="belt-stage"><div class="belt-conv"></div></div>
 </div>
 <div class="demo-pill" id="demo-pill" hidden><span class="dot"></span>Mod prezentare <button id="demo-stop">Oprește</button></div>
@@ -789,7 +811,7 @@ input[type=range]{accent-color:var(--brand)}
     <span class="wm">Tech<i></i>Con</span>
     <div class="f-tag">Componente industriale, proiecte complete și servicii tehnice</div>
     <div class="offices"><span>Dragomirești-Deal</span><span>Iași</span><span>Timișoara</span></div>
-    <div class="f-links"><button id="open-panel">Panou Tech-Con (demo)</button><button id="open-demo">▶ Mod prezentare</button><button id="open-belt">Bandă de test (cameră)</button></div>
+    <div class="f-links"><button id="open-panel">Panou Tech-Con (demo)</button><button id="open-demo">Mod prezentare</button><button id="open-belt">Bandă de test (cameră)</button></div>
   </div>
   <p class="f-text">Concept de instrument digital propus pentru Tech-Con, prototip pentru AI-Powered Business Challenge 2026. Nu e o aplicație oficială Tech-Con. Valorile din aplicația de referință sunt rezultate de test, nu garanții. Estimările se bazează pe datele introduse și trebuie validate printr-o evaluare tehnică.</p>
 </footer>
@@ -1009,7 +1031,7 @@ const Cam = {
      Așa, golurile din obiect (mâner, degete) nu mai dau numărări duble, iar obiectele rapide nu mai sunt ratate. */
   BAND: [.2, .8], SPLIT: [.42, .58], MIN_AREA: .015, REFRACT: 550,
   median(arr, len) { const a = arr.subarray(0, len).slice().sort(); return a[len >> 1] || 0; },
-  status(t) { const s = $('#cam-status'); if (s.textContent !== t) s.textContent = t; },
+  status(t, on) { const s = $('#cam-status'); if (s.textContent !== t) s.textContent = t; s.dataset.on = on ? '1' : ''; },
   frame(now) {
     this.lastNow = now;
     const el = (now - this.t0) / 1000;
@@ -1019,7 +1041,7 @@ const Cam = {
     if (el >= this.dur) return this.finish();
     const v = $('#cam-video');
     if (v.readyState < 2 || !v.videoWidth) {
-      this.status(el > 4 ? '⚠️ Camera nu trimite imagine. Închide alte aplicații care folosesc camera și apasă din nou „Pornește camera”.' : 'Pornesc camera…');
+      this.status(el > 4 ? 'Camera nu trimite imagine. Închide alte aplicații care folosesc camera și apasă din nou „Pornește camera”.' : 'Pornesc camera…');
       return;
     }
     const W = this.W, H = this.H, n = W * H;
@@ -1052,7 +1074,7 @@ const Cam = {
       this.bg[b] += (px[p] - this.bg[b]) * r; this.bg[b + 1] += (px[p + 1] - this.bg[b + 1]) * r; this.bg[b + 2] += (px[p + 2] - this.bg[b + 2]) * r;
     }
     // telefonul s-a mișcat sau scena s-a schimbat complet: reînvățăm fundalul, fără să numărăm
-    if (whole / n > .55) { if (!this.bigSince) this.bigSince = now; if (now - this.bigSince > 1200) { this.bg = null; this.bigSince = 0; this.side = null; this.status('↻ Imaginea s-a schimbat mult. Țin telefonul nemișcat? Reînvăț fundalul…'); return; } }
+    if (whole / n > .55) { if (!this.bigSince) this.bigSince = now; if (now - this.bigSince > 1200) { this.bg = null; this.bigSince = 0; this.side = null; this.status('Imaginea s-a schimbat mult. Țin telefonul nemișcat? Reînvăț fundalul…'); return; } }
     else this.bigSince = 0;
     // 4) Centrul obiectului și trecerea liniei
     const area = total / ((a1 - a0) * (hor ? W : H));
@@ -1069,7 +1091,7 @@ const Cam = {
       if (side) this.side = side;
     } else if (now - (this.lastSeen || 0) > 350) this.side = null;   // obiectul a ieșit: următorul începe de la zero
     const arrow = this.dir ? (hor ? (this.dir === 'AB' ? '↓' : '↑') : (this.dir === 'AB' ? '→' : '←')) : '';
-    this.status(this.cx !== null ? `🟢 Văd un obiect${arrow ? ' · sensul benzii ' + arrow : ''}` : `Camera merge. Trece un obiect prin fața camerei, peste linia roșie${arrow ? ' (sens ' + arrow + ')' : ''}.`);
+    this.status(this.cx !== null ? `Văd un obiect${arrow ? ' · sensul benzii ' + arrow : ''}` : `Camera merge. Trece un obiect prin fața camerei, peste linia roșie${arrow ? ' (sens ' + arrow + ')' : ''}.`, this.cx !== null);
     this.drawOverlay();
   },
   drawOverlay() {
@@ -1113,7 +1135,7 @@ const Cam = {
 };
 $('#cam-start').addEventListener('click', () => Cam.start());
 $('#cam-stop').addEventListener('click', () => Cam.finish());
-$('#cam-rotate').addEventListener('click', () => { Cam.horizontal = !Cam.horizontal; Cam.bg = null; Cam.side = null; Cam.dir = null; $('#cam-rotate').textContent = Cam.horizontal ? '↻ Linie verticală' : '↻ Linie orizontală'; Cam.drawOverlay(0); });
+$('#cam-rotate').addEventListener('click', () => { Cam.horizontal = !Cam.horizontal; Cam.bg = null; Cam.side = null; Cam.dir = null; $('#cam-rotate').innerHTML = `<svg class="i" aria-hidden="true"><use href="#i-rotate"/></svg> ${Cam.horizontal ? 'Linie verticală' : 'Linie orizontală'}`; Cam.drawOverlay(0); });
 $('#manual-rate').addEventListener('input', () => {
   const v = $('#manual-rate').value.trim(); const n = parseFloat(v.replace(',', '.'));
   const f = $('#f-manual');
@@ -1558,10 +1580,10 @@ $('#skip').addEventListener('click', () => Story.finish());
 
 function renderBilant(r) {
   const cards = [], fits = r.w <= A.ur20Payload;
-  cards.push(fits ? `<div class="bcard"><div class="bh"><span class="ico">💪</span>Efort</div>
+  cards.push(fits ? `<div class="bcard"><div class="bh"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-weight"/></svg></span>Efort</div>
     <div class="ba"><div class="side"><small>Azi, pe om</small><b>${f1(r.tonsPerOp)} t/tură</b></div><div class="arrow">→</div><div class="side after"><small>Cu UR20</small><b>0 găleți ridicate</b></div></div>
     <p>~${f0(r.tonsYear)} tone pe an nu mai sunt ridicate de mână. Indicele NIOSH de ${liTxt(r.LI)} (risc ${r.risk.label}) dispare din paletizare. Rămân schimbarea paleților și separatoarele.</p></div>`
-    : `<div class="bcard"><div class="bh"><span class="ico">💪</span>Efort</div>
+    : `<div class="bcard"><div class="bh"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-weight"/></svg></span>Efort</div>
     <div class="ba"><div class="side"><small>Azi, pe om</small><b>${f1(r.tonsPerOp)} t/tură</b></div><div class="arrow">→</div><div class="side"><small>Cu UR20</small><b>nepotrivit</b></div></div>
     <p>Problema există (indice NIOSH ${liTxt(r.LI)}, risc ${r.risk.label}), dar găleata depășește limita de ${A.ur20Payload} kg a UR20. Tech-Con poate evalua o altă soluție.</p></div>`);
   let vol;
@@ -1569,15 +1591,15 @@ function renderBilant(r) {
   else if (r.cells > 1) vol = `<div class="ba"><div class="side"><small>Linia ta</small><b>${f1(r.Lt)}/min</b></div><div class="arrow">→</div><div class="side after"><small>${r.cells} celule</small><b>${f1(r.R * r.cells)}/min</b></div></div><p>O singură celulă nu ține pasul. Cu ${r.cells} celule ritmul e acoperit, de confirmat la evaluarea tehnică.</p>`;
   else if (r.slowed) vol = `<div class="ba"><div class="side"><small>Azi</small><b>${f1(r.L)}/min</b></div><div class="arrow">→</div><div class="side after"><small>Cu UR20</small><b>${f1(r.Lt)}/min</b></div></div><p>+${f0(r.extraPct)}%, adică ~${f0(r.extraYear)} găleți pe an, dacă umplerea și depozitul țin acest ritm.</p>`;
   else vol = `<div class="ba"><div class="side"><small>Azi</small><b>${f1(r.L)}/min</b></div><div class="arrow">→</div><div class="side after"><small>Cu UR20</small><b>${f1(r.Lt)}/min</b></div></div><p>Același volum, cu același ritm de la prima la ultima oră și o rezervă de ~${f0(r.reserve)}%. Robotul nu accelerează singur fabrica, dar paletizarea nu mai e frâna.</p>`;
-  cards.push(`<div class="bcard"><div class="bh"><span class="ico">📦</span>Volum</div>${vol}</div>`);
-  cards.push(`<div class="bcard"><div class="bh"><span class="ico">🔁</span>Paleți</div>
+  cards.push(`<div class="bcard"><div class="bh"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-box"/></svg></span>Volum</div>${vol}</div>`);
+  cards.push(`<div class="bcard"><div class="bh"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-layers"/></svg></span>Paleți</div>
     <div class="ba"><div class="side"><small>Palet plin</small><b>~${f1(r.fillMin)} min</b></div><div class="arrow">·</div><div class="side"><small>Pe tură</small><b>~${f0(r.palletsShift)} paleți</b></div></div>
     <p>Două poziții de paletizare: robotul umple una, iar omul schimbă paletul pe cealaltă. Scanerele reduc viteza sau opresc robotul când intră cineva în zonă.</p></div>`);
   if (!fits) { /* fără estimare în bani pentru o soluție nepotrivită */ }
-  else if (r.value !== null) cards.push(`<div class="bcard"><div class="bh"><span class="ico">💶</span>Bani (estimarea ta)</div>
+  else if (r.value !== null) cards.push(`<div class="bcard"><div class="bh"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-euro"/></svg></span>Bani (estimarea ta)</div>
     <div class="ba"><div class="side"><small>Ore eliberate/an</small><b>~${f0(r.hoursFreedYear)}</b></div><div class="arrow">×</div><div class="side after"><small>la ${f1(r.s.costHour)} €/oră</small><b>~${f0(r.value)} €</b></div></div>
     <p>Valoarea timpului care nu mai e petrecut ridicând găleți, calculată pe costul introdus de tine. Nu e o economie garantată: oamenii pot fi mutați pe alte sarcini. Prețul celulei se discută la evaluare.</p></div>`);
-  else cards.push(`<div class="bcard"><div class="bh"><span class="ico">💶</span>Bani</div><p>Vrei și o estimare în bani? Adaugă costul orar al unui operator la pasul 2. Rămâne doar pe telefonul tău.</p></div>`);
+  else cards.push(`<div class="bcard"><div class="bh"><span class="ico"><svg class="i" aria-hidden="true"><use href="#i-euro"/></svg></span>Bani</div><p>Vrei și o estimare în bani? Adaugă costul orar al unui operator la pasul 2. Rămâne doar pe telefonul tău.</p></div>`);
   $('#bil').innerHTML = cards.join('');
   $$('#bil .bcard').forEach((c, i) => setTimeout(() => c.classList.add('show'), 120 + i * 220));
   $('#bil-note').textContent = `Referință: testele celulei UR20 din aplicația de referință Tech-Con (7,4–8,6 găleți/min). Estimările folosesc datele tale și ${A.days} de zile de producție pe an. Nu sunt garanții și trebuie validate la evaluarea tehnică Tech-Con.`;
@@ -1709,7 +1731,7 @@ const Home = (() => {
     txt(res, 291, 84, 26, 700, '#1226aa', '7');
     txt(res, 291, 98, 8.5, 600, '#5e6478', 'găleți/min');
     mk('rect', { x: 256, y: 110, width: 70, height: 20, rx: 10, fill: '#e5f3e6' }, res);
-    txt(res, 291, 123.5, 8.5, 700, '#1e7b24', '✓ Se potrivește');
+    txt(res, 291, 123.5, 8.5, 700, '#1e7b24', 'Se potrivește');
     txt(res, 291, 148, 8, 700, '#e7004c', 'Tura de mâine ›');
     const hand = mk('g', {}, root);
     mk('path', { d: 'M0,0 q6,-2 7,6 l3,26 q1,8 -8,10 q-12,2 -14,-8 l-4,-16 q-1,-5 4,-4 l5,8 l-1,-18 q0,-5 5,-4 z', fill: '#f1c9a5', stroke: '#c99a73', 'stroke-width': 1 }, hand);
@@ -1810,7 +1832,7 @@ const Panel = {
     const need = Math.ceil(cells / conv), maxCost = budget / need;
     $('#t-out').innerHTML = `Pentru <b>${cells} celule</b> la o rată de ${Math.round(conv * 100)}% sunt necesare <b>~${need} cereri relevante pe an</b> (~${f1(need / 12)} pe lună). Cu ${f0(budget)} € de promovare, o cerere relevantă poate costa cel mult <b>~${f0(maxCost)} €</b>.`;
     const fmtDate = t => { const d = Math.round((Date.now() - t) / 864e5); return d <= 0 ? 'azi' : d === 1 ? 'ieri' : `acum ${d} zile`; };
-    const srcIcon = s => /camera/.test(s) ? '📷 cameră' : /pe linie/.test(s) ? '👆 măsurat' : '✍️ declarat';
+    const srcIcon = s => { const n = /camera/.test(s) ? ['camera', 'cameră'] : /pe linie/.test(s) ? ['tap', 'măsurat'] : ['pen', 'declarat']; return `<svg class="i" aria-hidden="true"><use href="#i-${n[0]}"/></svg> ${n[1]}`; };
     $('#leads').innerHTML = shown.length ? shown.map(x => `
       <div class="lcard ${x.mine ? 'mine' : ''}">
         <div class="score ${x.p}">${x.sc}<small>${x.p}</small></div>
@@ -1879,7 +1901,7 @@ async function resultImage(r) {
   g.font = F(700, 190); g.fillText(f1(r.L), 74, 520); const nw = g.measureText(f1(r.L)).width;
   g.font = F(500, 48); g.fillStyle = 'rgba(255,255,255,.85)'; g.fillText('găleți/min', 90 + nw, 520);
   const col = { green: ['#e5f3e6', '#1e7b24'], amber: ['#fff4d6', '#8a5c00'], red: ['#fde8ec', '#c0001f'] }[r.v.lvl];
-  g.font = F(700, 40); const vt = (r.v.lvl === 'green' ? '✓ ' : '') + r.v.title, vw = g.measureText(vt).width + 70;
+  g.font = F(700, 40); const vt = r.v.title, vw = g.measureText(vt).width + 70;
   g.fillStyle = col[0]; g.beginPath(); g.roundRect(80, 580, vw, 86, 43); g.fill(); g.fillStyle = col[1]; g.fillText(vt, 115, 637);
   const rows = [
     ['Robot UR20 (test de referință)', f1(r.R) + ' găleți/min'],
