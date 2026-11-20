@@ -9,8 +9,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="icon.svg">
+<link rel="icon" href="icons/logo-48.png" type="image/png" sizes="48x48">
+<link rel="icon" href="icons/logo-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="icons/logo-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Tura de mâine">
 <style>
@@ -37,8 +38,11 @@ button{cursor:pointer;touch-action:manipulation}
 .logo{display:flex;align-items:center;gap:10px;background:none;border:0;padding:0;color:var(--brand);text-align:left}
 .wm{font-weight:800;font-size:19px;letter-spacing:-.6px;color:var(--brand);display:inline-flex;align-items:center;line-height:1}
 .wm i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin:0 2px;transform:translateY(1px)}
-.prod{border-left:1.5px solid var(--line);padding-left:10px;font-size:13px;font-weight:600;line-height:1.15;color:var(--brand)}
+.prod{border-left:1.5px solid var(--line);padding-left:10px;font-size:13px;font-weight:600;line-height:1.15;color:var(--brand);display:flex;align-items:center;gap:8px}
+.prod .app-logo{width:34px;height:34px;border-radius:9px;flex:0 0 34px;box-shadow:0 0 0 1px var(--line)}
 .prod small{display:block;font-weight:500;color:var(--muted);font-size:11px}
+.prod-txt{display:block;white-space:nowrap}
+@media (max-width:430px){ .steps{display:none!important} .prod small{font-size:10.5px} }
 .steps{display:flex;gap:4px;margin-left:auto}
 .steps i{width:16px;height:4px;border-radius:2px;background:var(--brand-pale)}
 .steps i.on{background:var(--brand)}
@@ -459,7 +463,7 @@ input[type=range]{accent-color:var(--brand)}
   <div class="top-row">
     <button class="logo" id="home" aria-label="Înapoi la început">
       <span class="wm" aria-label="Tech-Con">Tech<i></i>Con</span>
-      <span class="prod">Tura de mâine<small>paletizare cu UR20</small></span>
+      <span class="prod"><img class="app-logo" src="icons/logo-96.png" width="34" height="34" alt=""><span class="prod-txt">Tura de mâine<small>paletizare cu UR20</small></span></span>
     </button>
     <div class="steps" id="steps" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
   </div>
@@ -1888,7 +1892,7 @@ document.addEventListener('pointerdown', e => { if (Demo.on && !e.target.closest
 
 /* ---------- Imagine cu rezultatul, gata de trimis ---------- */
 async function resultImage(r) {
-  if (document.fonts && document.fonts.ready) await document.fonts.ready;
+  if (document.fonts && document.fonts.ready) await Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 1500))]);
   const W = 1080, H = 1350, c = document.createElement('canvas'); c.width = W; c.height = H; const g = c.getContext('2d');
   const grad = g.createLinearGradient(0, 0, W, H); grad.addColorStop(0, '#1226aa'); grad.addColorStop(1, '#0a1a87'); g.fillStyle = grad; g.fillRect(0, 0, W, H);
   g.strokeStyle = 'rgba(140,182,225,.14)'; g.lineWidth = 70; g.beginPath(); g.arc(W - 40, 60, 230, 0, Math.PI * 2); g.stroke();
@@ -1896,6 +1900,7 @@ async function resultImage(r) {
   g.fillStyle = '#fff'; g.font = F(800, 52); g.fillText('Tech', 80, 130); const tw = g.measureText('Tech').width;
   g.fillStyle = '#e7004c'; g.beginPath(); g.arc(80 + tw + 13, 113, 8, 0, Math.PI * 2); g.fill();
   g.fillStyle = '#fff'; g.fillText('Con', 80 + tw + 26, 130);
+  try { const lg = new Image(); await new Promise(res => { lg.onload = res; lg.onerror = res; setTimeout(res, 1500); lg.src = 'icons/logo-192.png'; }); if (lg.naturalWidth) { g.save(); g.beginPath(); g.roundRect(W - 80 - 150, 66, 150, 150, 32); g.clip(); g.drawImage(lg, W - 80 - 150, 66, 150, 150); g.restore(); } } catch { }
   g.fillStyle = '#8cb6e1'; g.font = F(700, 28); g.fillText('TURA DE MÂINE · PRE-EVALUARE PALETIZARE UR20', 80, 220);
   g.fillStyle = '#fff'; g.font = F(500, 56); g.fillText('Linia mea', 80, 330);
   g.font = F(700, 190); g.fillText(f1(r.L), 74, 520); const nw = g.measureText(f1(r.L)).width;

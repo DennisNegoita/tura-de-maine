@@ -1,5 +1,5 @@
-const CACHE = 'tura-de-maine-v14';
-const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon.svg'];
+const CACHE = 'tura-de-maine-v15';
+const ASSETS = ['./', './index.html', './manifest.webmanifest', './icons/logo-48.png', './icons/logo-96.png', './icons/logo-192.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
